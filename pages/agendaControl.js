@@ -19,6 +19,26 @@ export default function agendaControl(props){
             event_title: "Birthday",
             event_text: 'red',
             event_time: "13:31"
+        },
+        {
+            event_title: "Birthday",
+            event_text: 'red',
+            event_time: "13:31"
+        },
+        {
+            event_title: "Birthday",
+            event_text: 'red',
+            event_time: "13:31"
+        },
+        {
+            event_title: "Birthday",
+            event_text: 'red',
+            event_time: "13:31"
+        },
+        {
+            event_title: "Birthday",
+            event_text: 'red',
+            event_time: "13:31"
         }
         ],
 
@@ -101,7 +121,7 @@ export default function agendaControl(props){
                 {blankdays.map((day, key) => {
                         return (
                             <div 
-                                style={{width: "14.28%" , height: "120px"}}
+                                style={{width: "14.28%" , height: "180px"}}
                                 class="text-center border-r border-b px-4 pt-2"	
                             ></div>
                         )
@@ -117,13 +137,15 @@ export default function agendaControl(props){
           {no_of_days.map((day, key) => {
             return (
               <div
-                style={{ width: "14.28%", height: "120px" }}
-                class="px-4 pt-2 border-r border-b relative"
+                style={{ width: "14.28%", height: "180px" }}
+                class="border-r border-b relative"
               >
-                <div class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100">
+                <div class="px-4 pt-2 inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100">
                   {day}
                 </div>
+                <div class="mx px-1 overflow-y-auto max-h-full">
                 {renderEvents(day)}
+                </div>
               </div>
             );
           })}

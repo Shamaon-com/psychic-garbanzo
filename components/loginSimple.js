@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from 'next/router';
-
+import { AuthContext } from "../utils/functionsLib";
+import { Auth } from "aws-amplify";
 
 export default function LoginSimple({ ...props }) {
 
 
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const authContext = useContext(AuthContext);
+  
 
-  /*
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true)
     if (validate()) {
       try {
-        await Auth.signIn(email, password)
-        router.push('/main')
-
+        await Auth.signIn(email, password);
+        authContext.login();
+        router.push('/');
+        setIsLoading(false);
       } catch (e) {
-        //alert("La contraseña y el usuario no coinciden.")
         console.log(e.message);
         setIsLoading(false);
-        router.push('/main'); 
+        
       }
     }
     else {
@@ -31,36 +33,13 @@ export default function LoginSimple({ ...props }) {
       setIsLoading(false)
     };
   };
-  */
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setIsLoading(true);
-    if (password === "admin" && email === "admin@admin.com"){
-      router.push('userControl');
-    }
-    else if (password === "pablov" && email === "pablov@pablov.com"){
-      router.push('/');
-    } 
-    else {
-      alert("Porvafor rellene todos los campos.");
-      setIsLoading(false)
-    };
-  };
+  const validate = () => {
+    return true;
+  }
 
   return (
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-md w-full space-y-8">
-        <div>
-          <img
-            class="mx-auto w-auto"
-            src="/img/Screen Capture_select-area_20201221163707.png"
-            alt="Workflow"
-          />
-          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in
-          </h2>
-        </div>
+
         <form class="mt-8 space-y-6" action="#" method="POST">
           <input type="hidden" name="remember" value="true" />
           <div class="rounded-md shadow-sm -space-y-px">
@@ -144,7 +123,5 @@ export default function LoginSimple({ ...props }) {
             </button>
           </div>
         </form>
-      </div>
-    </div>
   );
 }

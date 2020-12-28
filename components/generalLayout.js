@@ -1,115 +1,124 @@
-<div class="bg-gray-100">
-<div class="max-w-6xl m-auto text-gray-800 flex flex-wrap justify-center">
-  <div class="p-5 w-48 ">
-    <div class="text-xs uppercase text-gray-500 font-medium">Home</div>
-    <a class="my-3 block" href="/#">
-      Services <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Products <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      About Us <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Pricing <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Partners <span class="text-teal-600 text-xs p-1">New</span>
-    </a>
-  </div>
-  <div class="p-5 w-48 ">
-    <div class="text-xs uppercase text-gray-500 font-medium">User</div>
-    <a class="my-3 block" href="/#">
-      Sign in <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      New Account <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Demo <span class="text-teal-600 text-xs p-1">New</span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Career <span class="text-teal-600 text-xs p-1">We're hiring</span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Surveys <span class="text-teal-600 text-xs p-1">New</span>
-    </a>
-  </div>
-  <div class="p-5 w-48 ">
-    <div class="text-xs uppercase text-gray-500 font-medium">
-      Resources
-    </div>
-    <a class="my-3 block" href="/#">
-      Documentation <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Tutorials <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Support <span class="text-teal-600 text-xs p-1">New</span>
-    </a>
-  </div>
-  <div class="p-5 w-48 ">
-    <div class="text-xs uppercase text-gray-500 font-medium">
-      Product
-    </div>
-    <a class="my-3 block" href="/#">
-      Our Products <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Great Deals <span class="text-teal-600 text-xs p-1">New</span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Analytics <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Mobile <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-  </div>
-  <div class="p-5 w-48 ">
-    <div class="text-xs uppercase text-gray-500 font-medium">
-      Support
-    </div>
-    <a class="my-3 block" href="/#">
-      Help Center <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Privacy Policy <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      Conditions <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-  </div>
-  <div class="p-5 w-48 ">
-    <div class="text-xs uppercase text-gray-500 font-medium">
-      Contact us
-    </div>
-    <a class="my-3 block" href="/#">
-      XXX XXXX, Floor 4 San Francisco, CA{" "}
-      <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-    <a class="my-3 block" href="/#">
-      contact@company.com{" "}
-      <span class="text-teal-600 text-xs p-1"></span>
-    </a>
-  </div>
-</div>
-</div>
+export default function GeneralLayout({ children }) {
+  return (
+  <div class="min-h-screen h-screen font-mono">
+    <div class="h-1/4 py-10 border-b-4 border-gray-400">
+      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
+        <div class="relative flex items-center justify-between h-full">
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              class="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Open main menu</span>
 
-<div class="bg-gray-100 pt-2 ">
-<div
-  class="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
-md:flex-row max-w-6xl"
->
-  <div class="mt-2">© Copyright 2020. All Rights Reserved.</div>
-  <div class="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
-    <a href="/#" class="w-6 mx-1"></a>
-    <a href="/#" class="w-6 mx-1"></a>
-    <a href="/#" class="w-6 mx-1"></a>
-    <a href="/#" class="w-6 mx-1"></a>
-    <a href="/#" class="w-6 mx-1"></a>
+              <svg
+                class="block h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+
+              <svg
+                class="hidden h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="flex-1 flex items-center">
+            <div class="flex-shrink-0 flex items-center">
+              <img
+                class="block lg:hidden h-8 w-auto"
+                src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                alt="Workflow"
+              />
+              <img
+                class="h-1/2 w-3/5"
+                src="/img/Screen Capture_select-area_20201221163707.png"
+                alt="Workflow"
+              />
+            </div>
+            <div class="hidden sm:block sm:ml-auto">
+              <div class="flex space-x-4">
+                <a
+                  href="#"
+                  class="text-blue-800  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                >
+                  Evento
+                </a>
+                <a
+                  href="#"
+                  class="text-blue-800  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                >
+                  Agenda
+                </a>
+                <a
+                  href="#"
+                  class="text-blue-800  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                >
+                  Projects
+                </a>
+                <a
+                  href="#"
+                  class="text-blue-800  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                >
+                  Calendar
+                </a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="hidden sm:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <a
+            href="#"
+            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Dashboard
+          </a>
+          <a
+            href="#"
+            class="text-blue-800  block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Team
+          </a>
+          <a
+            href="#"
+            class="text-blue-800  block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Projects
+          </a>
+          <a
+            href="#"
+            class="text-blue-800  block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Calendar
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-</div>
-</div>
+  );
+}

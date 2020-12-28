@@ -1,19 +1,34 @@
 import AdminLayout from "../components/adminLayout";
-import { userTable } from "./sampleData";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useFormFields } from "../utils/hooksLib";
+import { AuthContext } from "../utils/functionsLib";
+import { Auth, API } from "aws-amplify";
 
+/**
+TODO
+
+- Delete user
+- Search for user
+- Bulk update
+- Bulk delete
+
+
+
+*/
 export default function userControl(props) {
   const [users, setUsers] = useState([]);
   const [index, setIndex] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [searchByGroup, setSearchByGroup] = useState("Usuario")
+  const authContext = useContext(AuthContext);
+  let nextToken;
 
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     name: "",
     group: "Usuario",
     number: "",
-    password: ""
+    password: "",
   });
 
   useEffect(() => {
@@ -21,8 +36,14 @@ export default function userControl(props) {
   }, []);
 
   async function onLoad() {
+    console.log(authContext);
+    console.log(authContext.isLoggedIn);
+
+    if(!authContext.isLoggedIn){
+      console.log("Not auth")
+    }
     try {
-      setUsers(userTable.users);
+      await listUsers(searchByGroup);
     } catch (e) {
       if (e !== "No current user") {
         console.log(e);
@@ -30,24 +51,116 @@ export default function userControl(props) {
     }
   }
 
-  const addUser = () => {
-    console.log(fields)
+  async function listUsers(groupParam) {
 
-    var user  = {
-      'emailAddress': fields.email,
-      'userName': fields.name,
-      'userGroup': fields.group,
-      'phoneNumber': fields.number,
-      'password': fields.password
+    console.log(groupParam)
+    console.log(searchByGroup);
+
+    let group;
+
+    if (groupParam === "Ponente") {
+      group = "ponente";
     }
 
+    if (groupParam === "Administrador") {
+      group = "admins";
+    }
 
-    var userArray = users
-    userArray.push(user)
-    setUsers(userArray)
+    if (groupParam === "Usuario") {
+      group = "users";
+    }
 
-    setIsCreating(false)
-  };
+    let apiName = "AdminQueries";
+    let path = "/listUsersInGroup";
+    let myInit = {
+      queryStringParameters: {
+        groupname: group    ,
+        limit: 10,
+        token: nextToken,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+    nextToken = NextToken;
+    setUsers(rest.Users);
+
+  }
+
+  async function addUser() {
+    console.log(fields);
+
+    try {
+      const { user } = await Auth.signUp({
+        username: fields.email,
+        password: fields.password,
+        attributes: {
+          name: fields.name, // optional
+          phone_number: "+34" + fields.number, // optional - E.164 number convention
+          // other custom attributes
+        },
+      });
+
+      confirmUserSignUp();
+      addToGroup();
+      console.log(user);
+      setIsCreating(false);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function confirmUserSignUp() {
+    let apiName = "AdminQueries";
+    let path = "/confirmUserSignUp";
+    let myInit = {
+      body: {
+        username: fields.email,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    return await API.post(apiName, path, myInit);
+  }
+
+  async function addToGroup() {
+    let group;
+    if (fields.group === "Ponente") {
+      group = "ponente";
+    }
+
+    if (fields.group === "Administrador") {
+      group = "admins";
+    }
+
+    if (fields.group === "Usuario") {
+      group = "users";
+    }
+
+    let apiName = "AdminQueries";
+    let path = "/addUserToGroup";
+    let myInit = {
+      body: {
+        username: fields.email,
+        groupname: group,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    return await API.post(apiName, path, myInit);
+  }
 
   const deleteUser = () => {
     if (index === null) {
@@ -57,16 +170,17 @@ export default function userControl(props) {
     setIndex(null);
   };
 
-  const uploadCSV = () => {
+  const uploadCSV = () => {};
 
-  }
+  const deleteAll = () => {};
 
-  const deleteAll = () => {
 
-  }
+
 
   const renderUserCell = () => {
-    //console.log(users);
+    console.log(users);
+    const keys = ["sub", "phone_number_verified", "email_verified"];
+
     return (
       <tbody>
         {users.map((user, key) => {
@@ -83,31 +197,17 @@ export default function userControl(props) {
                   />
                 </label>
               </td>
-              <td class="border-dashed border-t border-gray-200 userId">
-                <span class="text-gray-700 px-6 py-3 flex items-center">
-                  {user.userName}
-                </span>
-              </td>
-              <td class="border-dashed border-t border-gray-200 firstName">
-                <span class="text-gray-700 px-6 py-3 flex items-center">
-                  {user.emailAddress}
-                </span>
-              </td>
-              <td class="border-dashed border-t border-gray-200 lastName">
-                <span class="text-gray-700 px-6 py-3 flex items-center">
-                  {user.phoneNumber}
-                </span>
-              </td>
-              <td class="border-dashed border-t border-gray-200 emailAddress">
-                <span class="text-gray-700 px-6 py-3 flex items-center">
-                  {user.userGroup}
-                </span>
-              </td>
-              <td class="border-dashed border-t border-gray-200 phoneNumber">
-                <span class="text-gray-700 px-6 py-3 flex items-center">
-                  {user.password}
-                </span>
-              </td>
+              {user.Attributes.map((attribute, key) => {
+                if (!keys.includes(attribute.Name)) {
+                  return (
+                    <td class="border-dashed border-t border-gray-200">
+                      <span class="text-gray-700 px-6 py-3 flex items-center">
+                        {attribute.Value}
+                      </span>
+                    </td>
+                  );
+                }
+              })}
             </tr>
           );
         })}
@@ -117,24 +217,22 @@ export default function userControl(props) {
 
   const renderKey = () => {
     //console.log(userTable.headings)
-    const heading = [
-       "Nombre",
-      "Email",
-      "Telefono",
-      "Grupo",
-      "Contraseña"
-    ]
-    return (
-      <>
-        {heading.map((item, key) => {
-          return (
-            <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">
-              {item}
-            </th>
-          );
-        })}
-      </>
-    );
+    const keys = ["sub", "phone_number_verified", "email_verified"];
+    if (users[0] !== undefined) {
+      return (
+        <>
+          {users[0].Attributes.map((item, key) => {
+            if (!keys.includes(item.Name)) {
+              return (
+                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">
+                  {item.Name}
+                </th>
+              );
+            }
+          })}
+        </>
+      );
+    }
   };
 
   const renderForm = () => {
@@ -154,14 +252,28 @@ export default function userControl(props) {
               </div>
             </div>
             <div class="flex ml-auto">
-              <button class="ml-auto rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-               onClick={(e) => {
-                setIsCreating(false);
-              }}              >
-                  <span class="sr-only">Close panel</span>
-                  <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+              <button
+                class="ml-auto rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                onClick={(e) => {
+                  setIsCreating(false);
+                }}
+              >
+                <span class="sr-only">Close panel</span>
+                <svg
+                  class="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
           </div>
@@ -229,7 +341,6 @@ export default function userControl(props) {
                       id="name"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       onChange={handleFieldChange}
-
                     />
                   </div>
                 </div>
@@ -248,7 +359,6 @@ export default function userControl(props) {
                       id="number"
                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       onChange={handleFieldChange}
-
                     />
                   </div>
                 </div>
@@ -269,13 +379,12 @@ export default function userControl(props) {
                     Contraseña
                   </label>
                   <input
-                  value={fields.password}
+                    value={fields.password}
                     type="password"
                     name="password"
                     id="password"
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     onChange={handleFieldChange}
-
                   />
                 </div>
               </div>
@@ -283,9 +392,9 @@ export default function userControl(props) {
             <hr />
             <div class="md:inline-flex w-full p-8 text-gray-500 items-center">
               <div class=" text-center ml-auto">
-                <button 
-                class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
-                onClick={addUser}
+                <button
+                  class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+                  onClick={addUser}
                 >
                   Crear
                 </button>
@@ -297,6 +406,14 @@ export default function userControl(props) {
     );
   };
 
+/** 
+  <div class="flex pr-4 ml-auto">
+  <button class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+    Subir CSV
+  </button>
+</div>
+*/
+
   return (
     <AdminLayout>
       {isCreating ? (
@@ -304,20 +421,40 @@ export default function userControl(props) {
       ) : (
         <div class=" w-full space-y-8">
           <div class=" mb-4 flex justify-between items-center">
-
-            <div class="flex pr-4 ml-auto">
-              <button class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
-                Subir CSV
-              </button>
+          <div class="flex pr-4">
+          <input
+              type="text"
+              name="number"
+              value={fields.number}
+              id="number"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              onChange={handleFieldChange}
+            />
             </div>
-            <div class="flex pr-4">
+            <div class="flex pr-4 mr-auto">
+              <select
+                id="group"
+                name="group"
+                value={searchByGroup}
+                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                onChange={(e) => {
+                  setSearchByGroup(e.target.value);
+                  listUsers(e.target.value);
+                }}
+              >
+                <option>Administrador</option>
+                <option>Ponente</option>
+                <option>Usuario</option>
+              </select>
+          </div>
+            <div class="flex pr-4 ml-auto">
               <button
                 class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
                 onClick={(e) => {
                   setIsCreating(true);
                 }}
               >
-                Añadir
+                +
               </button>
             </div>
             <div class="flex pr-4">
@@ -328,7 +465,7 @@ export default function userControl(props) {
                   deleteUser();
                 }}
               >
-                Borrar
+                -
               </button>
             </div>
           </div>
