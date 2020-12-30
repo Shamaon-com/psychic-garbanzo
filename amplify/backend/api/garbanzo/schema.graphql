@@ -12,3 +12,15 @@ type Event
   date: String!
 }
 
+type Message
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
+    ]
+  ) {
+  id: ID!
+  user: String!
+  message: String!
+}

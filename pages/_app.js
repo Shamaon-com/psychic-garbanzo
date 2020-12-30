@@ -10,6 +10,8 @@ function MyApp({ Component, pageProps }) {
 
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [userSession, setUserSession] = useState(null);
+
   const [isAuthenticating, setIsAuthenticating ] = useState(true);
 
   
@@ -19,9 +21,11 @@ function MyApp({ Component, pageProps }) {
   
   async function onLoad() {
     try {
-      const data = await Auth.currentSession();
+      const userData = await Auth.currentUserInfo();
+      const session = await Auth.currentSession()
       login();
-      setUserData(data);
+      setUserSession(session);
+      setUserData(userData);
       setIsAuthenticating(false);
     }
     catch(e) {
@@ -40,7 +44,7 @@ function MyApp({ Component, pageProps }) {
   };
 
   return (
-    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userData: userData, login: login, logout: logout}}>
+    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userData: userData,userSession: userSession, login: login, logout: logout}}>
       {!isAuthenticating ? (
         <Component {...pageProps} />
       ) : (

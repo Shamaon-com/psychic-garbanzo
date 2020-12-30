@@ -3,7 +3,7 @@ import { Component, Children } from "react";
 export default function GeneralLayout({ children }) {
   return (
     <div class="min-h-screen h-screen flex flex-col font-sans">
-      <div class="h-1/4 py-10 border-b-4 border-gray-400">
+      <div class="h-1/5 py-6 border-b-4 border-gray-400">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div class="relative flex items-center justify-between h-full">
             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -62,7 +62,7 @@ export default function GeneralLayout({ children }) {
               <div class="hidden sm:block sm:ml-auto">
                 <div class="flex space-x-4">
                   <a
-                    href="#"
+                    href="/"
                     class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
                   >
                     Evento
@@ -121,8 +121,8 @@ export default function GeneralLayout({ children }) {
         </div>
       </div>
 
-      <div class="flex w-full h-3/4 p-4 bg-white">
-        <ul class="flex flex-col w-full">
+      <div class="flex w-full h-4/5 p-4 bg-white">
+        <ul class="flex w-full">
           {children}
       </ul>
       </div>

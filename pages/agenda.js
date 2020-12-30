@@ -9,7 +9,16 @@ import * as subscriptions from "../config/graphql/subscriptions";
 
 import { useFormFields } from "../utils/hooksLib";
 
+
 export default function Agenda() {
+
+  /**
+   * To do
+   * 
+   * - Improve modal
+   * - Display date in a cleaner way
+   * - Integrate user auth
+   */
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [events, setEvents] = useState([]);

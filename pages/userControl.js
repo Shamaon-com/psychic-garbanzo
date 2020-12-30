@@ -11,10 +11,12 @@ TODO
 - Search for user
 - Bulk update
 - Bulk delete
-
-
-
+- Reset password
+- Email integration
+- Integration with graphql
 */
+
+
 export default function userControl(props) {
   const [users, setUsers] = useState([]);
   const [index, setIndex] = useState(null);
