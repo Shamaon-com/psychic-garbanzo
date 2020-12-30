@@ -1,0 +1,14 @@
+type Event
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: null }
+    ]
+  ) {
+  id: ID!
+  title: String!
+  description: String
+  date: String!
+}
+

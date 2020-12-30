@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     if(!authContext.isLoggedIn){
       console.log("not logged in");
-      router.push('/')
+      router.push('/login')
     }
     else{
       console.log(authContext.userData);

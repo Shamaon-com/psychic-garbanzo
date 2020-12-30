@@ -65,6 +65,7 @@ export default function agendaControl(props){
 
       
     const initDate = () => {
+		
         let today = new Date();
 
         const month = today.getMonth();
