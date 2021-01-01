@@ -35,7 +35,7 @@ export default function Home() {
         
       ) : (
         <GeneralLayout>
-          <div class="flex flex-row w-full">
+          <div class="flex flex-row max-w-7xl mx-auto w-full">
             <div class="w-3/4">
               iframe generator
             </div>
