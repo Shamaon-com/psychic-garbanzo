@@ -2,8 +2,9 @@ import { AuthContext } from "../utils/functionsLib";
 import { useRouter } from 'next/router';
 import GeneralLayout from "../components/generalLayout";
 import Chat from "../components/chat";
+import Iframe from "../components/iframeGenerator";
 
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext, useRef} from "react";
 
 
 export default function Home() {
@@ -23,8 +24,12 @@ export default function Home() {
       setUser(authContext.userData.attributes.email);
     }
     setIsLoading(false);
+
   }, []);
 
+
+
+  
   return (
     <>
     {
@@ -32,12 +37,11 @@ export default function Home() {
         <div>
           Loading
         </div>
-        
       ) : (
         <GeneralLayout>
-          <div class="flex flex-row max-w-7xl mx-auto w-full">
-            <div class="w-3/4">
-              iframe generator
+          <div class="flex flex-row max-w-screen-2xl mx-auto w-full">
+            <div  class="w-3/4">
+              <Iframe/>
             </div>
             <div class="w-1/4">
               <Chat user={user}/>

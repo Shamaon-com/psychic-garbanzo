@@ -2,7 +2,7 @@ import { Component, Children } from "react";
 
 export default function GeneralLayout({ children }) {
   return (
-    <div class="min-h-screen h-screen flex flex-col font-sans">
+    <div class="min-h-screen h-screen flex flex-col font-mono">
       <div class="h-1/5 py-6 border-b-4 border-gray-400">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div class="relative flex items-center justify-between h-full">

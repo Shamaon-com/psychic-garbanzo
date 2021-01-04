@@ -24,3 +24,29 @@ type Message
   user: String!
   message: String!
 }
+
+type Iframe
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list] }
+    ]
+  ) {
+  id: ID!
+  url: String!
+  title: String!
+}
+
+type GeneralSettings
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list] }
+    ]
+  ) {
+  id: ID!
+  login: Boolean!
+  indexPage: String!
+}

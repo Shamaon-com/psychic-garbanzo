@@ -70,3 +70,36 @@ export const onDeleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateIframe = /* GraphQL */ `
+  subscription OnCreateIframe {
+    onCreateIframe {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateIframe = /* GraphQL */ `
+  subscription OnUpdateIframe {
+    onUpdateIframe {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteIframe = /* GraphQL */ `
+  subscription OnDeleteIframe {
+    onDeleteIframe {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -109,10 +109,8 @@ export default function userControl(props) {
 
       confirmUserSignUp();
       addToGroup();
-      console.log(user);
       setIsCreating(false);
     } catch (e) {
-      console.log(e);
     }
   }
 
@@ -164,10 +162,35 @@ export default function userControl(props) {
     return await API.post(apiName, path, myInit);
   }
 
-  const deleteUser = () => {
+  async function deleteUser() {
+
     if (index === null) {
       alert("Seleccione un usuario");
     }
+    console.log(users[index].Username)
+    let apiName = "AdminQueries";
+    let path = "/getUser";
+    let myInit = {
+        queryStringParameters: {
+          username: users[index].Username
+    },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const user = await API.get(apiName, path, myInit);
+
+    user.deleteUser((error, data) => {
+      if (error) {
+        throw error;
+      }
+    // do stuff after deletion
+    });
+
+  
     users.splice(index, 1);
     setIndex(null);
   };

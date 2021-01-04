@@ -7,20 +7,25 @@ import * as subscriptions from "../config/graphql/subscriptions";
 import useDynamicRefs from "use-dynamic-refs";
 
 export default function Chat({ ...props }) {
+
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [getRef, setRef] = useDynamicRefs();
   const [isAdmin, setIsAdmin ] = useState(false);
-
   const messagesEndRef = useRef(null);
+
+  /**
+   * Init
+   * 
+   * - Missing setting is user is auth
+   */
+
 
   useEffect(() => {
     onPageRendered();
   }, []);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView();
-  };
+
 
   const onPageRendered = async () => {
     getMessages();
@@ -28,14 +33,9 @@ export default function Chat({ ...props }) {
     subscribeDeleteMessage();
   };
 
-  const sortArray = (array) => {
-    return array.sort(function (a, b) {
-      var c = new Date(a.createdAt);
-      var d = new Date(b.createdAt);
-      return c - d;
-    });
-  };
-
+  /**
+   * CRUD Operation functions
+   */
 
   const getMessages = () => {
     API.graphql(graphqlOperation(queries.listMessages)).then((data) => {
@@ -107,6 +107,31 @@ export default function Chat({ ...props }) {
     setMessage("");
   };
 
+
+  /**
+   * 
+   * Utils
+   */
+
+  const sortArray = (array) => {
+    return array.sort(function (a, b) {
+      var c = new Date(a.createdAt);
+      var d = new Date(b.createdAt);
+      return c - d;
+    });
+  };
+
+
+
+  /**
+   * UI Functions
+   */
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView();
+  };
+
+
   const showDelete = (e) => {
     if (isAdmin) {
       var target = e.target;
@@ -128,6 +153,12 @@ export default function Chat({ ...props }) {
       showDeleteRef.current.style.display = "none";
     }
   };
+
+
+
+  /**
+   *  Render Functions
+   */
 
   const renderMessages = () => {
     return (

@@ -19,6 +19,7 @@ export default function Agenda() {
    * - Display date in a cleaner way
    * - Integrate user auth
    */
+  
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [events, setEvents] = useState([]);

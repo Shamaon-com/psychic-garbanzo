@@ -61,3 +61,32 @@ export const listMessages = /* GraphQL */ `
     }
   }
 `;
+export const getIframe = /* GraphQL */ `
+  query GetIframe($id: ID!) {
+    getIframe(id: $id) {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listIframes = /* GraphQL */ `
+  query ListIframes(
+    $filter: ModelIframeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listIframes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        url
+        title
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
