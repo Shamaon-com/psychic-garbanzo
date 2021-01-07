@@ -1,4 +1,6 @@
 {
+    "identityPoolName": "garbanzoauth_identitypool_01a3d5f2",
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "garband2f9d990",
     "userPoolName": "garbanzoUserPool",
     "autoVerifiedAttributes": [
@@ -37,7 +39,7 @@
     "userpoolClientSetAttributes": true,
     "sharedId": "d2f9d990",
     "resourceName": "garbanzoauth",
-    "authSelections": "userPoolOnly",
+    "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",

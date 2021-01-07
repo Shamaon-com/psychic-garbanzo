@@ -90,3 +90,131 @@ export const listIframes = /* GraphQL */ `
     }
   }
 `;
+export const getGeneralSettings = /* GraphQL */ `
+  query GetGeneralSettings($id: ID!) {
+    getGeneralSettings(id: $id) {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listGeneralSettingss = /* GraphQL */ `
+  query ListGeneralSettingss(
+    $filter: ModelGeneralSettingsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGeneralSettingss(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        login
+        indexPage
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPonente = /* GraphQL */ `
+  query GetPonente($id: ID!) {
+    getPonente(id: $id) {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPonentes = /* GraphQL */ `
+  query ListPonentes(
+    $filter: ModelPonenteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPonentes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        title
+        file
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPatrocinador = /* GraphQL */ `
+  query GetPatrocinador($id: ID!) {
+    getPatrocinador(id: $id) {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPatrocinadors = /* GraphQL */ `
+  query ListPatrocinadors(
+    $filter: ModelPatrocinadorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPatrocinadors(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        link
+        file
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getArticulo = /* GraphQL */ `
+  query GetArticulo($id: ID!) {
+    getArticulo(id: $id) {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listArticulos = /* GraphQL */ `
+  query ListArticulos(
+    $filter: ModelArticuloFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listArticulos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        date
+        text
+        file
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

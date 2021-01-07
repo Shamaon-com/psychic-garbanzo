@@ -1,7 +1,34 @@
-import { Component, Children } from "react";
+import { Auth, API } from "aws-amplify";
+import LoadingAnimation from "../components/loadingAnimation";
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 
-export default function GeneralLayout({ children }) {
-  return (
+export default function GeneralLayout({ children, ...pageProps }) {
+
+  const [isLoading, setIsLoading] = useState(true);
+  const login = true;
+  const router = useRouter();
+
+  useEffect(() => {
+    onLoad();
+
+  }, []);
+
+  async function onLoad() {
+
+    if (
+      login && pageProps.authContext.isLoggedIn == false 
+    ) {
+      router.push("/login");
+    } else {
+      setIsLoading(false);
+    }
+  }
+
+
+
+  const renderLayout = () => {
+    return (
     <div class="min-h-screen h-screen flex flex-col font-mono">
       <div class="h-1/5 py-6 border-b-4 border-gray-400">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
@@ -74,16 +101,28 @@ export default function GeneralLayout({ children }) {
                     Agenda
                   </a>
                   <a
-                    href="/agenda"
+                    href="/ponentes"
                     class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
                   >
-                    Projects
+                    Ponentes
                   </a>
                   <a
-                    href="#"
+                    href="/patrocinadores"
                     class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
                   >
-                    Calendar
+                    Patrocinadores
+                  </a>
+                  <a
+                    href="/prensa"
+                    class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                  >
+                    Prensa
+                  </a>
+                  <a
+                    href="/contacto"
+                    class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                  >
+                    Contacto
                   </a>
                 </div>
               </div>
@@ -127,5 +166,9 @@ export default function GeneralLayout({ children }) {
       </ul>
       </div>
     </div>
-  );
+    )
+  }
+
+  return <>{!isLoading ? renderLayout() : <LoadingAnimation />}</>;
+
 }

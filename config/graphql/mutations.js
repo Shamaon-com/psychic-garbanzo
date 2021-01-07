@@ -130,3 +130,183 @@ export const deleteIframe = /* GraphQL */ `
     }
   }
 `;
+export const createGeneralSettings = /* GraphQL */ `
+  mutation CreateGeneralSettings(
+    $input: CreateGeneralSettingsInput!
+    $condition: ModelGeneralSettingsConditionInput
+  ) {
+    createGeneralSettings(input: $input, condition: $condition) {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGeneralSettings = /* GraphQL */ `
+  mutation UpdateGeneralSettings(
+    $input: UpdateGeneralSettingsInput!
+    $condition: ModelGeneralSettingsConditionInput
+  ) {
+    updateGeneralSettings(input: $input, condition: $condition) {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGeneralSettings = /* GraphQL */ `
+  mutation DeleteGeneralSettings(
+    $input: DeleteGeneralSettingsInput!
+    $condition: ModelGeneralSettingsConditionInput
+  ) {
+    deleteGeneralSettings(input: $input, condition: $condition) {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPonente = /* GraphQL */ `
+  mutation CreatePonente(
+    $input: CreatePonenteInput!
+    $condition: ModelPonenteConditionInput
+  ) {
+    createPonente(input: $input, condition: $condition) {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePonente = /* GraphQL */ `
+  mutation UpdatePonente(
+    $input: UpdatePonenteInput!
+    $condition: ModelPonenteConditionInput
+  ) {
+    updatePonente(input: $input, condition: $condition) {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePonente = /* GraphQL */ `
+  mutation DeletePonente(
+    $input: DeletePonenteInput!
+    $condition: ModelPonenteConditionInput
+  ) {
+    deletePonente(input: $input, condition: $condition) {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createPatrocinador = /* GraphQL */ `
+  mutation CreatePatrocinador(
+    $input: CreatePatrocinadorInput!
+    $condition: ModelPatrocinadorConditionInput
+  ) {
+    createPatrocinador(input: $input, condition: $condition) {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePatrocinador = /* GraphQL */ `
+  mutation UpdatePatrocinador(
+    $input: UpdatePatrocinadorInput!
+    $condition: ModelPatrocinadorConditionInput
+  ) {
+    updatePatrocinador(input: $input, condition: $condition) {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePatrocinador = /* GraphQL */ `
+  mutation DeletePatrocinador(
+    $input: DeletePatrocinadorInput!
+    $condition: ModelPatrocinadorConditionInput
+  ) {
+    deletePatrocinador(input: $input, condition: $condition) {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createArticulo = /* GraphQL */ `
+  mutation CreateArticulo(
+    $input: CreateArticuloInput!
+    $condition: ModelArticuloConditionInput
+  ) {
+    createArticulo(input: $input, condition: $condition) {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateArticulo = /* GraphQL */ `
+  mutation UpdateArticulo(
+    $input: UpdateArticuloInput!
+    $condition: ModelArticuloConditionInput
+  ) {
+    updateArticulo(input: $input, condition: $condition) {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteArticulo = /* GraphQL */ `
+  mutation DeleteArticulo(
+    $input: DeleteArticuloInput!
+    $condition: ModelArticuloConditionInput
+  ) {
+    deleteArticulo(input: $input, condition: $condition) {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -6,7 +6,7 @@ import * as subscriptions from "../config/graphql/subscriptions";
 
 
 export default function Iframe({ ...props }) {
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [src, setSrc] = useState("");
   const [title, setTitle] = useState("");
   const [iframe, setIframe] = useState(null);
@@ -20,8 +20,7 @@ export default function Iframe({ ...props }) {
 
   function getWindowDimensions() {
     let width = parentRef.current.parentNode.offsetWidth;
-    let height = parentRef.current.parentNode.offsetHeight;
-    console.log(width, height);
+    let height = parentRef.current.parentNode.offsetHeight;;
     var Width = width / 1.3;
     var Height = Width / 1.77;
 
@@ -39,7 +38,11 @@ export default function Iframe({ ...props }) {
 
   useEffect(() => {
     onPageRendered();
-
+  
+    if(props.authContext.userGroup){
+      console.log(props.authContext.userGroup.includes('admins'));
+      setIsAdmin(props.authContext.userGroup.includes('admins'));
+    }
   }, []);
 
   useEffect(() => {
@@ -52,7 +55,6 @@ export default function Iframe({ ...props }) {
 
 
   const handleResize = () => {
-    console.log(parentRef);
     if (parentRef.current) {
       setHeight(getWindowDimensions().Height);
       setWidth(getWindowDimensions().Width);
@@ -72,7 +74,6 @@ export default function Iframe({ ...props }) {
 
   const getIframe = () => {
     API.graphql(graphqlOperation(queries.listIframes)).then((data) => {
-        console.log(data.data.listIframes);
         setIframe(data.data.listIframes.items[0]);
     });
   };

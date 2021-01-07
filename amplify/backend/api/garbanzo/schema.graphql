@@ -3,7 +3,7 @@ type Event
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: null }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
     ]
   ) {
   id: ID!
@@ -30,7 +30,7 @@ type Iframe
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
     ]
   ) {
   id: ID!
@@ -43,10 +43,54 @@ type GeneralSettings
   @auth(
     rules: [
       { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list] }
     ]
   ) {
   id: ID!
   login: Boolean!
   indexPage: String!
+}
+
+
+type Ponente
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  title: String!
+  file: String
+}
+
+
+type Patrocinador
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  link: String!
+  file: String
+}
+
+type Articulo
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  date: String
+  text: String!
+  file: String
 }

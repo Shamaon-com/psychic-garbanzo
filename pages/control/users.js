@@ -1,7 +1,7 @@
-import AdminLayout from "../components/adminLayout";
+import AdminLayout from "../../layouts/adminLayout";
 import React, { useState, useEffect, useContext } from "react";
-import { useFormFields } from "../utils/hooksLib";
-import { AuthContext } from "../utils/functionsLib";
+import { useFormFields } from "../../utils/hooksLib";
+import { AuthContext } from "../../utils/functionsLib";
 import { Auth, API } from "aws-amplify";
 
 /**
@@ -33,30 +33,19 @@ export default function userControl(props) {
     password: "",
   });
 
+
   useEffect(() => {
-    onLoad();
+    console.log("useEffect on users")
+    onPageRendered();
   }, []);
 
-  async function onLoad() {
-    console.log(authContext);
-    console.log(authContext.isLoggedIn);
 
-    if(!authContext.isLoggedIn){
-      console.log("Not auth")
-    }
-    try {
-      await listUsers(searchByGroup);
-    } catch (e) {
-      if (e !== "No current user") {
-        console.log(e);
-      }
-    }
-  }
+
+  const onPageRendered = async () => {
+    listUsers(searchByGroup);
+  };
 
   async function listUsers(groupParam) {
-
-    console.log(groupParam)
-    console.log(searchByGroup);
 
     let group;
 
@@ -111,6 +100,7 @@ export default function userControl(props) {
       addToGroup();
       setIsCreating(false);
     } catch (e) {
+      alert(e.message)
     }
   }
 
@@ -439,85 +429,93 @@ export default function userControl(props) {
 </div>
 */
 
-  return (
-    <AdminLayout>
-      {isCreating ? (
-        renderForm()
-      ) : (
-        <div class=" w-full space-y-8">
-          <div class=" mb-4 flex justify-between items-center">
-          <div class="flex pr-4">
-          <input
-              type="text"
-              name="number"
-              value={fields.number}
-              id="number"
-              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              onChange={handleFieldChange}
-            />
-            </div>
-            <div class="flex pr-4 mr-auto">
-              <select
-                id="group"
-                name="group"
-                value={searchByGroup}
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                onChange={(e) => {
-                  setSearchByGroup(e.target.value);
-                  listUsers(e.target.value);
-                }}
-              >
-                <option>Administrador</option>
-                <option>Ponente</option>
-                <option>Usuario</option>
-              </select>
-          </div>
-            <div class="flex pr-4 ml-auto">
-              <button
-                class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
-                onClick={(e) => {
-                  setIsCreating(true);
-                }}
-              >
-                +
-              </button>
-            </div>
-            <div class="flex pr-4">
-              <button
-                class="h-10 px-5 m-2 text-indigo-100 transition-colors 
+  const renderMain = () => {
+    return (
+      <>
+        {isCreating ? (
+          renderForm()
+        ) : (
+          <div class=" w-full space-y-8">
+            <div class=" mb-4 flex justify-between items-center">
+              <div class="flex pr-4">
+                <input
+                  type="text"
+                  name="number"
+                  value={fields.number}
+                  id="number"
+                  class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                  onChange={handleFieldChange}
+                />
+              </div>
+              <div class="flex pr-4 mr-auto">
+                <select
+                  id="group"
+                  name="group"
+                  value={searchByGroup}
+                  class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  onChange={(e) => {
+                    setSearchByGroup(e.target.value);
+                    listUsers(e.target.value);
+                  }}
+                >
+                  <option>Administrador</option>
+                  <option>Ponente</option>
+                  <option>Usuario</option>
+                </select>
+              </div>
+              <div class="flex pr-4 ml-auto">
+                <button
+                  class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+                  onClick={(e) => {
+                    setIsCreating(true);
+                  }}
+                >
+                  +
+                </button>
+              </div>
+              <div class="flex pr-4">
+                <button
+                  class="h-10 px-5 m-2 text-indigo-100 transition-colors 
           duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
-                onClick={(e) => {
-                  deleteUser();
-                }}
-              >
-                -
-              </button>
+                  onClick={(e) => {
+                    deleteUser();
+                  }}
+                >
+                  -
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
+              style={{ height: "85%" }}
+            >
+              <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+                <thead>
+                  <tr class="text-left">
+                    <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+                      <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+                        <input
+                          type="checkbox"
+                          class="form-checkbox focus:outline-none focus:shadow-outline"
+                        />
+                      </label>
+                    </th>
+                    {renderKey()}
+                  </tr>
+                </thead>
+                {renderUserCell()}
+              </table>
             </div>
           </div>
+        )}
+      </>
+    );
+  };
+  return (
 
-          <div
-            class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
-            style={{ height: "85%" }}
-          >
-            <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
-              <thead>
-                <tr class="text-left">
-                  <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
-                    <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                      <input
-                        type="checkbox"
-                        class="form-checkbox focus:outline-none focus:shadow-outline"
-                      />
-                    </label>
-                  </th>
-                  {renderKey()}
-                </tr>
-              </thead>
-              {renderUserCell()}
-            </table>
-          </div>
-        </div>
-      )}
-    </AdminLayout>
+        <AdminLayout authContext={authContext}>
+          {renderMain()}
+        </AdminLayout>
   );
 }

@@ -103,3 +103,147 @@ export const onDeleteIframe = /* GraphQL */ `
     }
   }
 `;
+export const onCreateGeneralSettings = /* GraphQL */ `
+  subscription OnCreateGeneralSettings {
+    onCreateGeneralSettings {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateGeneralSettings = /* GraphQL */ `
+  subscription OnUpdateGeneralSettings {
+    onUpdateGeneralSettings {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteGeneralSettings = /* GraphQL */ `
+  subscription OnDeleteGeneralSettings {
+    onDeleteGeneralSettings {
+      id
+      login
+      indexPage
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePonente = /* GraphQL */ `
+  subscription OnCreatePonente {
+    onCreatePonente {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePonente = /* GraphQL */ `
+  subscription OnUpdatePonente {
+    onUpdatePonente {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePonente = /* GraphQL */ `
+  subscription OnDeletePonente {
+    onDeletePonente {
+      id
+      name
+      title
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreatePatrocinador = /* GraphQL */ `
+  subscription OnCreatePatrocinador {
+    onCreatePatrocinador {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdatePatrocinador = /* GraphQL */ `
+  subscription OnUpdatePatrocinador {
+    onUpdatePatrocinador {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeletePatrocinador = /* GraphQL */ `
+  subscription OnDeletePatrocinador {
+    onDeletePatrocinador {
+      id
+      name
+      link
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateArticulo = /* GraphQL */ `
+  subscription OnCreateArticulo {
+    onCreateArticulo {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateArticulo = /* GraphQL */ `
+  subscription OnUpdateArticulo {
+    onUpdateArticulo {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteArticulo = /* GraphQL */ `
+  subscription OnDeleteArticulo {
+    onDeleteArticulo {
+      id
+      name
+      date
+      text
+      file
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -12,6 +12,7 @@ export default function Chat({ ...props }) {
   const [messages, setMessages] = useState([]);
   const [getRef, setRef] = useDynamicRefs();
   const [isAdmin, setIsAdmin ] = useState(false);
+  const [user, setUser] = useState({})
   const messagesEndRef = useRef(null);
 
   /**
@@ -23,6 +24,11 @@ export default function Chat({ ...props }) {
 
   useEffect(() => {
     onPageRendered();
+    if(props.authContext.userGroup){
+      setIsAdmin(props.authContext.userGroup.includes('admins'));
+      setUser(props.authContext.userData.attributes.email)
+      console.log(props.authContext.userData)
+    }
   }, []);
 
 
@@ -96,7 +102,7 @@ export default function Chat({ ...props }) {
     }
 
     var itemDetails = {
-      user: props.user,
+      user: user,
       message: message,
     };
 
@@ -166,7 +172,7 @@ export default function Chat({ ...props }) {
         {messages.map((message, key) => {
           let classVar =
             "bg-white text-gray-700 p-2 self-start my-2 rounded-md shadow mr-3";
-          if (message.user !== props.user) {
+          if (message.user !== user) {
             classVar =
               "bg-green-500 text-white p-2 self-end my-2 rounded-md shadow ml-3";
           }
