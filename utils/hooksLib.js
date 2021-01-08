@@ -5,11 +5,18 @@ export function useFormFields(initialState) {
 
   return [
     fields,
-    function(event) {
-      setValues({
-        ...fields,
-        [event.target.id]: event.target.value
-      });
-    }
+    function (event) {
+      if (event.target.id === "image") {
+        setValues({
+          ...fields,
+          [event.target.id]: event.target.files,
+        });
+      } else {
+        setValues({
+          ...fields,
+          [event.target.id]: event.target.value,
+        });
+      }
+    },
   ];
 }
