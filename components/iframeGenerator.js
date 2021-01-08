@@ -4,7 +4,6 @@ import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
 
-
 export default function Iframe({ ...props }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [src, setSrc] = useState("");
@@ -12,15 +11,12 @@ export default function Iframe({ ...props }) {
   const [iframe, setIframe] = useState(null);
   const parentRef = useRef(null);
 
-
-
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
-
   function getWindowDimensions() {
     let width = parentRef.current.parentNode.offsetWidth;
-    let height = parentRef.current.parentNode.offsetHeight;;
+    let height = parentRef.current.parentNode.offsetHeight;
     var Width = width / 1.3;
     var Height = Width / 1.77;
 
@@ -38,10 +34,10 @@ export default function Iframe({ ...props }) {
 
   useEffect(() => {
     onPageRendered();
-  
-    if(props.authContext.userGroup){
-      console.log(props.authContext.userGroup.includes('admins'));
-      setIsAdmin(props.authContext.userGroup.includes('admins'));
+
+    if (props.authContext.userGroup) {
+      console.log(props.authContext.userGroup.includes("admins"));
+      setIsAdmin(props.authContext.userGroup.includes("admins"));
     }
   }, []);
 
@@ -53,7 +49,6 @@ export default function Iframe({ ...props }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [iframe]);
 
-
   const handleResize = () => {
     if (parentRef.current) {
       setHeight(getWindowDimensions().Height);
@@ -61,23 +56,20 @@ export default function Iframe({ ...props }) {
     }
   };
 
-
-
   const onPageRendered = async () => {
     getIframe();
     subscribeCreateIframe();
   };
 
-    /**
+  /**
    * CRUD Operation functions
    */
 
   const getIframe = () => {
     API.graphql(graphqlOperation(queries.listIframes)).then((data) => {
-        setIframe(data.data.listIframes.items[0]);
+      setIframe(data.data.listIframes.items[0]);
     });
   };
-
 
   const deleteIframe = (id) => {
     var itemDetails = {
@@ -89,15 +81,14 @@ export default function Iframe({ ...props }) {
     setIframe(null);
   };
 
-
   const subscribeCreateIframe = async () => {
-    await API.graphql(
-      graphqlOperation(subscriptions.onCreateIframe)
-    ).subscribe({
-      next: (subonCreateEvent) => {
-        setIframe(subonCreateEvent.value.data.onCreateIframe)
-      },
-    });
+    await API.graphql(graphqlOperation(subscriptions.onCreateIframe)).subscribe(
+      {
+        next: (subonCreateEvent) => {
+          setIframe(subonCreateEvent.value.data.onCreateIframe);
+        },
+      }
+    );
   };
 
   const createIframe = (e) => {
@@ -115,9 +106,7 @@ export default function Iframe({ ...props }) {
     API.graphql(
       graphqlOperation(mutations.createIframe, { input: itemDetails })
     );
-    
   };
-
 
   const renderIframe = () => {
     return (
@@ -138,19 +127,18 @@ export default function Iframe({ ...props }) {
               style={{ height: "90%" }}
               class="bg-gray-300 w-full h-5/6  justify-center items-center relative"
             >
-            {isAdmin &&
-            <div
-                id={iframe.id}
-                class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
-                style={{ width: "50px" }}
-                
-                onClick={(e) => {
-                deleteIframe(e.target.id);
-                }}
-            >
-                -
-            </div>
-            }
+              {isAdmin && (
+                <div
+                  id={iframe.id}
+                  class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
+                  style={{ width: "50px" }}
+                  onClick={(e) => {
+                    deleteIframe(e.target.id);
+                  }}
+                >
+                  -
+                </div>
+              )}
               <iframe
                 class="z-10"
                 src={iframe.url}
@@ -170,8 +158,8 @@ export default function Iframe({ ...props }) {
   };
   return (
     <div class="py-10 w-full h-full px-2">
-    {renderIframe()}
-    {isAdmin && !iframe && 
+      {renderIframe()}
+      {isAdmin && !iframe && (
         <div class="flex flex-col  w-full ">
           <h2 class="py-4">Titulo de la emision</h2>
           <input
@@ -209,7 +197,7 @@ export default function Iframe({ ...props }) {
             </div>
           </div>
         </div>
-    }
+      )}
     </div>
   );
 }

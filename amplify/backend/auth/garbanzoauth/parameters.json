@@ -1,6 +1,6 @@
 {
     "identityPoolName": "garbanzoauth_identitypool_01a3d5f2",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "garband2f9d990",
     "userPoolName": "garbanzoUserPool",
     "autoVerifiedAttributes": [

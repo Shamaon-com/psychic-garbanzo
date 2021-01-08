@@ -18,7 +18,8 @@
         }
       },
       "auth": {
-        "garbanzoauth": {}
+        "garbanzoauth": {},
+        "userPoolGroups": {}
       }
     }
   }

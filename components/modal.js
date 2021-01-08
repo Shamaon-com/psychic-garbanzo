@@ -13,7 +13,7 @@ export default function Modal({ ...props }) {
   const fileRef = useRef(null);
 
   useEffect(() => {
-    console.log(props)
+    //console.log(props)
     
   }, []);
 
