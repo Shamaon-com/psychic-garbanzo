@@ -18,7 +18,7 @@ export default function Agenda(props) {
 
   const authContext = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
-  const [events, setEvents] = useState([]);
+  const [agendas, setAgendas] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [isAdmin, setIsAdmin] = useState(true);
   const [fields, handleFieldChange] = useFormFields({
@@ -42,50 +42,50 @@ export default function Agenda(props) {
   }, []);
 
   const onPageRendered = async () => {
-    getEvents();
-    subscribeCreateEvent();
-    subscribeDeleteEvent();
+    getAgendas();
+    subscribeCreateAgenda();
+    subscribeDeleteAgenda();
   };
 
-  const subscribeCreateEvent = async () => {
-    await API.graphql(graphqlOperation(subscriptions.onCreateEvent)).subscribe({
-      next: (subonCreateEvent) => {
-        setEvents((events) => [
-          ...events,
-          subonCreateEvent.value.data.onCreateEvent,
+  const subscribeCreateAgenda = async () => {
+    await API.graphql(graphqlOperation(subscriptions.onCreateAgenda)).subscribe({
+      next: (subonCreateAgenda) => {
+        setAgendas((agendas) => [
+          ...agendas,
+          subonCreateAgenda.value.data.onCreateAgenda,
         ]);
       },
     });
   };
 
-  const subscribeDeleteEvent = async () => {
-    await API.graphql(graphqlOperation(subscriptions.onDeleteEvent)).subscribe({
-      next: (subonDeleteEvent) => {
-        setEvents((events) => [
-          ...events.filter(
-            (event) => event.id != subonDeleteEvent.value.data.onDeleteEvent.id
+  const subscribeDeleteAgenda = async () => {
+    await API.graphql(graphqlOperation(subscriptions.onDeleteAgenda)).subscribe({
+      next: (subonDeleteAgenda) => {
+        setAgendas((agendas) => [
+          ...agendas.filter(
+            (agenda) => agenda.id != subonDeleteAgenda.value.data.onDeleteAgenda.id
           ),
         ]);
       },
     });
   };
 
-  const getEvents = () => {
-    API.graphql(graphqlOperation(queries.listEvents)).then((data) =>
-      setEvents(data.data.listEvents.items)
+  const getAgendas = () => {
+    API.graphql(graphqlOperation(queries.listAgendas)).then((data) =>
+      setAgendas(data.data.listAgendas.items)
     );
   };
 
-  const deleteEvent = (id) => {
+  const deleteAgenda = (id) => {
     var itemDetails = {
       id: id,
     };
     API.graphql(
-      graphqlOperation(mutations.deleteEvent, { input: itemDetails })
+      graphqlOperation(mutations.deleteAgenda, { input: itemDetails })
     );
   };
 
-  const createEvent = (e) => {
+  const createAgenda = (e) => {
     var itemDetails = {
       title: fields.title,
       description: fields.description,
@@ -98,9 +98,9 @@ export default function Agenda(props) {
       ).toString(),
     };
 
-    console.log("Event Details : " + JSON.stringify(itemDetails));
+    console.log("Agenda Details : " + JSON.stringify(itemDetails));
     API.graphql(
-      graphqlOperation(mutations.createEvent, { input: itemDetails })
+      graphqlOperation(mutations.createAgenda, { input: itemDetails })
     );
   };
 
@@ -157,9 +157,9 @@ export default function Agenda(props) {
     let dataArray = [];
     let index = 0;
     let classString;
-    let parsedEvents = parseDates(events);
+    let parsedAgendas = parseDates(agendas);
 
-    for (var key in parsedEvents) {
+    for (var key in parsedAgendas) {
       switch (index) {
         case selectedTab:
           classString = "px-28 bg-blue-900 hover:bg-blue-800";
@@ -189,12 +189,12 @@ export default function Agenda(props) {
     return dataArray;
   };
 
-  const renderEvents = () => {
-    let parsedEvents = parseDates(events);
+  const renderAgendas = () => {
+    let parsedAgendas = parseDates(agendas);
     let currentKey;
     let index = 0;
 
-    for (var key in parsedEvents) {
+    for (var key in parsedAgendas) {
       if (index == selectedTab) {
         currentKey = key;
       }
@@ -203,24 +203,24 @@ export default function Agenda(props) {
 
     return (
       <>
-        {parsedEvents[currentKey] ? (
-          parsedEvents[currentKey].map((event, key) => {
+        {parsedAgendas[currentKey] ? (
+          parsedAgendas[currentKey].map((agenda, key) => {
             return (
               <div class="w-full h-24 border-dashed flex flex-col justify-center align-center items-center">
                 <div id="head" class="h-1/4 flex flex-row w-full">
                   <div class="text-center bg-gray-400 text-gray-100 w-full">
-                    {event.title} -
-                    {new Date(event.date).toLocaleTimeString([], {
+                    {agenda.title} -
+                    {new Date(agenda.date).toLocaleTimeString([], {
                       timeStyle: "short",
                     })}
                   </div>
                   {isAdmin && (
                     <div
-                      id={event.id}
+                      id={agenda.id}
                       class="bg-red-500 text-white text-center cursor-pointer"
                       style={{ width: "5%" }}
                       onClick={(e) => {
-                        deleteEvent(e.target.id);
+                        deleteAgenda(e.target.id);
                       }}
                     >
                       -
@@ -232,7 +232,7 @@ export default function Agenda(props) {
                   class="font-thin h-3/4 bg-blue-50 w-full text-blue-700 p-2 text-center"
                   id="body"
                 >
-                  {event.description}
+                  {agenda.description}
                 </div>
               </div>
             );
@@ -345,12 +345,12 @@ export default function Agenda(props) {
 
           <div class="shadow w-full rounded-lg bg-white overflow-hidden w-full block p-8">
             <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
-              Add Event Details
+              Add Agenda Details
             </h2>
 
             <div class="mb-4">
               <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
-                Event title
+                Agenda title
               </label>
               <input
                 id="title"
@@ -361,7 +361,7 @@ export default function Agenda(props) {
             </div>
             <div class="mb-4">
               <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
-                Event description
+                Agenda description
               </label>
               <input
                 id="description"
@@ -373,7 +373,7 @@ export default function Agenda(props) {
 
             <div class="mb-4">
               <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
-                Event date
+                Agenda date
               </label>
               {renderDatetimePicker()}
             </div>
@@ -389,11 +389,11 @@ export default function Agenda(props) {
                 type="button"
                 class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm"
                 onClick={(e) => {
-                  createEvent();
+                  createAgenda();
                   setShowModal(false);
                 }}
               >
-                Save Event
+                Save Agenda
               </button>
             </div>
           </div>
@@ -408,7 +408,7 @@ export default function Agenda(props) {
       <div class="max-w-7xl mx-auto w-full">
         <div class="flex mx-auto justify-center p-8">{renderTabs()}</div>
         <div class="flex flex-col space-y-4 max-w-screen-sm cointainer mx-auto">
-          {renderEvents()}
+          {renderAgendas()}
         </div>
       </div>
     </GeneralLayout>

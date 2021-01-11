@@ -1,4 +1,4 @@
-type Event
+type Agenda
   @model
   @auth(
     rules: [
@@ -11,6 +11,22 @@ type Event
   description: String
   date: String!
 }
+
+type Evento
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
+    ]
+  ) {
+  id: ID!
+  type: String!
+  title: String!
+  startData: String!
+  endDate: String!
+}
+
 
 type Message
   @model

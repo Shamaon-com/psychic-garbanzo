@@ -1,7 +1,7 @@
 import { AuthContext } from "../utils/functionsLib";
 import GeneralLayout from "../layouts/generalLayout";
 import Chat from "../components/chat";
-import Iframe from "../components/iframeGenerator";
+import Iframe from "../components/iframe";
 
 import React, { useState, useEffect, useContext, useRef} from "react";
 

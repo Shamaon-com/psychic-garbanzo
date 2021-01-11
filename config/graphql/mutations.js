@@ -1,12 +1,12 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createEvent = /* GraphQL */ `
-  mutation CreateEvent(
-    $input: CreateEventInput!
-    $condition: ModelEventConditionInput
+export const createAgenda = /* GraphQL */ `
+  mutation CreateAgenda(
+    $input: CreateAgendaInput!
+    $condition: ModelAgendaConditionInput
   ) {
-    createEvent(input: $input, condition: $condition) {
+    createAgenda(input: $input, condition: $condition) {
       id
       title
       description
@@ -16,12 +16,12 @@ export const createEvent = /* GraphQL */ `
     }
   }
 `;
-export const updateEvent = /* GraphQL */ `
-  mutation UpdateEvent(
-    $input: UpdateEventInput!
-    $condition: ModelEventConditionInput
+export const updateAgenda = /* GraphQL */ `
+  mutation UpdateAgenda(
+    $input: UpdateAgendaInput!
+    $condition: ModelAgendaConditionInput
   ) {
-    updateEvent(input: $input, condition: $condition) {
+    updateAgenda(input: $input, condition: $condition) {
       id
       title
       description
@@ -31,16 +31,64 @@ export const updateEvent = /* GraphQL */ `
     }
   }
 `;
-export const deleteEvent = /* GraphQL */ `
-  mutation DeleteEvent(
-    $input: DeleteEventInput!
-    $condition: ModelEventConditionInput
+export const deleteAgenda = /* GraphQL */ `
+  mutation DeleteAgenda(
+    $input: DeleteAgendaInput!
+    $condition: ModelAgendaConditionInput
   ) {
-    deleteEvent(input: $input, condition: $condition) {
+    deleteAgenda(input: $input, condition: $condition) {
       id
       title
       description
       date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createEvento = /* GraphQL */ `
+  mutation CreateEvento(
+    $input: CreateEventoInput!
+    $condition: ModelEventoConditionInput
+  ) {
+    createEvento(input: $input, condition: $condition) {
+      id
+      type
+      title
+      startData
+      endDate
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateEvento = /* GraphQL */ `
+  mutation UpdateEvento(
+    $input: UpdateEventoInput!
+    $condition: ModelEventoConditionInput
+  ) {
+    updateEvento(input: $input, condition: $condition) {
+      id
+      type
+      title
+      startData
+      endDate
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteEvento = /* GraphQL */ `
+  mutation DeleteEvento(
+    $input: DeleteEventoInput!
+    $condition: ModelEventoConditionInput
+  ) {
+    deleteEvento(input: $input, condition: $condition) {
+      id
+      type
+      title
+      startData
+      endDate
       createdAt
       updatedAt
     }
@@ -182,6 +230,7 @@ export const createPonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }
@@ -197,6 +246,7 @@ export const updatePonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }
@@ -212,6 +262,7 @@ export const deletePonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }

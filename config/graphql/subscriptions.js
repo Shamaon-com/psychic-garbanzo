@@ -1,9 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateEvent = /* GraphQL */ `
-  subscription OnCreateEvent {
-    onCreateEvent {
+export const onCreateAgenda = /* GraphQL */ `
+  subscription OnCreateAgenda {
+    onCreateAgenda {
       id
       title
       description
@@ -13,9 +13,9 @@ export const onCreateEvent = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateEvent = /* GraphQL */ `
-  subscription OnUpdateEvent {
-    onUpdateEvent {
+export const onUpdateAgenda = /* GraphQL */ `
+  subscription OnUpdateAgenda {
+    onUpdateAgenda {
       id
       title
       description
@@ -25,13 +25,52 @@ export const onUpdateEvent = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteEvent = /* GraphQL */ `
-  subscription OnDeleteEvent {
-    onDeleteEvent {
+export const onDeleteAgenda = /* GraphQL */ `
+  subscription OnDeleteAgenda {
+    onDeleteAgenda {
       id
       title
       description
       date
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateEvento = /* GraphQL */ `
+  subscription OnCreateEvento {
+    onCreateEvento {
+      id
+      type
+      title
+      startData
+      endDate
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateEvento = /* GraphQL */ `
+  subscription OnUpdateEvento {
+    onUpdateEvento {
+      id
+      type
+      title
+      startData
+      endDate
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteEvento = /* GraphQL */ `
+  subscription OnDeleteEvento {
+    onDeleteEvento {
+      id
+      type
+      title
+      startData
+      endDate
       createdAt
       updatedAt
     }
@@ -143,6 +182,7 @@ export const onCreatePonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }
@@ -155,6 +195,7 @@ export const onUpdatePonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }
@@ -167,6 +208,7 @@ export const onDeletePonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }

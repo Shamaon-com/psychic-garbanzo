@@ -1,9 +1,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getEvent = /* GraphQL */ `
-  query GetEvent($id: ID!) {
-    getEvent(id: $id) {
+export const getAgenda = /* GraphQL */ `
+  query GetAgenda($id: ID!) {
+    getAgenda(id: $id) {
       id
       title
       description
@@ -13,18 +13,51 @@ export const getEvent = /* GraphQL */ `
     }
   }
 `;
-export const listEvents = /* GraphQL */ `
-  query ListEvents(
-    $filter: ModelEventFilterInput
+export const listAgendas = /* GraphQL */ `
+  query ListAgendas(
+    $filter: ModelAgendaFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listAgendas(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         title
         description
         date
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getEvento = /* GraphQL */ `
+  query GetEvento($id: ID!) {
+    getEvento(id: $id) {
+      id
+      type
+      title
+      startData
+      endDate
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listEventos = /* GraphQL */ `
+  query ListEventos(
+    $filter: ModelEventoFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        title
+        startData
+        endDate
         createdAt
         updatedAt
       }
@@ -130,6 +163,7 @@ export const getPonente = /* GraphQL */ `
       name
       title
       file
+      url
       createdAt
       updatedAt
     }
@@ -147,6 +181,7 @@ export const listPonentes = /* GraphQL */ `
         name
         title
         file
+        url
         createdAt
         updatedAt
       }
