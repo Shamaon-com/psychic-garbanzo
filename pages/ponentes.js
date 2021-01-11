@@ -6,26 +6,27 @@ import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
 import { AuthContext } from "../utils/functionsLib";
-import useDynamicRefs from "use-dynamic-refs";
-
 import { useFormFields } from "../utils/hooksLib";
-import { data } from "autoprefixer";
+import Image from 'next/image';
 
-export default function Ponentes(props) {
+
+export default function Ponentes() {
+
   const authContext = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   // Specifc to page
   const [ponentes, setPonentes] = useState([]);
   const [imageDict, setimageDict] = useState({});
-  const [imageArray, setImageArray] = useState([])
   const [index, setIndex] = useState(0);
   const [numberOfElements, setNumberOfElements] = useState(1)
   const [fields, handleFieldChange] = useFormFields({
     name: "",
     title: "",
-    image: "",
+    url: "",
+    image: ""
   });
 
   useEffect(() => {
@@ -68,8 +69,7 @@ export default function Ponentes(props) {
           ...ponentes,
           subonCreatePonente.value.data.onCreatePonente,
         ]);
-        console.log("trigger subcribe")
-        console.log(subonCreatePonente.value.data.onCreatePonente)
+        getImage(subonCreatePonente.value.data.onCreatePonente.id, subonCreatePonente.value.data.onCreatePonente.file)
       },
     });
   };
@@ -80,6 +80,7 @@ export default function Ponentes(props) {
     var itesmetails = {
       name: fields.name,
       title: fields.title,
+      url: fields.url,
       file: filename.replace(/\s+/g, '')
     };
 
@@ -155,6 +156,12 @@ export default function Ponentes(props) {
   };
 
   const submit = () => {
+    /**
+     * This function is trigged when create button is pressed in Modal component,
+     * it will create ponente and upload the correspoing image to s3
+     */
+    setIsCreating(true);
+
     if (!validate()) {
       return;
     }
@@ -168,8 +175,10 @@ export default function Ponentes(props) {
       .then((result) => {
         console.log(result);
         createPonente();
+        setIsCreating(false);
+        setShowModal(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {alert(err); isCreating(false)});
   };
 
   const moveInGrid = (e) => {
@@ -228,12 +237,12 @@ export default function Ponentes(props) {
         </div>
         <div class="flex flex-row justify-center my-5">
           {index !== 0 &&
-            <div id="backwards" class="mx-2 cursor-pointer" onClick={moveInGrid}>
+            <div id="backwards" class="mx-2 cursor-pointer bg-gray-400 w-12 text-center text-white" onClick={moveInGrid}>
               &lt;
           </div>
           }
           {index + numberOfElements < ponentes.length &&
-            <div id="forward" class="mx-2 cursor-pointer" onClick={moveInGrid}>
+            <div id="forward" class="mx-2 cursor-pointer bg-gray-500 w-12 text-center text-white" onClick={moveInGrid}>
               &gt;
           </div>
           }
@@ -244,20 +253,15 @@ export default function Ponentes(props) {
 
   const renderCreatePonenteUi = () => {
     return (
-      <div class="bg-blue-50  py-3 px-3 max-w-xs"
+      <div class="border-dashed  border-gray-400 border-2 cursor-pointer text-gray-500
+       hover:bg-gray-400 hover:text-white py-3 max-h-64 h-64"
+
         onClick={(e) => {
           setShowModal(true);
         }}
       >
-        <div class="photo-wrapper p-2">
-          <img
-            class="w-32 h-32 rounded-full mx-auto"
-            src="https://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
-            alt="John Doe"
-          />
-        </div>
         <div class="p-2">
-          <h3 class="text-center text-xl text-gray-900 font-medium leading-8">
+          <h3 class="text-center text-xl font-medium leading-8">
             Añadir
           </h3>
         </div>
@@ -287,6 +291,7 @@ export default function Ponentes(props) {
             class="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto"
             src={imageDict[ponente.id]}
             alt="John Doe"
+            
           />
         </div>
         <div class="p-2">
@@ -318,6 +323,7 @@ export default function Ponentes(props) {
         submit={submit}
         showModal={showModal}
         setShowModal={setShowModal}
+        isCreating={isCreating}
       />
       <div class="max-w-5xl mx-auto w-full h-full">
         <div class="flex flex-wrap justify-center h-full">

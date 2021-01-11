@@ -62,7 +62,8 @@ type Ponente
   id: ID!
   name: String!
   title: String!
-  file: String
+  file: String!
+  url: String
 }
 
 
