@@ -81,7 +81,7 @@ export default function Modal({ ...props }) {
 
           <div class="shadow w-full  bg-white overflow-hidden w-full block p-8">
             <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
-              Añadir elemento
+              Añadir {props.element}
             </h2>
               {renderFields()}
             <div class="flex justify-end mt-8 text-right">
@@ -105,7 +105,7 @@ export default function Modal({ ...props }) {
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
                 }
-                Save Ponente
+                Save {props.element}
               </button>
             </div>
           </div>

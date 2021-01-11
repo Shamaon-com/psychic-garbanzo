@@ -1,5 +1,7 @@
 import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
+import LazyImage from "../components/lazyImage";
+
 import React, { useState, useEffect, useContext } from "react";
 import { API, graphqlOperation, Storage } from "aws-amplify";
 import * as mutations from "../config/graphql/mutations";
@@ -7,7 +9,6 @@ import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
 import { AuthContext } from "../utils/functionsLib";
 import { useFormFields } from "../utils/hooksLib";
-import Image from 'next/image';
 
 
 export default function Ponentes() {
@@ -69,8 +70,7 @@ export default function Ponentes() {
           ...ponentes,
           subonCreatePonente.value.data.onCreatePonente,
         ]);
-        getImage(subonCreatePonente.value.data.onCreatePonente.id, subonCreatePonente.value.data.onCreatePonente.file)
-      },
+      }
     });
   };
 
@@ -122,24 +122,10 @@ export default function Ponentes() {
       }else{
         setPonentes(data.data.listPonentes.items)
       }
-      data.data.listPonentes.items.map((item) => {
-        getImage(item.id, item.file);
-      })
     }
     );
   };
 
-  async function getImage(index, key) {
-  
-    Storage.get(key).then((data) =>{
-      let intDIct = imageDict
-      intDIct[index] = data
-      setimageDict({...intDIct})
-
-    })
-
-
-  }
 
   /**
    * UI Operation functions
@@ -173,7 +159,6 @@ export default function Ponentes() {
       contentType: "image/png",
     })
       .then((result) => {
-        console.log(result);
         createPonente();
         setIsCreating(false);
         setShowModal(false);
@@ -270,8 +255,7 @@ export default function Ponentes() {
   }
 
   const renderPonente = (ponente) => {
-    
-    console.log(imageDict[ponente.id])
+
     return (
       <div class="bg-blue-50  py-3 px-3 sm:max-w-xs max-h-64 relative">
         {isAdmin && (
@@ -287,12 +271,7 @@ export default function Ponentes() {
           </div>
         )}
         <div class="photo-wrapper p-2">
-          <img
-            class="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto"
-            src={imageDict[ponente.id]}
-            alt="John Doe"
-            
-          />
+            <LazyImage s3Key={ponente.file} />
         </div>
         <div class="p-2">
           <h3 class="text-center sm:text-xl text-gray-900 font-medium leading-8">
@@ -318,6 +297,7 @@ export default function Ponentes() {
   return (
     <GeneralLayout authContext={authContext}>
       <Modal
+        element={"Ponente"}
         fields={fields}
         handleFieldChange={handleFieldChange}
         submit={submit}
