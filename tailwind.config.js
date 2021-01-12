@@ -2,7 +2,11 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'hero-lg': "url('/img/handshake.jpeg')",
+      },
+    },
   },
   variants: {
     extend: {},
