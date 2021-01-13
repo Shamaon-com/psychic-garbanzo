@@ -23,11 +23,11 @@ export function useModalFields(initialState) {
     function (event) {
       
       let type = fields[event.target.id].type;
-
+      
       if(type==="file"){
         setValues({
           ...fields,
-          [event.target.id]: {"type": type, "value": event.target.file}
+          [event.target.id]: {"type": type, "value": event.target.files[0]}
         });
       }else{
       setValues({

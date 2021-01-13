@@ -1,5 +1,5 @@
-import { Auth, API } from "aws-amplify";
 import LoadingAnimation from "../components/loadingAnimation";
+import ContainerPage from "./components/containerPage";
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 
@@ -180,14 +180,10 @@ export default function GeneralLayout({ children, ...pageProps }) {
         <div class="h-1/5 py-6 border-b-4 border-gray-400">
           {window.screen.width >= 1024 ? renderPcNavBar() : renderMobileMenu()}
         </div>
-        <div class="flex w-full h-4/5 p-4 bg-white">
-          <ul class="flex w-full">
-            {children}
-          </ul>
-        </div>
+        <ContainerPage>
+          {children}
+        </ContainerPage>
       </div>
-
-
     )
   }
 

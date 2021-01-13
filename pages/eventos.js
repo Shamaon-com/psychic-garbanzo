@@ -1,28 +1,31 @@
-import GeneralLayout from "../layouts/generalLayout";
-import Modal from "../components/modal";
 import React, { useState, useEffect, useContext } from "react";
 import { API, graphqlOperation, Storage } from "aws-amplify";
+
+import GeneralLayout from "../layouts/generalLayout";
+import Modal from "../components/modal";
+import LazyImage from "../components/lazyImage"
+import Grid from "../components/grid";
+
+import { AuthContext } from "../utils/functionsLib";
+import { useModalFields } from "../utils/hooksLib";
+
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
-import { AuthContext } from "../utils/functionsLib";
-import { useModalFields } from "../utils/hooksLib";
-import LazyImage from "../components/lazyImage"
+
+
 
 
 export default function Evento() {
 
   const authContext = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
+  
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
   // Specifc to page
   const [eventos, setEventos] = useState([]);
-  const [index, setIndex] = useState(0);
-  const mobileCols = 1
-  const pcCols = 2
-  const [numberOfElements, setNumberOfElements] = useState(mobileCols)
+
 
   const [fields, handleFieldChange] = useModalFields({
     name: {type: "default", value: ""},
@@ -40,21 +43,9 @@ export default function Evento() {
 
   useEffect(() => {
     onPageRendered();
-    if (authContext.userGroup) {
-      if (authContext.userGroup.includes("admins")) {
-        setIsAdmin(true)
-      }
-    }
   }, []);
 
 
-  useEffect(() => {
-    handleResize();
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
 
 
@@ -121,7 +112,7 @@ export default function Evento() {
   const getEventos = () => {
     API.graphql(graphqlOperation(queries.listEventos)).then((data) => {
   
-      if(authContext.userGroup.includes("admins")){
+      if(authContext.isAdmin){
       
         setEventos([{id: "admin"}, ...data.data.listEventos.items]);
       }else{
@@ -172,101 +163,17 @@ export default function Evento() {
       .catch((err) => {alert(err); isCreating(false)});
   };
 
-  const moveInGrid = (e) => {
-    if (e.target.id === "forward") {
-      setIndex(calculateStopIndex())
-    }
-    if (e.target.id === "backwards") {
-      setIndex(index - numberOfElements)
-    }
-  }
-
-  const handleResize = () => {
-
-    if (window.screen.width >= 640) {
-      setNumberOfElements(pcCols)
-      setIndex(0)
-    } else {
-      setNumberOfElements(mobileCols)
-      setIndex(0)
-    }
-  }
-
-  const calculateStopIndex = () => {
-
-    if (index < index + numberOfElements && index + numberOfElements < eventos.length) {
-      return index + numberOfElements;
-    }
-    else {
-      return eventos.length;
-    }
-  }
-
 
   /**
    * 
    * Render Functions
    */
 
-  const renderGrid = () => {
-
-
-    var secondaryEventos = eventos;
-    var stopIndex = calculateStopIndex();
-    secondaryEventos = secondaryEventos.slice(index, stopIndex);
-
-  
-    var dataArray = secondaryEventos.map((evento, key) => {
-      if (evento.id === "admin") {
-        return renderCreateEventoUi();
-      }
-        return renderEvento(evento);
-    })
-
-    return (
-      <div class="mt-20 mb-auto w-full">
-        <div class=" sm:grid sm:grid-cols-2 gap-6 auto-rows-max">
-          {dataArray}
-        </div>
-        <div class="flex flex-row justify-center my-5">
-          {index !== 0 &&
-            <div id="backwards" class="mx-2 cursor-pointer bg-gray-400 w-12 text-center text-white" onClick={moveInGrid}>
-              &lt;
-          </div>
-          }
-          {index + numberOfElements < eventos.length &&
-            <div id="forward" class="mx-2 cursor-pointer bg-gray-500 w-12 text-center text-white" onClick={moveInGrid}>
-              &gt;
-          </div>
-          }
-        </div>
-      </div>
-    )
-  }
-
-  const renderCreateEventoUi = () => {
-    return (
-      <div class="border-dashed  h-60 border-gray-400 border-2 cursor-pointer text-gray-500
-       hover:bg-gray-400 hover:text-white py-3"
-
-        onClick={(e) => {
-          setShowModal(true);
-        }}
-      >
-        <div class="p-2">
-          <h3 class="text-center text-xl font-medium leading-8">
-            Añadir
-          </h3>
-        </div>
-      </div>
-    );
-  }
-
   const renderEvento = (evento) => {
     
     return (
       <div class="py-5 px-5 sm:max-w-xs max-h-40 relative">
-        {isAdmin && (
+        {authContext.isAdmin && (
           <div
             id={evento.id}
             class="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
@@ -299,11 +206,25 @@ export default function Evento() {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div class="max-w-5xl mx-auto w-full h-full">
-        <div class="flex flex-wrap justify-center h-full">
-          {renderGrid()}
+      <Grid
+        array={eventos.map((evento) => {
+          return renderEvento(evento);
+        })}
+      />
+      {authContext.isAdmin && (
+        <div
+          class="w-full h-24 border-dashed flex border-gray-400 border-2 
+                cursor-pointer justify-center text-gray-500
+                align-center items-center hover:bg-gray-400 hover:text-white"
+          onClick={(e) => {
+            setShowModal(true);
+          }}
+        >
+          <div class="text-lg" id="body">
+            AÑADE UNA NUEVA ENTRADA
+          </div>
         </div>
-      </div>
+      )}
     </GeneralLayout>
   );
 }

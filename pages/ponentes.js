@@ -1,55 +1,39 @@
+import React, { useState, useEffect, useContext } from "react";
+import { API, graphqlOperation, Storage } from "aws-amplify";
+
 import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
 import LazyImage from "../components/lazyImage";
+import Grid from "../components/grid";
 
-import React, { useState, useEffect, useContext } from "react";
-import { API, graphqlOperation, Storage } from "aws-amplify";
+
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
 import { AuthContext } from "../utils/functionsLib";
-import { useFormFields } from "../utils/hooksLib";
+import { useModalFields } from "../utils/hooksLib";
 
 
 export default function Ponentes() {
 
   const authContext = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
   // Specifc to page
   const [ponentes, setPonentes] = useState([]);
-  const [imageDict, setimageDict] = useState({});
-  const [index, setIndex] = useState(0);
-  const [numberOfElements, setNumberOfElements] = useState(1)
-  const [fields, handleFieldChange] = useFormFields({
-    name: "",
-    title: "",
-    url: "",
-    image: ""
+
+  const [fields, handleFieldChange] = useModalFields({
+    name: {type: "default", value: ""},
+    title: {type: "default", value: ""},
+    pdf: {type: "file", value: {}},
+    image: {type: "file", value: {}}
   });
 
   useEffect(() => {
     onPageRendered();
-    if (authContext.userGroup) {
-      if (authContext.userGroup.includes("admins")) {
-        setIsAdmin(true)
-
-      }
-    }
 
   }, []);
-
-
-  useEffect(() => {
-    handleResize();
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-    // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
 
 
   const onPageRendered = async () => {
@@ -75,13 +59,12 @@ export default function Ponentes() {
   };
 
   const createPonente = () => {
-    const filename = fields.name + "_" + fields.image[0].name;
 
     var itesmetails = {
-      name: fields.name,
-      title: fields.title,
-      url: fields.url,
-      file: filename.replace(/\s+/g, '')
+      name: fields.name.value,
+      title: fields.title.value,
+      pdf: fields.pdf.value.name,
+      file: fields.image.value.name
     };
 
     console.log("Ponente Details : " + JSON.stringify(itesmetails));
@@ -116,12 +99,7 @@ export default function Ponentes() {
 
   const getPonentes = () => {
     API.graphql(graphqlOperation(queries.listPonentes)).then((data) => {
-
-      if(authContext.userGroup.includes("admins")){
-        setPonentes([{id: "admin"}, ...data.data.listPonentes.items]);
-      }else{
-        setPonentes(data.data.listPonentes.items)
-      }
+      setPonentes(data.data.listPonentes.items);
     }
     );
   };
@@ -141,6 +119,19 @@ export default function Ponentes() {
     return true;
   };
 
+  const uploadToS3 = async (file) => {
+
+    Storage.put(file.name.replace(/\s+/g, ''), file, {
+      contentType: file.type,
+    }).then((result) => {
+      console.log(result);
+    }).catch((err) => {
+      alert(err);
+    })
+  }
+
+  
+
   const submit = () => {
     /**
      * This function is trigged when create button is pressed in Modal component,
@@ -148,53 +139,24 @@ export default function Ponentes() {
      */
     setIsCreating(true);
 
-    if (!validate()) {
-      return;
+    if (validate()) {
+
+      for(var field in fields){
+        if(fields[field].type === "file"){
+          console.log(fields[field].value);
+          
+          uploadToS3(fields[field].value);
+
+        }
+      }
+      
+      createPonente();
+      setIsCreating(false);
+      setShowModal(false);
     }
-
-    const file = fields.image[0];
-    const filename = fields.name + "_" + file.name;
-
-    Storage.put(filename.replace(/\s+/g, ''), file, {
-      contentType: "image/png",
-    })
-      .then((result) => {
-        createPonente();
-        setIsCreating(false);
-        setShowModal(false);
-      })
-      .catch((err) => {alert(err); isCreating(false)});
   };
 
-  const moveInGrid = (e) => {
-    if (e.target.id === "forward") {
-      setIndex(calculateStopIndex())
-    }
-    if (e.target.id === "backwards") {
-      setIndex(index - numberOfElements)
-    }
-  }
 
-  const handleResize = () => {
-
-    if (window.screen.width >= 640) {
-      setNumberOfElements(8)
-      setIndex(0)
-    } else {
-      setNumberOfElements(1)
-      setIndex(0)
-    }
-  }
-
-  const calculateStopIndex = () => {
-
-    if (index < index + numberOfElements && index + numberOfElements < ponentes.length) {
-      return index + numberOfElements;
-    }
-    else {
-      return ponentes.length;
-    }
-  }
 
 
   /**
@@ -202,66 +164,14 @@ export default function Ponentes() {
    * Render Functions
    */
 
-  const renderGrid = () => {
-
-    var secondaryPonentes = ponentes;
-    var stopIndex = calculateStopIndex();
-    secondaryPonentes = secondaryPonentes.slice(index, stopIndex);
-
-    var dataArray = secondaryPonentes.map((ponente, key) => {
-      if (ponente.id === "admin") {
-        return renderCreatePonenteUi();
-      }
-      return renderPonente(ponente);
-    })
-
-    return (
-      <div class="mt-20 mb-auto w-full">
-        <div class="sm:grid sm:grid-cols-4 gap-6 auto-rows-max">
-          {dataArray}
-        </div>
-        <div class="flex flex-row justify-center my-5">
-          {index !== 0 &&
-            <div id="backwards" class="mx-2 cursor-pointer bg-gray-400 w-12 text-center text-white" onClick={moveInGrid}>
-              &lt;
-          </div>
-          }
-          {index + numberOfElements < ponentes.length &&
-            <div id="forward" class="mx-2 cursor-pointer bg-gray-500 w-12 text-center text-white" onClick={moveInGrid}>
-              &gt;
-          </div>
-          }
-        </div>
-      </div>
-    )
-  }
-
-  const renderCreatePonenteUi = () => {
-    return (
-      <div class="border-dashed  border-gray-400 border-2 cursor-pointer text-gray-500
-       hover:bg-gray-400 hover:text-white py-3 max-h-64 h-64"
-
-        onClick={(e) => {
-          setShowModal(true);
-        }}
-      >
-        <div class="p-2">
-          <h3 class="text-center text-xl font-medium leading-8">
-            Añadir
-          </h3>
-        </div>
-      </div>
-    );
-  }
-
   const renderPonente = (ponente) => {
-
+    
     return (
-      <div class="bg-blue-50  py-3 px-3 sm:max-w-xs max-h-64 relative">
-        {isAdmin && (
+      <div key={ponente.id} class="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:max-w-xs sm:max-h-72  bg-blue-50">
+        {authContext.isAdmin && (
           <div
             id={ponente.id}
-            class="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
+            class="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0"
             style={{ width: "30px" }}
             onClick={(e) => {
               deletePonente(e.target.id);
@@ -270,10 +180,10 @@ export default function Ponentes() {
             -
           </div>
         )}
-        <div class="photo-wrapper p-2">
-            <LazyImage s3Key={ponente.file} />
+        <div class="flex justify-center items-center h-2/3">
+            <LazyImage s3Key={ponente.file} type="rounded"/>
         </div>
-        <div class="p-2">
+        <div class="m-2 h-1/3">
           <h3 class="text-center sm:text-xl text-gray-900 font-medium leading-8">
             {ponente.name}
           </h3>
@@ -305,11 +215,29 @@ export default function Ponentes() {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div class="max-w-5xl mx-auto w-full h-full">
-        <div class="flex flex-wrap justify-center h-full">
-          {renderGrid()}
-        </div>
+      <div className="flex flex-row">
+        <div className="flex my-10 text-3xl">Ponentes</div>
+        {authContext.isAdmin && (
+          <div className="flex my-10 text-3xl mx-3">
+            <div
+              class="bg-blue-500 text-white text-center cursor-pointer"
+              style={{ width: "40px" }}
+              onClick={(e) => {
+                setShowModal(true);
+              }}
+            >
+              +
+            </div>
+          </div>
+        )}
       </div>
+
+      <Grid
+        array={ponentes}
+        renderFunction={renderPonente}
+        pcCols={6}
+        mobileCols={1}
+      />
     </GeneralLayout>
   );
 }

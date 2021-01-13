@@ -11,7 +11,7 @@ export default function LazyImage({ ...props }) {
     const [source, setSource] = useState("")
 
     useEffect(() => {
-        getImage(props.s3Key)
+        getImage(props.s3Key);
 
     }, []);
 
@@ -19,17 +19,27 @@ export default function LazyImage({ ...props }) {
     async function getImage(key) {
         Storage.get(key).then((data) => {
             setSource(data);
-            console.log(data)
         })
     }; 
 
+    const setClass = () => {
+
+        switch(props.type){
+            case "rounded":
+                return "h-48 w-48 sm:h-32 sm:w-32 md rounded-full relative"
+            default:
+                return ""
+        }
+    }
 
     return (
+        
         <img
-            class="w-full h-full image-contain mx-auto"
+            class={setClass()}
             src={source}
             alt="John Doe"
         />
+       
     );
 
 }

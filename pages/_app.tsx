@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       const user = await Auth.signIn(username, password);
       setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
       setAttributes(user.attributes);
-      setIsLoggedIn(false);
+      setIsLoggedIn(true);
       router.push("/");
     }
     catch(e){
