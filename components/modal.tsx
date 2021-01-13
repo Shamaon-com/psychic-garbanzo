@@ -14,12 +14,6 @@ export default function Modal({ ...props }) {
 
   const fileRef = useRef(null);
 
-  const [datetime, handleDatetimeChange] = useFormFields({
-    month: "",
-    day: "",
-    hour: "",
-    minute: "",
-  });
 
   const renderTextField = (fieldName, field) => {
     return (
@@ -68,7 +62,7 @@ export default function Modal({ ...props }) {
               className="mt-1 w-1/2 self-center block py-2 px-3 border border-gray-300 
                     bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 
                     focus:border-indigo-500 sm:text-sm"
-              onChange={handleDatetimeChange}
+              onChange={props.handleFieldChange}
             >
               {field.options.map((item) => {
                 return <option value={item.key}>{item.text}</option>;
@@ -77,6 +71,32 @@ export default function Modal({ ...props }) {
       </div>
     );
   };
+
+
+  const handleDatetimeInput = (e) => {
+    var toInt = Number(e.target.value);
+
+    switch (e.target.id.split("_")[1]) {
+      case "day":
+        if (toInt !== NaN && toInt < 32 && toInt > -1) {
+          props.handleFieldChange(e)
+          break;
+        }
+      case "hour":
+        if (toInt !== NaN && toInt < 13 && toInt > -1) {
+          props.handleFieldChange(e)
+          break;
+        }
+      case "minute":
+        if (toInt !== NaN && toInt < 60 && toInt > -1) {
+          props.handleFieldChange(e)
+          break;
+        }
+      default:
+        console.log("error");
+    }
+  };
+
 
   const renderDateField = (fieldName, field) => {
     const MONTH_NAMES = [
@@ -106,8 +126,8 @@ export default function Modal({ ...props }) {
               {"Dia"}
             </label>
             <input
-              id="day"
-              value={datetime.day}
+              id={fieldName + "_day"}
+              value={props.fields[fieldName].value.day}
               className="w-12 bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg
                text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
               type="text"
@@ -121,11 +141,11 @@ export default function Modal({ ...props }) {
               {"Mes"}
             </label>
             <select
-              id="month"
-              value={datetime.month}
+              id={fieldName + "_month"}
+              value={props.fields[fieldName].value.month}
               className="mt-1 self-center block py-2 px-3 border border-gray-300 bg-white rounded-md 
                shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              onChange={handleDatetimeChange}
+               onChange={props.handleFieldChange}
             >
               {MONTH_NAMES.map((month, key) => {
                 return <option value={key}>{month}</option>;
@@ -137,8 +157,8 @@ export default function Modal({ ...props }) {
               {"Hora"}
             </label>
             <input
-              id="hour"
-              value={datetime.hour}
+              id={fieldName + "_hour"}
+              value={props.fields[fieldName].value.hour}
               className="mr-auto w-12 bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg
                text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
               type="text"
@@ -152,8 +172,8 @@ export default function Modal({ ...props }) {
               {"Minuto"}
             </label>
             <input
-              id="minute"
-              value={datetime.minute}
+              id={fieldName + "_minute"}
+              value={props.fields[fieldName].value.minute}
               className="w-12 bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg
                text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
               type="text"
@@ -171,8 +191,9 @@ export default function Modal({ ...props }) {
 
   const renderFields = () => {
     var dataArray = [];
-
+    console.log(props.fields)
     for (var field in props.fields) {
+      console.log(field)
       switch (props.fields[field].type) {
         case "select":
           dataArray.push(renderSelectField(field, props.fields[field]));

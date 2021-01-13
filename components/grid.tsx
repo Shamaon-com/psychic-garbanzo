@@ -6,16 +6,14 @@ import React, { useState } from "react";
 
     const [array, setArray] = useState([]);
     const [index, setIndex] = useState(0);
-    const [mobileCols, setMobileCols] = useState(1);
-    const [pcCols, setPcCols] = useState(8);
+    const [mobileCols, setMobileCols] = useState(props.mobileCols);
+    const [pcCols, setPcCols] = useState(props.pcCols);
 
     const [currentCols, setCurrentCols] = useState(mobileCols);
 
 
     useEffect(() => {
         setArray(props.array);
-        if(props.pcCols) setPcCols(props.pcCols);
-        if(props.mobileCols) setMobileCols(props.mobileCols);
 
     }, [props.array]);
 
@@ -61,6 +59,13 @@ import React, { useState } from "react";
 
     const createGridClass = () => {
 
+        var pcClass = " sm:grid sm:grid-cols-" + (pcCols/2).toString();
+        var mobileClass = "grid";
+        if(mobileCols > 1){
+            mobileClass = mobileClass + " grid-cols-" + (mobileCols/2).toString();
+        }
+
+        return mobileCols + pcClass + " gap-6 auto-rows-max";
     }
 
     const renderGrid = () => {
@@ -69,7 +74,7 @@ import React, { useState } from "react";
         const renderArray = array.slice(index, stopIndex);
 
         return (
-            <div className="grid sm:grid sm:grid-cols-3 gap-6 auto-rows-max">
+            <div className={createGridClass()}>
                 {renderArray.map((item) => {
                     return props.renderFunction(item);
                     })

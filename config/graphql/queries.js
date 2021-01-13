@@ -162,7 +162,8 @@ export const getPonente = /* GraphQL */ `
       id
       name
       title
-      file
+      image
+      pdf
       url
       createdAt
       updatedAt
@@ -180,7 +181,8 @@ export const listPonentes = /* GraphQL */ `
         id
         name
         title
-        file
+        image
+        pdf
         url
         createdAt
         updatedAt

@@ -22,18 +22,31 @@ export function useModalFields(initialState) {
     fields,
     function (event) {
       
-      let type = fields[event.target.id].type;
+      let type = fields[event.target.id.split("_")[0]].type;
       
-      if(type==="file"){
-        setValues({
-          ...fields,
-          [event.target.id]: {"type": type, "value": event.target.files[0]}
-        });
-      }else{
-      setValues({
-          ...fields,
-          [event.target.id]: {"type": type, "value": event.target.value}
-        });
+      switch(type){
+        case "file":
+          setValues({
+            ...fields,
+            [event.target.id]: {"type": type, "value": event.target.files[0]}
+          });
+          break;
+        case "date":
+          let id = event.target.id.split("_")[0];
+          let tag = event.target.id.split("_")[1];
+          let currentDate = fields[id].value;
+          console.log(currentDate)
+          currentDate[tag] = event.target.value;
+          setValues({
+            ...fields,
+            [id]: {"type": type, "value": currentDate}
+          });
+          break;
+        default:
+          setValues({
+            ...fields,
+            [event.target.id]: {"type": type, "value": event.target.value}
+          });
       }
     }
   ];
