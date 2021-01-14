@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 
 import GeneralLayout from "../layouts/generalLayout";
+import {ContainerPage} from "../components/containers";
 import Modal from "../components/modal";
 
 import { AuthContext } from "../utils/functionsLib";
@@ -297,27 +298,27 @@ export default function Agenda() {
   };
  
   return (
-    <GeneralLayout authContext={authContext}>
-      <Modal
-        element={"Agenda"}
-        fields={fields}
-        handleFieldChange={handleFieldChange}
-        submit={createAgenda}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        isCreating={isCreating}
-      />
-      <div className="flex mx-5 sm:mx-0">
-      < div className="flex text-xl my-8 sm:text-2x1 lg:text-3xl">Agenda</div>
-      </div>
-      <div className="mb-auto mx-auto  w-full max-w-screen-md">
-        <div className="flex mx-auto justify-center mb-3 sm:p-8">
-          {isMobile ? renderTabsMobile(): renderTabs() }
+    <GeneralLayout>
+      <ContainerPage>
+        <Modal
+          element={"Agenda"}
+          fields={fields}
+          handleFieldChange={handleFieldChange}
+          submit={createAgenda}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          isCreating={isCreating}
+        />
+        <div className="mb-auto mx-auto w-full max-w-screen-md">
+          <div className="flex text-xl my-8 sm:text-2x1 lg:text-3xl">
+            Agenda
+          </div>
+          <div className="flex mx-auto justify-center mb-3 sm:p-8">
+            {isMobile ? renderTabsMobile() : renderTabs()}
+          </div>
+          <div className="flex flex-col space-y-4">{renderAgendas()}</div>
         </div>
-        <div className="flex flex-col space-y-4">
-          {renderAgendas()}
-        </div>
-      </div>
+      </ContainerPage>
     </GeneralLayout>
   );
 }

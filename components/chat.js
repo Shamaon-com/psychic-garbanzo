@@ -92,7 +92,7 @@ export default function Chat({ ...props }) {
     }
 
     var itemDetails = {
-      user: user,
+      user: authContext.attributes.email,
       message: message,
     };
 
@@ -209,8 +209,8 @@ export default function Chat({ ...props }) {
   };
 
   return (
-    <div class="flex flex-col items-end w-full h-full py-10">
-      <div class="flex flex-col w-full h-full border-8 border-gray-400">
+
+      <div class="flex flex-col h-full w-full border-8 border-gray-400">
         <div class="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
           <div class="flex items-center">
             <h2 class="font-semibold tracking-wider">Chat</h2>
@@ -219,6 +219,7 @@ export default function Chat({ ...props }) {
         <div class="flex flex-col bg-gray-200 px-2 overflow-auto h-full">
           <div class=" flex flex-col mt-auto">{renderMessages()}</div>
         </div>
+
         <div class="relative bg-white">
           <input
             type="text"
@@ -240,6 +241,5 @@ export default function Chat({ ...props }) {
           </button>
         </div>
       </div>
-    </div>
   );
 }

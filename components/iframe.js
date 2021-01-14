@@ -50,7 +50,7 @@ export default function Iframe({ ...props }) {
       parentHeight = parentWidth / 1.7
     }
     
-    return [parentWidth, parentHeight];
+    return [parentWidth, parentWidth/1.7];
   }
 
   const handleResize = () => {
@@ -120,20 +120,10 @@ export default function Iframe({ ...props }) {
     return (
       <>
         {iframe && (
-          <div class="flex flex-col w-full h-full px-10">
-            <div
-              id="title"
-              style={{ height: "10%" }}
-              class="flex justify-center items-center bg-gray-400 mb-4"
-            >
-              <p class="text-white text-5xl font-thin align-middle uppercase">
-                {iframe.title}
-              </p>
-            </div>
             <div
               ref={parentRef}
-              style={{ height: "90%", width: "100%"}}
-              class="bg-gray-300 justify-center items-center relative"
+              style={{width: "100%"}}
+              class="justify-center items-center relative"
             >
               {authContext.isAdmin && (
                 <div
@@ -159,53 +149,59 @@ export default function Iframe({ ...props }) {
                 allowfullscreen
               />
             </div>
-          </div>
         )}
       </>
     );
   };
-  return (
-    <div class="py-10 w-full h-full px-2">
-      {renderIframe()}
-      {authContext.isAdmin && !iframe && (
-        <div class="flex flex-col  w-full ">
-          <h2 class="py-4">Titulo de la emision</h2>
-          <input
-            value={title}
-            class="bg-gray-200 appearance-none border-2 border-gray-200 w-3/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-            type="text"
-            onChange={(e) => {
-              setTitle(e.target.value);
+
+
+  const renderCreate = () => {
+    return (
+      <div class="flex flex-col w-full ">
+      <h2 class="py-4">Titulo de la emision</h2>
+      <input
+        value={title}
+        class="bg-gray-200 appearance-none border-2 border-gray-200 w-3/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
+        type="text"
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
+      <h2 class="py-4">Intrduzca Iframe URL</h2>
+      <div class="flex flex-row">
+        <input
+          value={src}
+          class="bg-gray-200 appearance-none border-2 border-gray-200 w-3/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
+          type="text"
+          onChange={(e) => {
+            setSrc(e.target.value);
+          }}
+        />
+        <div class="w-10 h-10 mx-4">
+          <svg
+            onClick={(e) => {
+              createIframe();
             }}
-          />
-          <h2 class="py-4">Intrduzca Iframe URL</h2>
-          <div class="flex flex-row">
-            <input
-              value={src}
-              class="bg-gray-200 appearance-none border-2 border-gray-200 w-3/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-              type="text"
-              onChange={(e) => {
-                setSrc(e.target.value);
-              }}
-            />
-            <div class="w-10 h-10 mx-4">
-              <svg
-                onClick={(e) => {
-                  createIframe();
-                }}
-                class="cursor-pointer"
-                id="Capa_1"
-                enable-background="new 0 0 280.823 280.823"
-                viewBox="0 0 280.823 280.823"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="m120.353 120.353h-20.059v40.118h-40.118v20.059h40.118v40.118h20.059v-40.118h40.118v-20.059h-40.118z" />
-                <path d="m250.735 0h-160.47c-16.592 0-30.089 13.497-30.089 30.088v30.088h-30.088c-16.591 0-30.088 13.497-30.088 30.089v160.471c0 16.592 13.497 30.088 30.088 30.088h160.471c16.592 0 30.088-13.497 30.088-30.088v-30.088h30.088c16.592 0 30.088-13.497 30.088-30.088v-160.472c0-16.591-13.496-30.088-30.088-30.088zm-50.147 250.735c0 5.534-4.496 10.029-10.029 10.029h-160.471c-5.534 0-10.029-4.496-10.029-10.029v-160.47c0-5.534 4.496-10.029 10.029-10.029h160.471c5.534 0 10.029 4.496 10.029 10.029zm60.177-60.176c0 5.534-4.496 10.029-10.029 10.029h-30.088v-110.323c0-16.592-13.497-30.088-30.088-30.088h-110.325v-30.089c0-5.534 4.496-10.029 10.029-10.029h160.471c5.534 0 10.029 4.496 10.029 10.029v160.471z" />
-              </svg>
-            </div>
-          </div>
+            class="cursor-pointer"
+            id="Capa_1"
+            enable-background="new 0 0 280.823 280.823"
+            viewBox="0 0 280.823 280.823"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m120.353 120.353h-20.059v40.118h-40.118v20.059h40.118v40.118h20.059v-40.118h40.118v-20.059h-40.118z" />
+            <path d="m250.735 0h-160.47c-16.592 0-30.089 13.497-30.089 30.088v30.088h-30.088c-16.591 0-30.088 13.497-30.088 30.089v160.471c0 16.592 13.497 30.088 30.088 30.088h160.471c16.592 0 30.088-13.497 30.088-30.088v-30.088h30.088c16.592 0 30.088-13.497 30.088-30.088v-160.472c0-16.591-13.496-30.088-30.088-30.088zm-50.147 250.735c0 5.534-4.496 10.029-10.029 10.029h-160.471c-5.534 0-10.029-4.496-10.029-10.029v-160.47c0-5.534 4.496-10.029 10.029-10.029h160.471c5.534 0 10.029 4.496 10.029 10.029zm60.177-60.176c0 5.534-4.496 10.029-10.029 10.029h-30.088v-110.323c0-16.592-13.497-30.088-30.088-30.088h-110.325v-30.089c0-5.534 4.496-10.029 10.029-10.029h160.471c5.534 0 10.029 4.496 10.029 10.029v160.471z" />
+          </svg>
         </div>
-      )}
+      </div>
+    </div>
+    )
+  }
+  return (
+    <div class="flex w-full h-full items-center">
+      {renderIframe()}
+      {authContext.isAdmin && !iframe && 
+        renderCreate()
+      }
     </div>
   );
 }

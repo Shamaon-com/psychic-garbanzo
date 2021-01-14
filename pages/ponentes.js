@@ -5,6 +5,7 @@ import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
 import LazyImage from "../components/lazyImage";
 import Grid from "../components/grid";
+import {ContainerPage} from "../components/containers";
 
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
@@ -205,7 +206,8 @@ export default function Ponentes() {
 
 
   return (
-    <GeneralLayout authContext={authContext}>
+    <GeneralLayout>
+      <ContainerPage>
       <Modal
         element={"Ponente"}
         fields={fields}
@@ -238,6 +240,7 @@ export default function Ponentes() {
         pcCols={6}
         mobileCols={1}
       />
+      </ContainerPage>
     </GeneralLayout>
   );
 }

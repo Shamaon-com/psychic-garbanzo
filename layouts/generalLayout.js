@@ -1,5 +1,4 @@
 import LoadingAnimation from "../components/loadingAnimation";
-import ContainerPage from "./components/containerPage";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
@@ -9,7 +8,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const login = true;
   const router = useRouter();
-
+  const [isMobile, setIsMobile] = useState(true)
   const authContext = useContext(AuthContext);
 
 
@@ -28,6 +27,24 @@ export default function GeneralLayout({ children, ...pageProps }) {
       setIsLoading(false);
     }
   }
+
+
+  useEffect(() => {
+    handleResize();
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleResize = () => {
+
+    if (window.screen.width >= 1024) {
+      setIsMobile(false)
+    } else {
+      setIsMobile(true)
+    }
+ }
 
   const renderNavModal = () => {
     <div class="hidden sm:hidden">
@@ -62,10 +79,9 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
   const renderMobileMenu = () => {
     return (
-
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
-        <div class="relative flex items-center justify-between h-full">
-          <div class="flex-1 flex items-center h-full justify-center">
+      <div class="h-16 border-b-4 border-t-4 border-gray-400">
+        <div class="relative flex justify-between h-full">
+          <div class="flex-1 flex  h-full">
             <div class="absolute inset-y-0 right-0 flex items-center sm:hidden">
               <button
                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -106,9 +122,9 @@ export default function GeneralLayout({ children, ...pageProps }) {
                 </svg>
               </button>
             </div>
-            <div class="flex-shrink-0 flex items-center h-full ">
+            <div class="h-16 ">
               <img
-                class="object-contain w-full h-full"
+                class="object-contain h-full py-2"
                 src="/img/Screen Capture_select-area_20201221163707.png"
                 alt="Workflow"
               />
@@ -181,12 +197,10 @@ export default function GeneralLayout({ children, ...pageProps }) {
   const renderLayout = () => {
     return (
       <div class="min-h-screen h-screen flex flex-col font-mono">
-        <div class="h-1/5 py-6 border-b-4 border-gray-400">
-          {window.screen.width >= 1024 ? renderPcNavBar() : renderMobileMenu()}
-        </div>
-        <ContainerPage>
+          {isMobile ? renderMobileMenu(): renderPcNavBar()}
+        <div class="flex-1">
           {children}
-        </ContainerPage>
+        </div>
       </div>
     )
   }

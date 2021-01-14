@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../utils/functionsLib";
 import { useFormFields } from '../utils/hooksLib';
-import ContainerFull  from "../layouts/components/containerFull"
+import {ContainerFull}  from "../components/containers"
 
 export default function Login() {
 
