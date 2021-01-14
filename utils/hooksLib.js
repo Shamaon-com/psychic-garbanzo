@@ -32,10 +32,8 @@ export function useModalFields(initialState) {
           });
           break;
         case "date":
-          let id = event.target.id.split("_")[0];
-          let tag = event.target.id.split("_")[1];
+          const [id, tag] = event.target.id.split("_");
           let currentDate = fields[id].value;
-          console.log(currentDate)
           currentDate[tag] = event.target.value;
           setValues({
             ...fields,

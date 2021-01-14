@@ -167,7 +167,7 @@ export default function Ponentes() {
   const renderPonente = (ponente) => {
 
     return (
-      <div key={ponente.id} className="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:w-64 sm:h-64  bg-blue-50">
+      <div key={ponente.id} className="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:h-64  bg-blue-50">
         {authContext.isAdmin && (
           <div
             id={ponente.id}
@@ -216,9 +216,9 @@ export default function Ponentes() {
         isCreating={isCreating}
       />
       <div className="flex flex-row mx-5 sm:mx-0">
-        <div className="flex my-10 text-3xl">Ponentes</div>
+        <div className="flex text-xl my-8 sm:text-3xl">Ponentes</div>
         {authContext.isAdmin && (
-          <div className="flex my-10 text-3xl mx-3">
+          <div className="flex my-8 sm:text-3xl mx-3">
             <div
               className="bg-blue-500 text-white text-center cursor-pointer"
               style={{ width: "40px" }}
@@ -235,7 +235,7 @@ export default function Ponentes() {
       <Grid
         array={ponentes}
         renderFunction={renderPonente}
-        pcCols={8}
+        pcCols={6}
         mobileCols={1}
       />
     </GeneralLayout>

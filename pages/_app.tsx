@@ -33,8 +33,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       try {
         const userData = await Auth.currentUserInfo();
         setAttributes(userData.attributes);
-        const session = await Auth.currentSession();
-        setIsAdmin(session.accessToken.payload['cognito:groups'].includes("admins"));
+        const session:any = await Auth.currentSession();
+        setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
         setIsLoggedIn(true);
         setIsAuthenticating(false);
       } catch (e) {

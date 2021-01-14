@@ -76,22 +76,23 @@ export default function Modal({ ...props }) {
   const handleDatetimeInput = (e) => {
     var toInt = Number(e.target.value);
 
-    switch (e.target.id.split("_")[1]) {
+    switch (e.target.id.split("_")[1]){
       case "day":
         if (toInt !== NaN && toInt < 32 && toInt > -1) {
           props.handleFieldChange(e)
-          break;
         }
+        break;
       case "hour":
-        if (toInt !== NaN && toInt < 13 && toInt > -1) {
+        if (toInt !== NaN && toInt < 24 && toInt > -1) {
           props.handleFieldChange(e)
-          break;
         }
+        break;
       case "minute":
+        console.log("case minute")
         if (toInt !== NaN && toInt < 60 && toInt > -1) {
-          props.handleFieldChange(e)
-          break;
+          props.handleFieldChange(e);
         }
+        break;
       default:
         console.log("error");
     }
@@ -191,9 +192,8 @@ export default function Modal({ ...props }) {
 
   const renderFields = () => {
     var dataArray = [];
-    console.log(props.fields)
+    
     for (var field in props.fields) {
-      console.log(field)
       switch (props.fields[field].type) {
         case "select":
           dataArray.push(renderSelectField(field, props.fields[field]));

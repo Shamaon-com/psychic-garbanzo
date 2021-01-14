@@ -22,13 +22,15 @@ export default function Agenda() {
   const authContext = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [agendas, setAgendas] = useState([]);
+  const [parsedAgendas, setParsedAgendas] = useState({});
   const [selectedTab, setSelectedTab] = useState(0);
+  const [isMobile, setIsMobile] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
 
   const [fields, handleFieldChange] = useModalFields({
     title: { type: "default", value: "" },
     description: { type: "default", value: "" },
-    date: { type: "date", value: {"day": 0, "month": 0, "hour": 0, "minute": 0} },
+    date: { type: "date", value: {day: 0, month: 0, hour: 0, minute: 0} },
   });
 
 
@@ -36,6 +38,29 @@ export default function Agenda() {
     onPageRendered();
 
   }, []);
+
+  useEffect(() => {
+    setParsedAgendas(parseDates(agendas));
+
+  }, [agendas])
+
+
+  useEffect(() => {
+    handleResize();
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleResize = () => {
+
+    if (window.screen.width >= 640) {
+      setIsMobile(false)
+    } else {
+      setIsMobile(true)
+    }
+ }
 
   const onPageRendered = async () => {
     getAgendas();
@@ -82,24 +107,27 @@ export default function Agenda() {
   };
 
   const createAgenda = (e) => {
+    setIsCreating(true);
     console.log(fields);
-    return
+    
     var itemDetails = {
-      title: fields.title,
-      description: fields.description,
+      title: fields.title.value,
+      description: fields.description.value,
       date: new Date(
         2020,
-        datetime.month,
-        datetime.day,
-        datetime.hour,
-        datetime.minute
-      ).toString(),
+        fields.date.value.month,
+        fields.date.value.day,
+        fields.date.value.hour,
+        fields.date.value.minute
+      ).toString()
     };
 
     console.log("Agenda Details : " + JSON.stringify(itemDetails));
     API.graphql(
       graphqlOperation(mutations.createAgenda, { input: itemDetails })
     );
+    setIsCreating(false);
+    setShowModal(false);
   };
 
 
@@ -131,7 +159,6 @@ export default function Agenda() {
     let dataArray = [];
     let index = 0;
     let classNameString;
-    let parsedAgendas = parseDates(agendas);
 
     for (var key in parsedAgendas) {
       switch (index) {
@@ -147,24 +174,62 @@ export default function Agenda() {
 
       dataArray.push(
         <div
-          className={"text-white py-0.5 text-lg cursor-pointer " + classNameString}
+          className={
+            "text-white py-0.5 text-lg cursor-pointer " + classNameString
+          }
           id={key}
           tabIndex={index}
           onClick={(e) => {
-            setSelectedTab((e.target.tabIndex));
+            setSelectedTab(e.target.tabIndex);
           }}
         >
-          DÍA {parsedAgendas[index].date}
+          {new Date(parsedAgendas[key][0].date).toLocaleDateString([], {
+            dateStyle: "short",
+          })}
         </div>
       );
       index++;
     }
-
     return dataArray;
   };
 
+  const renderTabsMobile = () => {
+
+    let dataArray = [];
+    let index = 0;
+
+    for (var key in parsedAgendas) {
+      dataArray.push(
+        <option
+          id={key}
+          value={index}
+        >
+          {" "}
+          {new Date(parsedAgendas[key][0].date).toLocaleDateString([], {
+            dateStyle: "short",
+          })}
+        </option>
+      );
+      index++;
+    }
+
+    return (
+      <select
+        className="mt-1 self-center block py-2 px-3 border border-gray-300 bg-white rounded-md text-center
+      shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm w-48"
+        onChange={(e) => {
+          setSelectedTab(e.target.value);
+        }}
+      >
+        {dataArray}
+      </select>
+    );
+
+  }
+
+  
   const renderAgendas = () => {
-    let parsedAgendas = parseDates(agendas);
+
     let currentKey;
     let index = 0;
 
@@ -183,10 +248,9 @@ export default function Agenda() {
               <div className="w-full h-24 border-dashed flex flex-col justify-center align-center items-center">
                 <div id="head" className="h-1/4 flex flex-row w-full">
                   <div className="text-center bg-gray-400 text-gray-100 w-full">
-                    {agenda.title} -
+                    {agenda.title} - {" "}
                     {new Date(agenda.date).toLocaleTimeString([], {
-                      dateStyle: "short",
-                      timeStyle: "medium"
+                      timeStyle: "short"
                     })}
                   </div>
                   {authContext.isAdmin && (
@@ -231,11 +295,7 @@ export default function Agenda() {
       </>
     );
   };
-
-  
-
  
-
   return (
     <GeneralLayout authContext={authContext}>
       <Modal
@@ -247,11 +307,16 @@ export default function Agenda() {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div className="flex mx-auto justify-center p-8">
-        {renderTabs()}
+      <div className="flex mx-5 sm:mx-0">
+      < div className="flex text-xl my-8 sm:text-2x1 lg:text-3xl">Agenda</div>
       </div>
-      <div className="flex flex-col space-y-4">
-        {renderAgendas()}
+      <div className="mb-auto mx-auto  w-full max-w-screen-md">
+        <div className="flex mx-auto justify-center mb-3 sm:p-8">
+          {isMobile ? renderTabsMobile(): renderTabs() }
+        </div>
+        <div className="flex flex-col space-y-4">
+          {renderAgendas()}
+        </div>
       </div>
     </GeneralLayout>
   );
