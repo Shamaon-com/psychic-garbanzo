@@ -3,9 +3,12 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
+import { AuthContext } from "../utils/functionsLib";
+
 
 export default function Iframe({ ...props }) {
-  const [isAdmin, setIsAdmin] = useState(false);
+  
+
   const [src, setSrc] = useState("");
   const [title, setTitle] = useState("");
   const [iframe, setIframe] = useState(null);
@@ -14,46 +17,50 @@ export default function Iframe({ ...props }) {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
-  function getWindowDimensions() {
-    let width = parentRef.current.parentNode.offsetWidth;
-    let height = parentRef.current.parentNode.offsetHeight;
-    var Width = width / 1.3;
-    var Height = Width / 1.77;
 
-    if (Height > height / 1.7) {
-      Height = height / 1.7;
-      Width = Height * 1.77;
-    }
-
-    //console.log("calculated: ", Height, Width);
-    return {
-      Width,
-      Height,
-    };
-  }
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     onPageRendered();
 
-    if (props.authContext.userGroup) {
-      console.log(props.authContext.userGroup.includes("admins"));
-      setIsAdmin(props.authContext.userGroup.includes("admins"));
-    }
   }, []);
 
   useEffect(() => {
-    handleResize();
     // Add event listener
     window.addEventListener("resize", handleResize);
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
-  }, [iframe]);
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+  });
+ 
+  const solveResize = (parentWidth, parentHeight) => {
+
+    if(1.69 < parentWidth/parentHeight >  1.72){
+      return [parentWidth, parentHeight];
+    }
+    else if(parentWidth > parentHeight){
+      while(parentWidth < parentHeight*1.7){
+        parentHeight--;
+      }
+    }
+    else if(parentHeight > parentWidth){
+      parentHeight = parentWidth / 1.7
+    }
+    
+    return [parentWidth, parentHeight];
+  }
 
   const handleResize = () => {
-    if (parentRef.current) {
-      setHeight(getWindowDimensions().Height);
-      setWidth(getWindowDimensions().Width);
-    }
+
+    if(parentRef.current){
+      const parentWidth = parentRef.current.offsetWidth;
+      const parentHeight = parentRef.current.offsetHeight;
+      const [width, height] = solveResize(parentWidth, parentHeight);
+      setWidth(width); setHeight(height);
+      }
   };
 
   const onPageRendered = async () => {
@@ -109,6 +116,7 @@ export default function Iframe({ ...props }) {
   };
 
   const renderIframe = () => {
+    
     return (
       <>
         {iframe && (
@@ -124,10 +132,10 @@ export default function Iframe({ ...props }) {
             </div>
             <div
               ref={parentRef}
-              style={{ height: "90%" }}
-              class="bg-gray-300 w-full h-5/6  justify-center items-center relative"
+              style={{ height: "90%", width: "100%"}}
+              class="bg-gray-300 justify-center items-center relative"
             >
-              {isAdmin && (
+              {authContext.isAdmin && (
                 <div
                   id={iframe.id}
                   class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
@@ -146,8 +154,8 @@ export default function Iframe({ ...props }) {
                 frameborder="1"
                 marginheight="0px"
                 marginwidth="0px"
-                height={"100%"}
-                width={"100%"}
+                height={height}
+                width={width}
                 allowfullscreen
               />
             </div>
@@ -159,7 +167,7 @@ export default function Iframe({ ...props }) {
   return (
     <div class="py-10 w-full h-full px-2">
       {renderIframe()}
-      {isAdmin && !iframe && (
+      {authContext.isAdmin && !iframe && (
         <div class="flex flex-col  w-full ">
           <h2 class="py-4">Titulo de la emision</h2>
           <input

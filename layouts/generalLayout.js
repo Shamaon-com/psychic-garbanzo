@@ -1,13 +1,17 @@
 import LoadingAnimation from "../components/loadingAnimation";
 import ContainerPage from "./components/containerPage";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
+import { AuthContext } from "../utils/functionsLib";
 
 export default function GeneralLayout({ children, ...pageProps }) {
 
   const [isLoading, setIsLoading] = useState(true);
   const login = true;
   const router = useRouter();
+
+  const authContext = useContext(AuthContext);
+
 
   useEffect(() => {
     onLoad();
@@ -17,7 +21,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
   async function onLoad() {
 
     if (
-      login && pageProps.authContext.isLoggedIn == false 
+      login && authContext.isLoggedIn == false 
     ) {
       router.push("/login");
     } else {
