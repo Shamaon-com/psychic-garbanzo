@@ -31,6 +31,7 @@ export default function Agenda() {
   const [fields, handleFieldChange] = useModalFields({
     title: { type: "default", value: "" },
     description: { type: "default", value: "" },
+    pene: {type: "default", value:""},
     date: { type: "date", value: {day: 0, month: 0, hour: 0, minute: 0} },
   });
 

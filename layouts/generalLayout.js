@@ -137,6 +137,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
   const renderPcNavBar = () => {
     return (
+  <div class="h-1/5 py-6 border-b-4 border-gray-400">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
       <div class="relative flex items-center justify-between h-full">
         <div class="flex-1 flex items-center h-full justify-center">
@@ -189,6 +190,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
           </div>
         </div>
       </div>
+    </div>
     </div>
     )
   }
