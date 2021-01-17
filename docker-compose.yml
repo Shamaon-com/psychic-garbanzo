@@ -1,0 +1,14 @@
+# docker-compose.yml
+version: "3"
+
+services:
+  server:
+    image: node:12
+    working_dir: /psychic-garbanzo
+    volumes:
+      - ./:/psychic-garbanzo
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+    command: sh -c "npm install && npm run dev"

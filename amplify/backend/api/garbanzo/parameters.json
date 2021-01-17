@@ -1,11 +1,11 @@
 {
-  "AppSyncApiName": "garbanzo",
-  "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false,
-  "AuthCognitoUserPoolId": {
-    "Fn::GetAtt": [
-      "authgarbanzoauth",
-      "Outputs.UserPoolId"
-    ]
-  }
+    "AppSyncApiName": "garbanzo",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authgarbanzoauth",
+            "Outputs.UserPoolId"
+        ]
+    }
 }

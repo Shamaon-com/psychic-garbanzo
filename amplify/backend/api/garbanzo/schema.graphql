@@ -78,7 +78,8 @@ type Ponente
   id: ID!
   name: String!
   title: String!
-  file: String!
+  image: String!
+  pdf: String,
   url: String
 }
 

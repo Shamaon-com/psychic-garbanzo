@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext} from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
 import * as subscriptions from "../config/graphql/subscriptions";
+import { AuthContext } from "../utils/functionsLib";
 
 import useDynamicRefs from "use-dynamic-refs";
 
@@ -11,24 +12,13 @@ export default function Chat({ ...props }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [getRef, setRef] = useDynamicRefs();
-  const [isAdmin, setIsAdmin ] = useState(false);
-  const [user, setUser] = useState({})
   const messagesEndRef = useRef(null);
-
-  /**
-   * Init
-   * 
-   * - Missing setting is user is auth
-   */
+  const authContext = useContext(AuthContext);
 
 
   useEffect(() => {
     onPageRendered();
-    if(props.authContext.userGroup){
-      setIsAdmin(props.authContext.userGroup.includes('admins'));
-      setUser(props.authContext.userData.attributes.email)
-      console.log(props.authContext.userData)
-    }
+
   }, []);
 
 
@@ -102,7 +92,7 @@ export default function Chat({ ...props }) {
     }
 
     var itemDetails = {
-      user: user,
+      user: authContext.attributes.email,
       message: message,
     };
 
@@ -139,7 +129,7 @@ export default function Chat({ ...props }) {
 
 
   const showDelete = (e) => {
-    if (isAdmin) {
+    if (authContext.isAdmin) {
       var target = e.target;
       while (target && target.id === "") {
         target = target.parentNode;
@@ -150,7 +140,7 @@ export default function Chat({ ...props }) {
   };
 
   const hideDelete = (e) => {
-    if (isAdmin) {
+    if (authContext.isAdmin) {
       var target = e.target;
       while (target && target.id === "") {
         target = target.parentNode;
@@ -172,7 +162,7 @@ export default function Chat({ ...props }) {
         {messages.map((message, key) => {
           let classVar =
             "bg-white text-gray-700 p-2 self-start my-2 rounded-md shadow mr-3";
-          if (message.user !== user) {
+          if (message.user !== authContext.attributes.email) {
             classVar =
               "bg-green-500 text-white p-2 self-end my-2 rounded-md shadow ml-3";
           }
@@ -184,7 +174,7 @@ export default function Chat({ ...props }) {
               onMouseEnter={showDelete}
               onMouseLeave={hideDelete}
             >
-            {isAdmin &&
+            {authContext.isAdmin &&
               <svg
                 ref={setRef(message.id)}
                 style={{ display: "none", width: "20px" }}
@@ -219,8 +209,8 @@ export default function Chat({ ...props }) {
   };
 
   return (
-    <div class="flex flex-col items-end w-full h-full py-10">
-      <div class="chat-modal flex flex-col w-full h-full border-8 border-gray-400">
+
+      <div class="flex flex-col h-full w-full border-8 border-gray-400">
         <div class="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
           <div class="flex items-center">
             <h2 class="font-semibold tracking-wider">Chat</h2>
@@ -229,6 +219,7 @@ export default function Chat({ ...props }) {
         <div class="flex flex-col bg-gray-200 px-2 overflow-auto h-full">
           <div class=" flex flex-col mt-auto">{renderMessages()}</div>
         </div>
+
         <div class="relative bg-white">
           <input
             type="text"
@@ -250,6 +241,5 @@ export default function Chat({ ...props }) {
           </button>
         </div>
       </div>
-    </div>
   );
 }

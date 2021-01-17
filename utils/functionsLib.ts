@@ -1,14 +1,17 @@
-import { Auth } from "aws-amplify";
+
 import { createContext } from "react";
+import { CognitoUser } from '@aws-amplify/auth';
 
 
 
-export const AuthContext = createContext({
+
+export  const AuthContext = createContext({
     isLoggedIn: false,
-    userData: null,
-    login: () => {},
+    isAdmin: false,
+    attributes: {},
+    login: (username: string, password: string) => {},
     logout: () => {}
-});
+  });
 
 
 export const capitalize = (str) => {

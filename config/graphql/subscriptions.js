@@ -181,7 +181,8 @@ export const onCreatePonente = /* GraphQL */ `
       id
       name
       title
-      file
+      image
+      pdf
       url
       createdAt
       updatedAt
@@ -194,7 +195,8 @@ export const onUpdatePonente = /* GraphQL */ `
       id
       name
       title
-      file
+      image
+      pdf
       url
       createdAt
       updatedAt
@@ -207,7 +209,8 @@ export const onDeletePonente = /* GraphQL */ `
       id
       name
       title
-      file
+      image
+      pdf
       url
       createdAt
       updatedAt
