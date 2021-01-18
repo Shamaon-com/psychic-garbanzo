@@ -210,14 +210,16 @@ export default function Chat({ ...props }) {
 
   return (
 
-      <div class="flex flex-col h-full w-full border-8 border-gray-400">
+      <div class="flex flex-col h-mobile lg:h-full w-full border-8 border-gray-300">
         <div class="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
           <div class="flex items-center">
             <h2 class="font-semibold tracking-wider">Chat</h2>
           </div>
         </div>
         <div class="flex flex-col bg-gray-200 px-2 overflow-auto h-full">
-          <div class=" flex flex-col mt-auto">{renderMessages()}</div>
+          <div class=" flex flex-col mt-auto">
+            {renderMessages()}
+          </div>
         </div>
 
         <div class="relative bg-white">

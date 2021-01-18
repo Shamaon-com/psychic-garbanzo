@@ -198,12 +198,16 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
   const renderLayout = () => {
     return (
-      <div class="min-h-screen h-screen flex flex-col font-mono">
-          {isMobile ? renderMobileMenu(): renderPcNavBar()}
-        <div class="flex-1">
-          {children}
+      <>
+        <head>
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"/>
+        </head>
+        <div class="min-h-screen h-screen flex flex-col font-NanumGothic">
+            {isMobile ? renderMobileMenu(): renderPcNavBar()}
+            {children}
         </div>
-      </div>
+      </>
     )
   }
 
