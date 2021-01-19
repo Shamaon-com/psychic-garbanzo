@@ -22,7 +22,8 @@ export default function userControl(props) {
   const [index, setIndex] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
   const [searchByGroup, setSearchByGroup] = useState("Usuario")
-  const authContext = useContext(AuthContext);
+
+
   let nextToken;
 
   const [fields, handleFieldChange] = useFormFields({
@@ -514,7 +515,7 @@ export default function userControl(props) {
   };
   return (
 
-        <AdminLayout authContext={authContext}>
+        <AdminLayout>
           {renderMain()}
         </AdminLayout>
   );
