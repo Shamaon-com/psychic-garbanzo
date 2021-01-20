@@ -55,11 +55,11 @@ export default function Iframe({ ...props }) {
       >
         {authContext.isAdmin && (
           <div
-            id={1}
+            id={props.id}
             class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
             style={{ width: "50px" }}
             onClick={(e) => {
-              deleteIframe(e.target.id);
+              props.deleteIframe(e.target.id);
             }}
           >
             -

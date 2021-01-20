@@ -13,7 +13,7 @@ import LazyImage from "../components/lazyImage"
 export default function Patrocinador() {
 
   const authContext = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -32,12 +32,6 @@ export default function Patrocinador() {
 
   useEffect(() => {
     onPageRendered();
-    if (authContext.userGroup) {
-      if (authContext.userGroup.includes("admins")) {
-        setIsAdmin(true)
-
-      }
-    }
 
   }, []);
 
@@ -115,7 +109,7 @@ export default function Patrocinador() {
   const getPatrocinadors = () => {
     API.graphql(graphqlOperation(queries.listPatrocinadors)).then((data) => {
   
-      if(authContext.userGroup.includes("admins")){
+      if(authContext.isAdmin){
       
         setPatrocinadors([{id: "admin"}, ...data.data.listPatrocinadors.items]);
       }else{
@@ -260,7 +254,7 @@ export default function Patrocinador() {
     
     return (
       <div class="py-5 px-5 sm:max-w-xs max-h-40 relative">
-        {isAdmin && (
+        {authContext.isAdmin && (
           <div
             id={patrocinador.id}
             class="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "

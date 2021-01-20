@@ -62,20 +62,22 @@ export default function Home(props) {
   };
 
   const createIframe = (e) => {
-    if (title === "" || src === "") {
+    if (fields.title === "" || fields.url === "") {
       alert("Mensaje vacio");
       return;
     }
 
     var itemDetails = {
-      url: src,
-      title: title,
+      url: fields.url.value,
+      title: fields.title.value,
     };
 
     console.log("Event Details : " + JSON.stringify(itemDetails));
     API.graphql(
       graphqlOperation(mutations.createIframe, { input: itemDetails })
     );
+
+    setShowModal(false);
   };
 
   return (
@@ -89,17 +91,35 @@ export default function Home(props) {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-
       <div className="h-mobile flex mx-auto container w-full lg:items-center lg:h-4/5  lg:px-8">
         <div className="flex flex-col mx-auto h-full w-full lg:flex-row">
-          <div class="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+        {iframe ?
+          <div class="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4"> 
             <div className="text-5x1 lg:text-5xl text-gray-500" style={{height: "10%"}}>
                 {iframe.title}
             </div>
             <div className="flex-1 w-full h-full" style={{height: "90%"}}>
-              <Iframe src={iframe.url} id={iframe.id}/>
+              <Iframe src={iframe.url} id={iframe.id} deleteIframe={deleteIframe}/>
             </div>
           </div>
+          :
+          <div class="flex flex-row w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+            <div className="text-5x1 lg:text-5xl text-gray-500" style={{height: "10%"}}>
+                Crea un nuevo evento
+            
+              <div
+              className="bg-blue-500 text-white text-center cursor-pointer  my-5"
+              style={{ width: "40px" }}
+              onClick={(e) => {
+                setShowModal(true);
+              }}
+            >
+              +
+            </div>
+            </div>
+          </div>
+          
+          }
           <div class="w-full lg:py-10 lg:w-1/4">
             <Chat />
           </div>
