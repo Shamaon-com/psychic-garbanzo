@@ -1,12 +1,14 @@
 import { Auth, API } from "aws-amplify";
 import LoadingAnimation from "../components/loadingAnimation";
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
+import { AuthContext } from "../utils/functionsLib";
 
 
 export default function AdminLayout({ children, ...pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     onLoad();
@@ -15,8 +17,7 @@ export default function AdminLayout({ children, ...pageProps }) {
   async function onLoad() {
 
     if (
-      pageProps.authContext.isLoggedIn == true &&
-      pageProps.authContext.userGroup.includes("admins")
+      authContext.isLoggedIn && authContext.isAdmin
     ) {
       setIsLoading(false);
     } else {

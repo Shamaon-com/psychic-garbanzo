@@ -13,7 +13,6 @@ import LazyImage from "../components/lazyImage"
 export default function Patrocinador() {
 
   const authContext = useContext(AuthContext);
-
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -110,7 +109,6 @@ export default function Patrocinador() {
     API.graphql(graphqlOperation(queries.listPatrocinadors)).then((data) => {
   
       if(authContext.isAdmin){
-      
         setPatrocinadors([{id: "admin"}, ...data.data.listPatrocinadors.items]);
       }else{
         setPatrocinadors(data.data.listPatrocinadors.items)
