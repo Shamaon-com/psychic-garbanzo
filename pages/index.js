@@ -131,7 +131,7 @@ export default function Home(props) {
 							</div>
 						</div>
 					)}
-					<div class="w-full lg:py-10 lg:w-1/4">
+					<div class="w-full lg:py-10 lg:w-1/4 my-auto">
 						<QuestionBox />
 					</div>
 				</div>

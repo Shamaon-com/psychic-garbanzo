@@ -133,39 +133,7 @@ export default function QuestionBox() {
 	};
 
 	return (
-		// <div class="flex flex-col h-mobile lg:h-full w-full border-8 border-gray-300">
-		// 	<div class="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
-		// 		<div class="max-w-2xl bg-white py-10 px-5 m-auto w-full mt-10">
-		// 			<div class="text-3xl mb-6 text-center">
-		// 				Escribe tu pregunta
-		// 			</div>
-
-		// 			<div class="flex max-w-xl m-auto">
-		// 				<div class="m-auto">
-		// 					<textarea
-		// 						onChange={(e) => {
-		// 							setQuestion(e.target.value);
-		// 						}}
-		// 						class="m-auto pl-4 pr-16 py-2 border border-blue-700 focus:outline-none"
-		// 						placeholder="Pregunta"
-		// 					></textarea>
-
-		// 					<div class="text-right">
-		// 						<button
-		// 							class="text-blue-600 bg-white hover:text-blue-500 py-1 w-auto transistion-color duration-100 focus:outline-none"
-		// 							onClick={(e) => {
-		// 								createMessage(e);
-		// 							}}
-		// 						>
-		// 							Enviar
-		// 						</button>
-		// 					</div>
-		// 				</div>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// </div>
-		<div class="flex flex-col h-mobile lg:h-full w-full border-8 border-gray-300">
+		<div class="flex flex-col h-mobile lg:h-52 w-full border-8 border-gray-300">
 			<div class="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
 				<div class="flex items-center">
 					<h2 class="font-semibold tracking-wider">
@@ -174,20 +142,22 @@ export default function QuestionBox() {
 				</div>
 			</div>
 
-			<div class="relative bg-white h-100%">
-				<input
+			<div class="relative bg-white h-full flex flex-col">
+				<textarea
 					type="text"
-					name="message"
+					name="question"
+					value={question}
+					placeholder="Pregunta"
 					onChange={(e) => {
-						setMessage(e.target.value);
+						setQuestion(e.target.value);
 					}}
-					class="pl-4 pr-16 py-2 border border-blue-700 focus:outline-none w-full"
+					class="py-2 border-none focus:border-none focus:outline-none focus:border-transparent w-full resize-none h-3/4 flex-row"
 				/>
 				<button
 					class="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
-                        px-3 py-1 w-auto transistion-color duration-100 focus:outline-none"
+                        px-3 py-1 w-auto transistion-color duration-100 focus:outline-none flex-row"
 					onClick={(e) => {
-						createMessage(e);
+						createQuestion(e);
 					}}
 				>
 					Send
