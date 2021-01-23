@@ -94,6 +94,35 @@ export const listMessages = /* GraphQL */ `
     }
   }
 `;
+export const getQuestion = /* GraphQL */ `
+  query GetQuestion($id: ID!) {
+    getQuestion(id: $id) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listQuestions = /* GraphQL */ `
+  query ListQuestions(
+    $filter: ModelQuestionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listQuestions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user
+        question
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getIframe = /* GraphQL */ `
   query GetIframe($id: ID!) {
     getIframe(id: $id) {
