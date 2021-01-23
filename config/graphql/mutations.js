@@ -136,6 +136,48 @@ export const deleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const createQuestion = /* GraphQL */ `
+  mutation CreateQuestion(
+    $input: CreateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    createQuestion(input: $input, condition: $condition) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateQuestion = /* GraphQL */ `
+  mutation UpdateQuestion(
+    $input: UpdateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    updateQuestion(input: $input, condition: $condition) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteQuestion = /* GraphQL */ `
+  mutation DeleteQuestion(
+    $input: DeleteQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    deleteQuestion(input: $input, condition: $condition) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createIframe = /* GraphQL */ `
   mutation CreateIframe(
     $input: CreateIframeInput!
