@@ -195,7 +195,7 @@ export default function Ponentes() {
 						</table>
 					</div>
 				</div>
-				)}
+				)
 			</>
 		);
 	};
