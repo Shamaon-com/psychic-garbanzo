@@ -1,79 +1,19 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../config/graphql/mutations';
-import * as queries from '../config/graphql/queries';
-import * as subscriptions from '../config/graphql/subscriptions';
+
 import { AuthContext } from '../utils/functionsLib';
 
 import useDynamicRefs from 'use-dynamic-refs';
 
 export default function QuestionBox() {
 	const [question, setQuestion] = useState('');
-	const [questions, setQuestions] = useState([]);
-	const [getRef, setRef] = useDynamicRefs();
 	const questionsEndRef = useRef(null);
 	const authContext = useContext(AuthContext);
 
-	const getQuestions = () => {
-		API.graphql(graphqlOperation(queries.listQuestions)).then((data) => {
-			setQuestions(sortArray(data.data.listQuestions.items));
-			scrollToBottom();
-		});
-	};
-
-	const subscribeDeleteQuestion = async () => {
-		await API.graphql(
-			graphqlOperation(subscriptions.onDeleteQuestion)
-		).subscribe({
-			next: (subonDeleteEvent) => {
-				setQuestions((questions) =>
-					sortArray([
-						...questions.filter(
-							(question) =>
-								question.id !=
-								subonDeleteEvent.value.data.onDeleteQuestion.id
-						),
-					])
-				);
-			},
-		});
-	};
-
-	const deleteQuestion = (e) => {
-		var target = e.target;
-		while (target && target.id === '') {
-			target = target.parentNode;
-			console.log(target);
-		}
-
-		var itemDetails = {
-			id: target.id,
-		};
-		API.graphql(
-			graphqlOperation(mutations.deleteQuestion, { input: itemDetails })
-		);
-	};
-
-	const subscribeCreateQuestion = async () => {
-		await API.graphql(
-			graphqlOperation(subscriptions.onCreateQuestion)
-		).subscribe({
-			next: (subonCreateEvent) => {
-				console.log('question sub create');
-				setQuestions((questions) =>
-					sortArray([
-						...questions,
-						subonCreateEvent.value.data.onCreateQuestion,
-					])
-				);
-				scrollToBottom();
-			},
-		});
-	};
-
 	const createQuestion = (e) => {
 		if (question === '') {
-			alert('Mensaje vacio');
+			alert('Pregunta vacia');
 			return;
 		}
 
@@ -109,28 +49,6 @@ export default function QuestionBox() {
 
 	const scrollToBottom = () => {
 		questionsEndRef.current.scrollIntoView();
-	};
-
-	const showDelete = (e) => {
-		if (authContext.isAdmin) {
-			var target = e.target;
-			while (target && target.id === '') {
-				target = target.parentNode;
-			}
-			const showDeleteRef = getRef(target.id);
-			showDeleteRef.current.style.display = 'block';
-		}
-	};
-
-	const hideDelete = (e) => {
-		if (authContext.isAdmin) {
-			var target = e.target;
-			while (target && target.id === '') {
-				target = target.parentNode;
-			}
-			const showDeleteRef = getRef(target.id);
-			showDeleteRef.current.style.display = 'none';
-		}
 	};
 
 	return (

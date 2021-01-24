@@ -6,153 +6,20 @@ import * as subscriptions from '../config/graphql/subscriptions';
 import { AuthContext } from '../utils/functionsLib';
 
 import useDynamicRefs from 'use-dynamic-refs';
+import Ponentes from '../pages/control/ponentes';
 
 export default function QuestionList({ ...props }) {
-	const [question, setQuestion] = useState('');
-	const [questions, setQuestions] = useState([]);
 	const [getRef, setRef] = useDynamicRefs();
-	const questionsEndRef = useRef(null);
-	const authContext = useContext(AuthContext);
-
-	useEffect(() => {
-		onPageRendered();
-	}, []);
-
-	const onPageRendered = async () => {
-		getQuestions();
-		subscribeCreateQuestion();
-		subscribeDeleteQuestion();
-	};
-
-	/**
-	 * CRUD Operation functions
-	 */
-
-	const getQuestions = () => {
-		API.graphql(graphqlOperation(queries.listQuestions)).then((data) => {
-			setQuestions(sortArray(data.data.listQuestions.items));
-			scrollToBottom();
-		});
-	};
-
-	const subscribeDeleteQuestion = async () => {
-		await API.graphql(
-			graphqlOperation(subscriptions.onDeleteQuestion)
-		).subscribe({
-			next: (subonDeleteEvent) => {
-				setQuestions((questions) =>
-					sortArray([
-						...questions.filter(
-							(question) =>
-								question.id !=
-								subonDeleteEvent.value.data.onDeleteQuestion.id
-						),
-					])
-				);
-			},
-		});
-	};
-
-	const deleteQuestion = (e) => {
-		var target = e.target;
-		while (target && target.id === '') {
-			target = target.parentNode;
-			console.log(target);
-		}
-
-		var itemDetails = {
-			id: target.id,
-		};
-		API.graphql(
-			graphqlOperation(mutations.deleteQuestion, { input: itemDetails })
-		);
-	};
-
-	const subscribeCreateQuestion = async () => {
-		await API.graphql(
-			graphqlOperation(subscriptions.onCreateQuestion)
-		).subscribe({
-			next: (subonCreateEvent) => {
-				console.log('question sub create');
-				setQuestions((questions) =>
-					sortArray([
-						...questions,
-						subonCreateEvent.value.data.onCreateQuestion,
-					])
-				);
-				scrollToBottom();
-			},
-		});
-	};
-
-	const createQuestion = (e) => {
-		if (question === '') {
-			alert('Mensaje vacio');
-			return;
-		}
-
-		var itemDetails = {
-			user: authContext.attributes.email,
-			question: question,
-		};
-
-		console.log('Event Details : ' + JSON.stringify(itemDetails));
-		API.graphql(
-			graphqlOperation(mutations.createQuestion, { input: itemDetails })
-		);
-		setQuestion('');
-	};
-
-	/**
-	 *
-	 * Utils
-	 */
-
-	const sortArray = (array) => {
-		return array.sort(function (a, b) {
-			var c = new Date(a.createdAt);
-			var d = new Date(b.createdAt);
-			return c - d;
-		});
-	};
-
-	/**
-	 * UI Functions
-	 */
-
-	const scrollToBottom = () => {
-		questionsEndRef.current.scrollIntoView();
-	};
-
-	const showDelete = (e) => {
-		if (authContext.isAdmin) {
-			var target = e.target;
-			while (target && target.id === '') {
-				target = target.parentNode;
-			}
-			const showDeleteRef = getRef(target.id);
-			showDeleteRef.current.style.display = 'block';
-		}
-	};
-
-	const hideDelete = (e) => {
-		if (authContext.isAdmin) {
-			var target = e.target;
-			while (target && target.id === '') {
-				target = target.parentNode;
-			}
-			const showDeleteRef = getRef(target.id);
-			showDeleteRef.current.style.display = 'none';
-		}
-	};
-
 	const renderQuestions = () => {
 		return (
 			<>
-				{questions.map((question, key) => {
+				{props.questions.map((question, key) => {
 					let classVar =
 						'bg-white text-gray-700 p-2 self-start my-2 rounded-md shadow mr-3';
-					if (question.user !== authContext.attributes.email) {
+					if (
+						props.question.user !==
+						props.authContext.attributes.email
+					) {
 						classVar =
 							'bg-green-500 text-white p-2 self-end my-2 rounded-md shadow ml-3';
 					}
@@ -161,18 +28,18 @@ export default function QuestionList({ ...props }) {
 							key={key}
 							id={question.id}
 							className={classVar}
-							onMouseEnter={showDelete}
-							onMouseLeave={hideDelete}
+							onMouseEnter={props.showDelete}
+							onMouseLeave={props.hideDelete}
 						>
-							{authContext.isAdmin && (
+							{props.authContext.isAdmin && (
 								<svg
-									ref={setRef(question.id)}
+									ref={setRef(props.question.id)}
 									style={{ display: 'none', width: '20px' }}
 									className="ml-auto p-0.5 cursor-pointer"
 									viewBox="0 0 512 512"
 									width="512pt"
 									xmlns="http://www.w3.org/2000/svg"
-									onClick={deleteQuestion}
+									onClick={props.deleteQuestion}
 								>
 									<path
 										d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0"
@@ -194,7 +61,7 @@ export default function QuestionList({ ...props }) {
 						</div>
 					);
 				})}
-				<div ref={questionsEndRef}></div>
+				<div ref={props.questionsEndRef}></div>
 			</>
 		);
 	};
