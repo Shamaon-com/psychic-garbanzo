@@ -87,6 +87,7 @@ export default function QuestionBox() {
 			graphqlOperation(mutations.createQuestion, { input: itemDetails })
 		);
 		setQuestion('');
+		alert('Pregunta enviada');
 	};
 
 	/**
