@@ -63,7 +63,20 @@ type GeneralSettings
   ) {
   id: ID!
   login: Boolean!
-  indexPage: String!
+  mainLogo: String!
+  backgroundLoginImage: String!
+  backgroundColor: String!
+  boxBackgroundColor: String!
+  boxBorderColor: String!
+  boxInnerTextColor: String!
+  boxTitleColor: String!
+  titleColor: String!
+  textColor: String!
+  pageAgenda: Boolean!
+  pagePonentes: Boolean!
+  pagePatrocinadores: Boolean!
+  pagePrensa: Boolean! 
+  pageContacto: Boolean!
 }
 
 
