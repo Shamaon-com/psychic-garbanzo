@@ -9,32 +9,24 @@ import useDynamicRefs from 'use-dynamic-refs';
 import Ponentes from '../pages/control/ponentes';
 
 export default function QuestionList({ ...props }) {
-
-	const [array, setArray] = useState([])
+	const [array, setArray] = useState([]);
 	const [getRef, setRef] = useDynamicRefs();
 	const questionsEndRef = useRef(null);
 
-
 	const authContext = useContext(AuthContext);
-
 
 	useEffect(() => {
 		console.log(props);
 		setArray(props.data);
-
 	}, [props.data]);
 
-
-		return (
-			<>
-				{array.map((item, key) => {
-					let classVar = 'bg-white text-gray-700 p-2 self-start my-2 rounded-md shadow mr-3';
-					return (
-						<div
-							key={key}
-							id={item.id}
-							className={classVar}
-						>
+	return (
+		<>
+			{array.map((item, key) => {
+				let classVar =
+					'bg-white text-gray-700 p-4 self-start m-3 rounded-xl shadow-lg';
+				return (
+					<div key={key} id={item.id} className={classVar}>
 						<svg
 							style={{ width: '20px' }}
 							className="ml-auto p-0.5 cursor-pointer"
@@ -52,17 +44,14 @@ export default function QuestionList({ ...props }) {
 								fill="#fafafa"
 							/>
 						</svg>
-
-							<div className="text-sm">
-								{item.user.split('@')[0]} -{' '}
-								{new Date(
-									item.createdAt
-								).toLocaleTimeString()}
-							</div>
-							{item.question}
+						{item.question}
+						<div className="text-xs font-light font-sans">
+							{item.user.split('@')[0]} -{' '}
+							{new Date(item.createdAt).toLocaleTimeString()}
 						</div>
-					);
-				})}
-			</>
-		);
+					</div>
+				);
+			})}
+		</>
+	);
 }

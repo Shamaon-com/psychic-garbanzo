@@ -10,7 +10,6 @@ import * as queries from '../../config/graphql/queries';
 import * as subscriptions from '../../config/graphql/subscriptions';
 
 export default function Ponentes() {
-
 	const [questions, setQuestions] = useState([]);
 	const [getRef, setRef] = useDynamicRefs();
 
@@ -84,11 +83,10 @@ export default function Ponentes() {
 						subonCreateEvent.value.data.onCreateQuestion,
 					])
 				);
-				scrollToBottom();
+				//scrollToBottom();
 			},
 		});
 	};
-
 
 	/**
 	 *
@@ -107,44 +105,36 @@ export default function Ponentes() {
 	 * UI Functions
 	 */
 
-	const scrollToBottom = () => {
-	 	QuestionList.questionsEndRef.current.scrollIntoView();
-	 };
-
+	// const scrollToBottom = () => {
+	// 	QuestionList.questionsEndRef.current.scrollIntoView();
+	// };
 
 	const renderQuestionList = () => {
-		
-
 		return (
 			<tbody>
 				{questions.map((question, key) => {
-					return (
-						<div> 
-							{question.question}
-						</div>
-					);
+					return <div>{question.question}</div>;
 				})}
 			</tbody>
 		);
 	};
 
-
-
 	const renderMain = () => {
-		console.log(questions)
+		console.log(questions);
 		return (
 			<div class=" w-full space-y-8">
 				<div
 					class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
 					style={{ height: '100%', maxHeight: '85%' }}
 				>
-				<QuestionList data={questions} deleteItem={deleteQuestion}/> 
+					<QuestionList
+						data={questions}
+						deleteItem={deleteQuestion}
+					/>
 				</div>
 			</div>
 		);
 	};
 
-
 	return <AdminLayout>{renderMain()}</AdminLayout>;
-
 }
