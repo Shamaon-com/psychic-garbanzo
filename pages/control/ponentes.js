@@ -8,6 +8,7 @@ import useDynamicRefs from 'use-dynamic-refs';
 import * as mutations from '../../config/graphql/mutations';
 import * as queries from '../../config/graphql/queries';
 import * as subscriptions from '../../config/graphql/subscriptions';
+import { render } from 'react-dom';
 
 export default function Ponentes() {
 	const [questions, setQuestions] = useState([]);
@@ -83,7 +84,7 @@ export default function Ponentes() {
 						subonCreateEvent.value.data.onCreateQuestion,
 					])
 				);
-				//scrollToBottom();
+				scrollToBottom();
 			},
 		});
 	};
@@ -105,19 +106,19 @@ export default function Ponentes() {
 	 * UI Functions
 	 */
 
-	// const scrollToBottom = () => {
-	// 	QuestionList.questionsEndRef.current.scrollIntoView();
-	// };
-
-	const renderQuestionList = () => {
-		return (
-			<tbody>
-				{questions.map((question, key) => {
-					return <div>{question.question}</div>;
-				})}
-			</tbody>
-		);
+	const scrollToBottom = () => {
+		questionsEndRef.current.scrollIntoView({ behavior: 'smooth' });
 	};
+
+	// const renderQuestionList = () => {
+	// 	return (
+	// 		<tbody class="bg-white text-gray-700 p-4 self-start m-3 rounded-xl shadow-lg">
+	// 			{questions.map((question, key) => {
+	// 				return <div>{question.question}</div>;
+	// 			})}
+	// 		</tbody>
+	// 	);
+	// };
 
 	const renderMain = () => {
 		console.log(questions);
@@ -125,12 +126,13 @@ export default function Ponentes() {
 			<div class=" w-full space-y-8">
 				<div
 					class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
-					style={{ height: '100%', maxHeight: '85%' }}
+					style={{ height: '100%', maxHeight: '75%' }}
 				>
 					<QuestionList
 						data={questions}
 						deleteItem={deleteQuestion}
 					/>
+					<div ref={questionsEndRef}></div>
 				</div>
 			</div>
 		);

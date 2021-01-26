@@ -44,7 +44,7 @@ export default function QuestionList({ ...props }) {
 								fill="#fafafa"
 							/>
 						</svg>
-						{item.question}
+						<div className="font-medium mb-1">{item.question}</div>
 						<div className="text-xs font-light font-sans">
 							{item.user.split('@')[0]} -{' '}
 							{new Date(item.createdAt).toLocaleTimeString()}
