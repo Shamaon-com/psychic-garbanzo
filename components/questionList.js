@@ -52,7 +52,7 @@ export default function QuestionList({ ...props }) {
 								fill="#fafafa"
 							/>
 						</svg>
-						
+
 							<div className="text-sm">
 								{item.user.split('@')[0]} -{' '}
 								{new Date(
@@ -65,7 +65,4 @@ export default function QuestionList({ ...props }) {
 				})}
 			</>
 		);
-	
-
-
 }
