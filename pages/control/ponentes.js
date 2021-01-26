@@ -12,6 +12,7 @@ import { render } from 'react-dom';
 
 export default function Ponentes() {
 	const [questions, setQuestions] = useState([]);
+	const lentgh = questions.length;
 	const [getRef, setRef] = useDynamicRefs();
 
 	const questionsEndRef = useRef(null);
@@ -121,8 +122,16 @@ export default function Ponentes() {
 	// };
 
 	const renderMain = () => {
-		console.log(questions);
-		return (
+		return questions.length === 0 ? (
+			<div class="m-auto">
+				<div class="bg-white shadow-xl rounded-xl">
+					<div class="font-sans text-xl text-gray-600 p-5">
+						Aquí aparecerán las preguntas
+						<div ref={questionsEndRef}></div>
+					</div>
+				</div>
+			</div>
+		) : (
 			<div class=" w-full space-y-8">
 				<div
 					class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
