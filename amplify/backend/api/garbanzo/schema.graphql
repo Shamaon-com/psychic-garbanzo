@@ -178,7 +178,7 @@ type Patrocinador
 	file: String
 }
 
-type Articulo
+type Recurso
 	@model
 	@auth(
 		rules: [
@@ -197,8 +197,9 @@ type Articulo
 		]
 	) {
 	id: ID!
-	name: String
-	date: String
+	type: String!
+	name: String!
 	text: String!
 	file: String
+	videoUrl: String
 }

@@ -3,6 +3,7 @@ import { capitalize } from '../utils/functionsLib';
 import { useFormFields } from '../utils/hooksLib'
 
 
+
 export default function Modal({ ...props }) {
   /**
    * Recived props:
@@ -52,6 +53,10 @@ export default function Modal({ ...props }) {
   };
 
   const renderSelectField = (fieldName, field) => {
+    /**
+     * Filed options is array of options in props field
+     */
+    console.log(field.options)
     return (
       <div className="mb-4">
         <label className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
@@ -64,8 +69,9 @@ export default function Modal({ ...props }) {
                     focus:border-indigo-500 sm:text-sm"
               onChange={props.handleFieldChange}
             >
-              {field.options.map((item) => {
-                return <option value={item.key}>{item.text}</option>;
+              {field.options.map((item, index) => {
+               
+                return(<option value={item.key}>{item.text}</option>);
               })}
             </select>
       </div>
@@ -194,6 +200,7 @@ export default function Modal({ ...props }) {
     var dataArray = [];
     
     for (var field in props.fields) {
+
       switch (props.fields[field].type) {
         case "select":
           dataArray.push(renderSelectField(field, props.fields[field]));
