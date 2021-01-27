@@ -10,6 +10,15 @@ export default function Iframe({ ...props }) {
 
   const authContext = useContext(AuthContext);
 
+
+  /**
+   * 
+   * recives:
+   *  - src (required)
+   *  - id (not required)
+   *  - delete function (not required)
+   */
+
   useEffect(() => {
     // Add event listener
     window.addEventListener("resize", handleResize);
