@@ -3,7 +3,7 @@ import { API, graphqlOperation, Storage } from "aws-amplify";
 
 import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
-import IframeModal from ' ../iframeModal';
+import IframeModal from "../components/iframeModal";
 import { ContainerPage } from "../components/containers";
 import { icon, videoIcon } from "../utils/svg";
 
@@ -23,6 +23,7 @@ export default function Recursos() {
 
   // Specifc to page
   const [recursos, setRecursos] = useState([]);
+  const [iframeSrc, setIframeSrc] = useState(null);
 
   const [fields, handleFieldChange] = useModalFields({
     type: { type: "select", value: "document", options: [{ key: "document", text: "Documentos" }, { key: "video", text: "Video" }] },
@@ -234,9 +235,9 @@ export default function Recursos() {
                   </div>
                 )}
                 <div className="flex flex-col w-1/6 h-full justify-center items-center">
-                  <a href="http://www.google.com">
+                  <div onClick={(e) => setIframeSrc(recurso.videoUrl)}>
                     {videoIcon()}
-                  </a>
+                  </div>
                 </div>
                 <div className="flex flex-col w-5/6 justify-center align-center">
                   <div className="mb-1 text-blue-700">
@@ -266,9 +267,8 @@ export default function Recursos() {
           isCreating={isCreating}
         />
         <IframeModal
-          iframeSrc={}
-          showModal={showModal}
-          setShowModal={setShowModal}
+          iframeSrc={iframeSrc}
+          setIframeSrc={setIframeSrc}
         />
         <div className="flex flex-row mx-5 sm:mx-0">
           <div className="flex text-xl my-8 sm:text-3xl">Recursos</div>
