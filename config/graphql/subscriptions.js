@@ -109,6 +109,39 @@ export const onDeleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateQuestion = /* GraphQL */ `
+  subscription OnCreateQuestion {
+    onCreateQuestion {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateQuestion = /* GraphQL */ `
+  subscription OnUpdateQuestion {
+    onUpdateQuestion {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteQuestion = /* GraphQL */ `
+  subscription OnDeleteQuestion {
+    onDeleteQuestion {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateIframe = /* GraphQL */ `
   subscription OnCreateIframe {
     onCreateIframe {

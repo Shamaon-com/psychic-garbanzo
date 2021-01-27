@@ -1,114 +1,204 @@
 type Agenda
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  title: String!
-  description: String
-  date: String!
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, update, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	title: String!
+	description: String
+	date: String!
 }
 
 type Evento
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  type: String!
-  title: String!
-  startData: String!
-  endDate: String!
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, update, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	type: String!
+	title: String!
+	startData: String!
+	endDate: String!
 }
 
-
 type Message
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  user: String!
-  message: String!
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	user: String!
+	message: String!
+}
+
+type Question
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins", "ponentes"]
+				queries: [get, list]
+				mutations: [delete]
+			}
+			{ allow: groups, groups: ["users"], mutations: [create] }
+		]
+	) {
+	id: ID!
+	user: String!
+	question: String!
 }
 
 type Iframe
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  url: String!
-  title: String!
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	url: String!
+	title: String!
 }
 
 type GeneralSettings
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-    ]
-  ) {
-  id: ID!
-  login: Boolean!
-  indexPage: String!
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, update, delete]
+			}
+		]
+	) {
+	id: ID!
+	login: Boolean!
+	indexPage: String!
 }
-
 
 type Ponente
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  name: String!
-  title: String!
-  image: String!
-  pdf: String,
-  url: String
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, update, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	name: String!
+	title: String!
+	image: String!
+	pdf: String
+	url: String
 }
 
-
 type Patrocinador
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  name: String!
-  link: String!
-  file: String
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, update, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	name: String!
+	link: String!
+	file: String
 }
 
 type Articulo
-  @model
-  @auth(
-    rules: [
-      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
-      { allow: groups, groups: ["users"], queries: [get, list], mutations: [create] }
-    ]
-  ) {
-  id: ID!
-  name: String
-  date: String
-  text: String!
-  file: String
+	@model
+	@auth(
+		rules: [
+			{
+				allow: groups
+				groups: ["admins"]
+				queries: [get, list]
+				mutations: [create, update, delete]
+			}
+			{
+				allow: groups
+				groups: ["users"]
+				queries: [get, list]
+				mutations: [create]
+			}
+		]
+	) {
+	id: ID!
+	name: String
+	date: String
+	text: String!
+	file: String
 }

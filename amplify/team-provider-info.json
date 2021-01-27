@@ -12,14 +12,9 @@
       "AmplifyAppId": "d6k2vls7r42ez"
     },
     "categories": {
-      "function": {
-        "garbanzoauthPostConfirmation": {
-          "GROUP": "users"
-        }
-      },
       "auth": {
-        "garbanzoauth": {},
-        "userPoolGroups": {}
+        "userPoolGroups": {},
+        "garbanzoauth": {}
       }
     }
   }
