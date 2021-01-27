@@ -20,6 +20,7 @@ export default function Home(props) {
 	const [iframe, setIframe] = useState({});
 	const [showModal, setShowModal] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
+	const [tab, setTab] = useState(0);
 
 	const [fields, handleFieldChange] = useModalFields({
 		title: { type: 'default', value: '' },
@@ -80,6 +81,21 @@ export default function Home(props) {
 		setShowModal(false);
 	};
 
+
+	const renderTabContent = () => {
+
+		switch (tab) {
+			case 0:
+				return <Chat />
+			case 1:
+				return <QuestionBox />
+			default:
+				return <Chat />
+		}
+	}
+
+
+
 	return (
 		<GeneralLayout>
 			<Modal
@@ -113,26 +129,38 @@ export default function Home(props) {
 							</div>
 						</div>
 					) : (
-						<div class="flex flex-row w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
-							<div
-								className="text-5x1 lg:text-5xl text-gray-500"
-								style={{ height: '10%' }}
-							>
-								Crea un nuevo evento
+							<div class="flex flex-row w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
 								<div
-									className="bg-blue-500 text-white text-center cursor-pointer  my-5"
-									style={{ width: '40px' }}
-									onClick={(e) => {
-										setShowModal(true);
-									}}
+									className="text-5x1 lg:text-5xl text-gray-500"
+									style={{ height: '10%' }}
 								>
-									+
+									Crea un nuevo evento
+								<div
+										className="bg-blue-500 text-white text-center cursor-pointer  my-5"
+										style={{ width: '40px' }}
+										onClick={(e) => {
+											setShowModal(true);
+										}}
+									>
+										+
+								</div>
 								</div>
 							</div>
+						)}
+					<div class="h-full lg:py-10 lg:w-1/4 my-auto">
+						<div className="flex flex-row" style={{ height: '10%' }}>
+							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 0 && " text-blue-500 border-b-2 font-medium border-blue-500")} 
+								onClick={(e) => setTab(0)}>
+								Chat
+							</div>
+							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 1 && " text-blue-500 border-b-2 font-medium border-blue-500")} 
+								onClick={(e) => setTab(1)}>
+								Preguntas
+							</div>
 						</div>
-					)}
-					<div class="w-full lg:py-10 lg:w-1/4 my-auto">
-						<QuestionBox />
+						<div class="flex" style={{ height: '90%' }}>
+							{renderTabContent()}
+						</div>
 					</div>
 				</div>
 			</div>
