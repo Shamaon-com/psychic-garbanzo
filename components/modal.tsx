@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { capitalize } from '../utils/functionsLib';
-import { useFormFields } from '../utils/hooksLib'
+
 
 
 
@@ -56,7 +56,6 @@ export default function Modal({ ...props }) {
     /**
      * Filed options is array of options in props field
      */
-    console.log(field.options)
     return (
       <div className="mb-4">
         <label className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
@@ -70,7 +69,6 @@ export default function Modal({ ...props }) {
               onChange={props.handleFieldChange}
             >
               {field.options.map((item, index) => {
-               
                 return(<option value={item.key}>{item.text}</option>);
               })}
             </select>

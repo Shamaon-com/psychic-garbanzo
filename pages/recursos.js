@@ -3,9 +3,9 @@ import { API, graphqlOperation, Storage } from "aws-amplify";
 
 import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
-import LazyImage from "../components/lazyImage";
-import Grid from "../components/grid";
-import {ContainerPage} from "../components/containers";
+import IframeModal from "../components/iframeModal";
+import { ContainerPage } from "../components/containers";
+import { icon, videoIcon } from "../utils/svg";
 
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
@@ -23,9 +23,10 @@ export default function Recursos() {
 
   // Specifc to page
   const [recursos, setRecursos] = useState([]);
+  const [iframeSrc, setIframeSrc] = useState(null);
 
   const [fields, handleFieldChange] = useModalFields({
-    type: { type: "select", value: "", options: [{key: 1, text: "one"}, {key:2, text: "two"}]},
+    type: { type: "select", value: "document", options: [{ key: "document", text: "Documentos" }, { key: "video", text: "Video" }] },
     name: { type: "default", value: "" },
     text: { type: "default", value: "" },
     videoUrl: { type: "default", value: "" },
@@ -54,6 +55,7 @@ export default function Recursos() {
       graphqlOperation(subscriptions.onCreateRecurso)
     ).subscribe({
       next: (subonCreateRecurso) => {
+        console.log(subonCreateRecurso.value.data.onCreateRecurso)
         setRecursos((recursos) => [
           ...recursos,
           subonCreateRecurso.value.data.onCreateRecurso,
@@ -66,9 +68,10 @@ export default function Recursos() {
 
     var itesmetails = {
       name: fields.name.value,
-      title: fields.title.value,
-      pdf: fields.pdf.value.name,
-      image: fields.image.value.name
+      type: fields.type.value,
+      file: fields.file.value.name,
+      videoUrl: fields.videoUrl.value,
+      text: fields.text.value
     };
 
     console.log("Recurso Details : " + JSON.stringify(itesmetails));
@@ -116,7 +119,7 @@ export default function Recursos() {
 
   const validate = () => {
     for (var field in fields) {
-      if (fields[field] === "") {
+      if (fields[field] === "" && field !== "videoUrl") {
         alert("Rellene todos los campos");
         return false;
       }
@@ -169,10 +172,83 @@ export default function Recursos() {
    * Render Functions
    */
 
-  const renderRecurso = (Recurso) => {
+  const renderRecurso = () => {
+
+    const documnetRecurso = recursos.filter(recurso => recurso.type === "document");
+
+    const videoRecurso = recursos.filter(recurso => recurso.type === "video");
+
 
     return (
-      <div>
+      <div className="flex flex-col w-full max-w-2xl mx-auto">
+        <div className="w-full bg-gray-100 shadow">
+          <div className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
+            Documentos
+          </div>
+          {documnetRecurso.map((recurso, index) => {
+            return (
+              <div className="flex w-full flex-row h-20 relative">
+                {authContext.isAdmin && (
+                  <div
+                    id={recurso.id}
+                    className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
+                    style={{ width: "30px" }}
+                    onClick={(e) => {
+                      deleteRecurso(e.target.id);
+                    }}
+                  >
+                    -
+                  </div>
+                )}
+                <div className="flex flex-col w-1/6 h-full justify-center items-center">
+                  <a href="http://www.google.com">
+                    {icon()}
+                  </a>
+                </div>
+                <div className="flex flex-col w-5/6 justify-center align-center">
+                  <div className="mb-1 text-blue-700">
+                    {recurso.name}
+                  </div>
+                  {recurso.text}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="w-full bg-gray-100 shadow mt-5">
+          <div className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
+            Videos
+                    </div>
+          {videoRecurso.map((recurso, index) => {
+            return (
+              <div className="flex w-full flex-row h-20 relative">
+                {authContext.isAdmin && (
+                  <div
+                    id={recurso.id}
+                    className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
+                    style={{ width: "30px" }}
+                    onClick={(e) => {
+                      deleteRecurso(e.target.id);
+                    }}
+                  >
+                    -
+                  </div>
+                )}
+                <div className="flex flex-col w-1/6 h-full justify-center items-center">
+                  <div onClick={(e) => setIframeSrc(recurso.videoUrl)}>
+                    {videoIcon()}
+                  </div>
+                </div>
+                <div className="flex flex-col w-5/6 justify-center align-center">
+                  <div className="mb-1 text-blue-700">
+                    {recurso.name}
+                  </div>
+                  {recurso.text}
+                </div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     );
   };
@@ -181,32 +257,36 @@ export default function Recursos() {
   return (
     <GeneralLayout>
       <ContainerPage>
-      <Modal
-        element={"Recurso"}
-        fields={fields}
-        handleFieldChange={handleFieldChange}
-        submit={submit}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        isCreating={isCreating}
-      />
-      <div className="flex flex-row mx-5 sm:mx-0">
-        <div className="flex text-xl my-8 sm:text-3xl">Recursos</div>
-        {authContext.isAdmin && (
-          <div className="flex my-8 sm:text-3xl mx-3">
-            <div
-              className="bg-blue-500 text-white text-center cursor-pointer"
-              style={{ width: "40px" }}
-              onClick={(e) => {
-                setShowModal(true);
-              }}
-            >
-              +
+        <Modal
+          element={"Recurso"}
+          fields={fields}
+          handleFieldChange={handleFieldChange}
+          submit={submit}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          isCreating={isCreating}
+        />
+        <IframeModal
+          iframeSrc={iframeSrc}
+          setIframeSrc={setIframeSrc}
+        />
+        <div className="flex flex-row mx-5 sm:mx-0">
+          <div className="flex text-xl my-8 sm:text-3xl">Recursos</div>
+          {authContext.isAdmin && (
+            <div className="flex my-8 sm:text-3xl mx-3">
+              <div
+                className="bg-blue-500 text-white text-center cursor-pointer"
+                style={{ width: "40px" }}
+                onClick={(e) => {
+                  setShowModal(true);
+                }}
+              >
+                +
             </div>
-          </div>
-        )}
-      </div>
-
+            </div>
+          )}
+        </div>
+        {renderRecurso()}
       </ContainerPage>
     </GeneralLayout>
   );

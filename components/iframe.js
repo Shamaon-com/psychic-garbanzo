@@ -10,6 +10,13 @@ export default function Iframe({ ...props }) {
 
   const authContext = useContext(AuthContext);
 
+
+  /**
+   * 
+   * recives:
+   *  - src (required)
+   */
+
   useEffect(() => {
     // Add event listener
     window.addEventListener("resize", handleResize);
@@ -51,20 +58,8 @@ export default function Iframe({ ...props }) {
 
       <div
         ref={parentRef}
-        class="w-full h-full relative"
+        class="w-full h-full"
       >
-        {authContext.isAdmin && (
-          <div
-            id={props.id}
-            class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
-            style={{ width: "50px" }}
-            onClick={(e) => {
-              props.deleteIframe(e.target.id);
-            }}
-          >
-            -
-          </div>
-        )}
         <iframe
           class="z-10"
           src={src}

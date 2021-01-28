@@ -44,6 +44,7 @@ export function useModalFields(initialState) {
           break;
         case "select":
           const currentOptions = fields[event.target.id].options;
+          console.log(event.target.value)
           setValues({
             ...fields,
             [event.target.id]: {"type": type, "value": event.target.value, "options": currentOptions}
