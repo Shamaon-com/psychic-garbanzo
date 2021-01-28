@@ -43,7 +43,7 @@ export default function IframeModal({ ...props }) {
           </div>
 
           <div className="shadow w-full  bg-white overflow-hidden w-full block p-8">
-            <Iframe src={src} id={0} deleteIframe={null} /> 
+            <Iframe src={src} /> 
           </div>
         </div>
       </div>

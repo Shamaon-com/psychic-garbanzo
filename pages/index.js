@@ -118,13 +118,23 @@ export default function Home(props) {
 								{iframe.title}
 							</div>
 							<div
-								className="flex-1 w-full h-full"
+								className="flex-1 w-full h-full relative"
 								style={{ height: '90%' }}
 							>
+								{authContext.isAdmin && (
+									<div
+										id={props.id}
+										class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
+										style={{ width: "50px" }}
+										onClick={(e) => {
+											props.deleteIframe(e.target.id);
+										}}
+									>
+										-
+									</div>
+								)}
 								<Iframe
 									src={iframe.url}
-									id={iframe.id}
-									deleteIframe={deleteIframe}
 								/>
 							</div>
 						</div>
@@ -149,11 +159,11 @@ export default function Home(props) {
 						)}
 					<div class="h-full lg:py-10 lg:w-1/4 my-auto">
 						<div className="flex flex-row" style={{ height: '10%' }}>
-							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 0 && " text-blue-500 border-b-2 font-medium border-blue-500")} 
+							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 0 && " text-blue-500 border-b-2 font-medium border-blue-500")}
 								onClick={(e) => setTab(0)}>
 								Chat
 							</div>
-							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 1 && " text-blue-500 border-b-2 font-medium border-blue-500")} 
+							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 1 && " text-blue-500 border-b-2 font-medium border-blue-500")}
 								onClick={(e) => setTab(1)}>
 								Preguntas
 							</div>
