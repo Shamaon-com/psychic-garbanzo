@@ -123,7 +123,7 @@ export default function Home(props) {
 							>
 								{authContext.isAdmin && (
 									<div
-										id={props.id}
+										id={iframe.id}
 										class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
 										style={{ width: "50px" }}
 										onClick={(e) => {
