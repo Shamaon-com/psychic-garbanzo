@@ -127,7 +127,7 @@ export default function Home(props) {
 										class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
 										style={{ width: "50px" }}
 										onClick={(e) => {
-											props.deleteIframe(e.target.id);
+											deleteIframe(e.target.id);
 										}}
 									>
 										-
