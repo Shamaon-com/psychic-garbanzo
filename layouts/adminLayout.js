@@ -56,7 +56,27 @@ export default function AdminLayout({ children, ...pageProps }) {
 						</li>
 						<li class="my-px">
 							<span class="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase">
-								Modulos
+								Usuario
+							</span>
+						</li>
+						<li class="my-px">
+							<a
+								href="/control/"
+								class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"
+							>
+								<span class="flex items-center justify-center text-lg text-gray-400">
+								<span class="text-gray-600">
+                        <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+						</span>
+								</span>
+								<span class="ml-3">Perfil</span>
+							</a>
+						</li>
+						<li class="my-px">
+							<span class="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase">
+								Administrador
 							</span>
 						</li>
 						<li class="my-px">
@@ -101,52 +121,7 @@ export default function AdminLayout({ children, ...pageProps }) {
 								<span class="ml-3">Preguntas</span>
 							</a>
 						</li>
-						<li class="my-px">
-							<a
-								href="/control/agenda"
-								class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"
-							>
-								<span class="flex items-center justify-center text-lg text-gray-400">
-									<svg
-										fill="none"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										class="h-6 w-6"
-									>
-										<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
-									</svg>
-								</span>
-								<span class="ml-3">Agenda</span>
-							</a>
-						</li>
-						<li class="my-px">
-							<a
-								href="#"
-								class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"
-							>
-								<span class="flex items-center justify-center text-lg text-gray-400">
-									<svg
-										fill="none"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										class="h-6 w-6"
-									>
-										<path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
-									</svg>
-								</span>
-								<span class="ml-3">Clients</span>
-								<span class="flex items-center justify-center text-sm text-gray-500 font-semibold bg-gray-200 h-6 px-2 rounded-full ml-auto">
-									1k
-								</span>
-							</a>
-						</li>
-						<li class="my-px">
+						<li class="my-px mt-auto">
 							<a
 								href="#"
 								class="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"

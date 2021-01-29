@@ -12,7 +12,16 @@ export function ContainerFull({children}){
     )
 }
 
+export  function ContainerPageAdmin({children}){
 
+    return (
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="flex flex-wrap flex-col justify-center h-full w-full">
+                {children}
+            </div>
+        </div>
+    )
+}
 
 export  function ContainerPage({children}){
 
