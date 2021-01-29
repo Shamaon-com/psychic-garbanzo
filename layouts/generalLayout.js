@@ -175,16 +175,10 @@ export default function GeneralLayout({ children, ...pageProps }) {
                 Patrocinadores
           </a>
               <a
-                href="/prensa"
+                href="/recursos"
                 class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
               >
-                Prensa
-          </a>
-              <a
-                href="/contacto"
-                class="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
-              >
-                Contacto
+                Recursos
           </a>
             </div>
           </div>

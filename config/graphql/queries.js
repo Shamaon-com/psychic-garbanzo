@@ -94,6 +94,35 @@ export const listMessages = /* GraphQL */ `
     }
   }
 `;
+export const getQuestion = /* GraphQL */ `
+  query GetQuestion($id: ID!) {
+    getQuestion(id: $id) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listQuestions = /* GraphQL */ `
+  query ListQuestions(
+    $filter: ModelQuestionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listQuestions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user
+        question
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getIframe = /* GraphQL */ `
   query GetIframe($id: ID!) {
     getIframe(id: $id) {
@@ -222,32 +251,34 @@ export const listPatrocinadors = /* GraphQL */ `
     }
   }
 `;
-export const getArticulo = /* GraphQL */ `
-  query GetArticulo($id: ID!) {
-    getArticulo(id: $id) {
+export const getRecurso = /* GraphQL */ `
+  query GetRecurso($id: ID!) {
+    getRecurso(id: $id) {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }
   }
 `;
-export const listArticulos = /* GraphQL */ `
-  query ListArticulos(
-    $filter: ModelArticuloFilterInput
+export const listRecursos = /* GraphQL */ `
+  query ListRecursos(
+    $filter: ModelRecursoFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listArticulos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listRecursos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        type
         name
-        date
         text
         file
+        videoUrl
         createdAt
         updatedAt
       }

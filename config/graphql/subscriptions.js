@@ -109,6 +109,39 @@ export const onDeleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const onCreateQuestion = /* GraphQL */ `
+  subscription OnCreateQuestion {
+    onCreateQuestion {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateQuestion = /* GraphQL */ `
+  subscription OnUpdateQuestion {
+    onUpdateQuestion {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteQuestion = /* GraphQL */ `
+  subscription OnDeleteQuestion {
+    onDeleteQuestion {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateIframe = /* GraphQL */ `
   subscription OnCreateIframe {
     onCreateIframe {
@@ -253,40 +286,43 @@ export const onDeletePatrocinador = /* GraphQL */ `
     }
   }
 `;
-export const onCreateArticulo = /* GraphQL */ `
-  subscription OnCreateArticulo {
-    onCreateArticulo {
+export const onCreateRecurso = /* GraphQL */ `
+  subscription OnCreateRecurso {
+    onCreateRecurso {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateArticulo = /* GraphQL */ `
-  subscription OnUpdateArticulo {
-    onUpdateArticulo {
+export const onUpdateRecurso = /* GraphQL */ `
+  subscription OnUpdateRecurso {
+    onUpdateRecurso {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteArticulo = /* GraphQL */ `
-  subscription OnDeleteArticulo {
-    onDeleteArticulo {
+export const onDeleteRecurso = /* GraphQL */ `
+  subscription OnDeleteRecurso {
+    onDeleteRecurso {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }

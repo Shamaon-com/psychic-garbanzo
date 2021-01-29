@@ -136,6 +136,48 @@ export const deleteMessage = /* GraphQL */ `
     }
   }
 `;
+export const createQuestion = /* GraphQL */ `
+  mutation CreateQuestion(
+    $input: CreateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    createQuestion(input: $input, condition: $condition) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateQuestion = /* GraphQL */ `
+  mutation UpdateQuestion(
+    $input: UpdateQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    updateQuestion(input: $input, condition: $condition) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteQuestion = /* GraphQL */ `
+  mutation DeleteQuestion(
+    $input: DeleteQuestionInput!
+    $condition: ModelQuestionConditionInput
+  ) {
+    deleteQuestion(input: $input, condition: $condition) {
+      id
+      user
+      question
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createIframe = /* GraphQL */ `
   mutation CreateIframe(
     $input: CreateIframeInput!
@@ -316,49 +358,52 @@ export const deletePatrocinador = /* GraphQL */ `
     }
   }
 `;
-export const createArticulo = /* GraphQL */ `
-  mutation CreateArticulo(
-    $input: CreateArticuloInput!
-    $condition: ModelArticuloConditionInput
+export const createRecurso = /* GraphQL */ `
+  mutation CreateRecurso(
+    $input: CreateRecursoInput!
+    $condition: ModelRecursoConditionInput
   ) {
-    createArticulo(input: $input, condition: $condition) {
+    createRecurso(input: $input, condition: $condition) {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }
   }
 `;
-export const updateArticulo = /* GraphQL */ `
-  mutation UpdateArticulo(
-    $input: UpdateArticuloInput!
-    $condition: ModelArticuloConditionInput
+export const updateRecurso = /* GraphQL */ `
+  mutation UpdateRecurso(
+    $input: UpdateRecursoInput!
+    $condition: ModelRecursoConditionInput
   ) {
-    updateArticulo(input: $input, condition: $condition) {
+    updateRecurso(input: $input, condition: $condition) {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteArticulo = /* GraphQL */ `
-  mutation DeleteArticulo(
-    $input: DeleteArticuloInput!
-    $condition: ModelArticuloConditionInput
+export const deleteRecurso = /* GraphQL */ `
+  mutation DeleteRecurso(
+    $input: DeleteRecursoInput!
+    $condition: ModelRecursoConditionInput
   ) {
-    deleteArticulo(input: $input, condition: $condition) {
+    deleteRecurso(input: $input, condition: $condition) {
       id
+      type
       name
-      date
       text
       file
+      videoUrl
       createdAt
       updatedAt
     }

@@ -24,6 +24,8 @@ export function useModalFields(initialState) {
       
       let type = fields[event.target.id.split("_")[0]].type;
       
+      console.log(type);
+
       switch(type){
         case "file":
           setValues({
@@ -38,6 +40,14 @@ export function useModalFields(initialState) {
           setValues({
             ...fields,
             [id]: {"type": type, "value": currentDate}
+          });
+          break;
+        case "select":
+          const currentOptions = fields[event.target.id].options;
+          console.log(event.target.value)
+          setValues({
+            ...fields,
+            [event.target.id]: {"type": type, "value": event.target.value, "options": currentOptions}
           });
           break;
         default:
