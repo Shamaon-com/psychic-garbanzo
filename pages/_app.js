@@ -1,14 +1,14 @@
 import "tailwindcss/tailwind.css";
-import { Amplify, Auth } from "aws-amplify";
+import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
 import awsconfig from "../config/aws-exports";
 import { useRouter } from 'next/router';
 
 import React, { useState, useEffect } from "react";
 import LoadingAnimation from "../components/loadingAnimation";
-import type { AppProps /*, AppContext */ } from 'next/app'
+
 import { AuthContext } from "../utils/functionsLib";
 
-
+import * as queries from "../config/graphql/queries";
 
 
 
@@ -17,13 +17,14 @@ Amplify.configure(awsconfig);
 
 
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   
 
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [attributes, setAttributes] = useState({})
+  const [attributes, setAttributes] = useState({});
+  const [generalSettings, setGeneralSettings] = useState({});
 
   const router = useRouter();
 
@@ -33,8 +34,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       try {
         const userData = await Auth.currentUserInfo();
         setAttributes(userData.attributes);
-        const session:any = await Auth.currentSession();
+        const session = await Auth.currentSession();
         setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
+        getPageSettings();
         setIsLoggedIn(true);
         setIsAuthenticating(false);
       } catch (e) {
@@ -44,11 +46,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     onLoad();
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (username, password) => {
     try {
       const user = await Auth.signIn(username, password);
       setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
       setAttributes(user.attributes);
+      getPageSettings();
       setIsLoggedIn(true);
       router.push("/");
     }
@@ -61,6 +64,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     setIsLoggedIn(false);
   };
 
+  const getPageSettings = () => {
+    API.graphql(graphqlOperation(queries.listGeneralSettingss)).then((data) => {
+      setGeneralSettings(data.data.listGeneralSettingss.items)
+    }
+      
+    );
+  }
+
+
   return (
     <>
       {!isAuthenticating ? (
@@ -69,6 +81,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             isLoggedIn: isLoggedIn,
             isAdmin: isAdmin,
             attributes: attributes,
+            generalSettings: generalSettings,
             login: login,
             logout: logout
           }}

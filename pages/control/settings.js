@@ -1,36 +1,77 @@
-import React, { useState, useEffect, useContext } from "react";
-import { API, graphqlOperation } from "aws-amplify";
+import AdminLayout from '../../layouts/adminLayout';
+import ContainerPage from '../../components/containers';
+import React, { useContext, useEffect } from 'react';
 
-import AdminLayout from "../../layouts/adminLayout";
-import {ContainerFull} from "../../components/containers";
-import Modal from "../../components/modal";
-
-import { AuthContext } from "../../utils/functionsLib";
-import { useModalFields } from "../../utils/hooksLib";
-
-import * as mutations from "../../config/graphql/mutations";
-import * as queries from "../../config/graphql/queries";
-import * as subscriptions from "../../config/graphql/subscriptions";
-
-
+import { AuthContext } from '../../utils/functionsLib';
 
 export default function platformControl(props) {
-  
+  const authContext = useContext(AuthContext);
 
+  useEffect(() => {
+    console.log('uig')
+  }, []);
+
+
+
+  const buildInitalSettings = () => {
+
+
+
+  }
+
+  /**
+   *   
+    login: Boolean!
+    mainLogo: String!
+    backgroundLoginImage: String!
+    backgroundColor: String!
+    boxBackgroundColor: String!
+    boxBorderColor: String!
+    boxInnerTextColor: String!
+    boxTitleColor: String!
+    titleColor: String!
+    textColor: String!
+    pageAgenda: Boolean!
+    pagePonentes: Boolean!
+    pagePatrocinadores: Boolean!
+    pagePrensa: Boolean! 
+    pageContacto: Boolean!
+  */
+
+
+  const renderMain = () => {
+    return (
+      <div>
+        <div className="py-5 border-b">
+          <p className="text-xl mb-3">Diseño general</p>
+          <p className="text-gray-500 font-extralight">
+            Cambia el diseño del evento
+          </p>
+        </div>
+        <div className="flex flex-row mb-3 py-3 border-b">
+          <p className="text-gray-600">Nombre</p>
+          <p className="mx-auto font-light">
+            Esta informacion esta relacionada con tu perfil
+          </p>
+          <p className="text-blue-600">Cambiar</p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <AdminLayout>
-      <div class="container mx-auto px-4 max-w-5xl">
-        <div class="flex flex-wrap flex-col h-full w-full">
-          <div class="inputs w-full max-w-7xl p-6 mx-auto">
-            <h2 class="text-2xl text-gray-900">Account Setting</h2>
-            <form class="mt-6 border-t border-gray-400 pt-4">
-              
-
-            </form>
-          </div>
+      <ContainerPage>
+        <div className="flex items-center text-3xl " style={{ height: "10%" }}>
+          Settings
         </div>
-      </div>
+        <div
+          className="bg-white rounded-lg shadow py-10 px-20"
+          style={{ height: "90%" }}
+        >
+          {renderMain()}
+        </div>
+      </ContainerPage>
     </AdminLayout>
   );
 }

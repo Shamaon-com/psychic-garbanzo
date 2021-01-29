@@ -23,7 +23,7 @@ export  function ContainerPageAdmin({children}){
     )
 }
 
-export  function ContainerPage({children}){
+export default function ContainerPage({children}){
 
     return (
         <div class="container mx-auto px-4 max-w-5xl">

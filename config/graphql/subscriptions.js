@@ -180,7 +180,20 @@ export const onCreateGeneralSettings = /* GraphQL */ `
     onCreateGeneralSettings {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }
@@ -191,7 +204,20 @@ export const onUpdateGeneralSettings = /* GraphQL */ `
     onUpdateGeneralSettings {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }
@@ -202,7 +228,20 @@ export const onDeleteGeneralSettings = /* GraphQL */ `
     onDeleteGeneralSettings {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }

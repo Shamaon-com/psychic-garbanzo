@@ -1,5 +1,5 @@
 import AdminLayout from '../../layouts/adminLayout';
-import {ContainerPage} from '../../components/containers';
+import ContainerPage from '../../components/containers';
 import React, { useContext, useEffect } from 'react';
 
 import { AuthContext } from '../../utils/functionsLib';
@@ -11,7 +11,7 @@ export default function userProfile() {
 
 
 	useEffect(() => {
-		console.log(authContext);
+		console.log('');
 	}, []);
 
     
@@ -51,7 +51,4 @@ export default function userProfile() {
 }
 
 
-
-
-<a href={'personaje/' + id}/>
 

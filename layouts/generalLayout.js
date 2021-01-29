@@ -6,7 +6,7 @@ import { AuthContext } from "../utils/functionsLib";
 export default function GeneralLayout({ children, ...pageProps }) {
 
   const [isLoading, setIsLoading] = useState(true);
-  const login = true;
+
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(true)
   const authContext = useContext(AuthContext);
@@ -19,11 +19,13 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
   async function onLoad() {
 
-    if (
-      login && authContext.isLoggedIn == false 
-    ) {
+    if ( authContext.isLoggedIn == false ) {
       router.push("/login");
-    } else {
+    } else if (authContext.generalSettings.length === 0){
+			console.log("pushing to settings")
+			router.push("/control/settings");
+		}
+    else {
       setIsLoading(false);
     }
   }

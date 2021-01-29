@@ -228,7 +228,20 @@ export const createGeneralSettings = /* GraphQL */ `
     createGeneralSettings(input: $input, condition: $condition) {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }
@@ -242,7 +255,20 @@ export const updateGeneralSettings = /* GraphQL */ `
     updateGeneralSettings(input: $input, condition: $condition) {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }
@@ -256,7 +282,20 @@ export const deleteGeneralSettings = /* GraphQL */ `
     deleteGeneralSettings(input: $input, condition: $condition) {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }

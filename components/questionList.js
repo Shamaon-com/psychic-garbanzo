@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { a, API, graphqlOperation } from 'aws-amplify';
-import * as mutations from '../config/graphql/mutations';
-import * as queries from '../config/graphql/queries';
-import * as subscriptions from '../config/graphql/subscriptions';
-import { AuthContext } from '../utils/functionsLib';
+import React, { useState, useEffect} from 'react';
 
-import useDynamicRefs from 'use-dynamic-refs';
-import Ponentes from '../pages/control/ponentes';
+
 
 export default function QuestionList({ ...props }) {
 	const [array, setArray] = useState([]);
-	const [getRef, setRef] = useDynamicRefs();
-	const questionsEndRef = useRef(null);
 
-	const authContext = useContext(AuthContext);
 
 	useEffect(() => {
 		console.log(props);

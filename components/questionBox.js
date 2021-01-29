@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../config/graphql/mutations';
 
 import { AuthContext } from '../utils/functionsLib';
 
-import useDynamicRefs from 'use-dynamic-refs';
+
 
 export default function QuestionBox() {
 	const [question, setQuestion] = useState('');
-	const questionsEndRef = useRef(null);
 	const authContext = useContext(AuthContext);
 
 	const createQuestion = (e) => {
@@ -28,27 +27,6 @@ export default function QuestionBox() {
 		);
 		setQuestion('');
 		alert('Pregunta enviada');
-	};
-
-	/**
-	 *
-	 * Utils
-	 */
-
-	const sortArray = (array) => {
-		return array.sort(function (a, b) {
-			var c = new Date(a.createdAt);
-			var d = new Date(b.createdAt);
-			return c - d;
-		});
-	};
-
-	/**
-	 * UI Functions
-	 */
-
-	const scrollToBottom = () => {
-		questionsEndRef.current.scrollIntoView();
 	};
 
 	return (
