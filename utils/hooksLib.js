@@ -15,16 +15,21 @@ export function useFormFields(initialState) {
 }
 
 export function setDictValue(initialState) {
+
   const [fields, setValues] = useState(initialState);
 
   return [
     fields,
     function (key, value) {
+      if(fields[key] !== undefined){
         setValues({
           ...fields,
           [key]: value,
         });
+      }else{
+        console.log(key, fields[key])
       }
+    }
   ];
 }
 

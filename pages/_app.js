@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [attributes, setAttributes] = useState({});
-  const [generalSettings, setGeneralSettings] = useState({});
+  const [generalSettings, setGeneralSettings] = useState([]);
 
   const router = useRouter();
 
@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }) {
       setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
       setAttributes(user.attributes);
 
-      // Check if settings are set
+      // Check if settings are set 
       const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
       setGeneralSettings(settings.data.listGeneralSettingss.items);
 

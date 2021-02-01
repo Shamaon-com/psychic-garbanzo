@@ -119,7 +119,7 @@ type GeneralSettings
     ]
   ) {
   id: ID!
-  login: Boolean!
+  login: String!
   mainLogo: String!
   backgroundLoginImage: String!
   backgroundColor: String!

@@ -39,6 +39,7 @@ export default function Home(props) {
 
 	const getIframe = () => {
 		API.graphql(graphqlOperation(queries.listIframes)).then((data) => {
+			console.log(data.data.listIframes.items)
 			setIframe(data.data.listIframes.items[0]);
 		});
 	};
