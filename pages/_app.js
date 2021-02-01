@@ -32,14 +32,23 @@ function MyApp({ Component, pageProps }) {
 
     async function onLoad() {
       try {
+        // load user data
         const userData = await Auth.currentUserInfo();
         setAttributes(userData.attributes);
+
+        // load user session
         const session = await Auth.currentSession();
         setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
-        getPageSettings();
+        
+        // load settings data
+        const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
+        setGeneralSettings(settings.data.listGeneralSettingss.items);
+
         setIsLoggedIn(true);
         setIsAuthenticating(false);
+
       } catch (e) {
+        console.log(e)
         setIsAuthenticating(false);
       }
     }
@@ -48,10 +57,15 @@ function MyApp({ Component, pageProps }) {
 
   const login = async (username, password) => {
     try {
+      // Sign in user
       const user = await Auth.signIn(username, password);
       setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
       setAttributes(user.attributes);
-      getPageSettings();
+
+      // Check if settings are set
+      const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
+      setGeneralSettings(settings.data.listGeneralSettingss.items);
+
       setIsLoggedIn(true);
       router.push("/");
     }
@@ -63,14 +77,6 @@ function MyApp({ Component, pageProps }) {
   const logout = () => {
     setIsLoggedIn(false);
   };
-
-  const getPageSettings = () => {
-    API.graphql(graphqlOperation(queries.listGeneralSettingss)).then((data) => {
-      setGeneralSettings(data.data.listGeneralSettingss.items)
-    }
-      
-    );
-  }
 
 
   return (

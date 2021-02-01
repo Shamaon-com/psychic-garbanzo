@@ -18,10 +18,13 @@ export default function AdminLayout({ children, ...pageProps }) {
 	console.log(authContext.generalSettings.length === 0)
 	
     if (authContext.isLoggedIn && authContext.isAdmin) {
+    /**
 		if (authContext.generalSettings.length === 0){
 			console.log("pushing to settings")
-			router.push("/control/settings");
-		}
+      router.push("/control/settings");
+    
+    }
+    */
       setIsLoading(false);
     } else {
       router.push("/");

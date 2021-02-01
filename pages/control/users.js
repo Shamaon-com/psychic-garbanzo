@@ -2,7 +2,7 @@ import AdminLayout from '../../layouts/adminLayout';
 import React, { useState, useEffect, useContext } from 'react';
 import { useFormFields } from '../../utils/hooksLib';
 import { Auth, API } from 'aws-amplify';
-import {ContainerPage} from '../../components/containers';
+import ContainerPage from '../../components/containers';
 
 /**
 TODO
@@ -13,10 +13,10 @@ TODO
 - Bulk delete
 - Reset password
 - Email integration
-- Integration with graphql
+- Integration with graphqlsaa a
 */
 
-export default function userControl(props) {
+export default function UserControl(props) {
 	const [users, setUsers] = useState([]);
 	const [index, setIndex] = useState(null);
 	const [isCreating, setIsCreating] = useState(false);

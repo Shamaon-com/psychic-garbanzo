@@ -3,7 +3,7 @@ import GeneralLayout from '../layouts/generalLayout';
 import Chat from '../components/chat';
 import Iframe from '../components/iframe';
 
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../config/graphql/mutations';
@@ -28,6 +28,7 @@ export default function Home(props) {
 	});
 
 	useEffect(() => {
+
 		onPageRendered();
 	}, []);
 

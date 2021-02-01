@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 
 import GeneralLayout from "../layouts/generalLayout";
-import {ContainerPage} from "../components/containers";
+import ContainerPage from "../components/containers";
 import Modal from "../components/modal";
 
 import { AuthContext } from "../utils/functionsLib";

@@ -5,7 +5,7 @@ import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../utils/functionsLib';
 
 
-export default function userProfile() {
+export default function Index() {
 
 	const authContext = useContext(AuthContext);
 

@@ -18,13 +18,16 @@ export default function GeneralLayout({ children, ...pageProps }) {
   }, []);
 
   async function onLoad() {
-
+    console.log(authContext);
     if ( authContext.isLoggedIn == false ) {
       router.push("/login");
-    } else if (authContext.generalSettings.length === 0){
+    } 
+    /**
+    else if (authContext.generalSettings.length === 0){
 			console.log("pushing to settings")
 			router.push("/control/settings");
-		}
+    }
+    */
     else {
       setIsLoading(false);
     }

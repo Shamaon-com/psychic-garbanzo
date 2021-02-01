@@ -4,7 +4,7 @@ import { API, graphqlOperation, Storage } from "aws-amplify";
 import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
 import IframeModal from "../components/iframeModal";
-import { ContainerPage } from "../components/containers";
+import ContainerPage from "../components/containers";
 import { icon, videoIcon } from "../utils/svg";
 
 import * as mutations from "../config/graphql/mutations";

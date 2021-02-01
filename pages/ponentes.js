@@ -5,7 +5,7 @@ import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
 import LazyImage from "../components/lazyImage";
 import Grid from "../components/grid";
-import {ContainerPage} from "../components/containers";
+import ContainerPage from "../components/containers";
 
 import * as mutations from "../config/graphql/mutations";
 import * as queries from "../config/graphql/queries";
@@ -21,7 +21,7 @@ export default function Ponentes() {
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  // Specifc to page
+  // Specifc to page 
   const [ponentes, setPonentes] = useState([]);
 
   const [fields, handleFieldChange] = useModalFields({
