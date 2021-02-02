@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps }) {
         setIsAuthenticating(false);
 
       } catch (e) {
-        console.log(e)
+        console.log(e);
         setIsAuthenticating(false);
       }
     }

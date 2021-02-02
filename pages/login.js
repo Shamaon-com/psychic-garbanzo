@@ -110,7 +110,7 @@ export default function Login() {
     <ContainerFull>
       <div className="w-full h-1/4 flex flex-row">
         <img
-          className="mx-auto w-auto"
+          className="mx-auto h-full"
           src="/img/Screen Capture_select-area_20201221163707.png"
           alt="Workflow"
         />

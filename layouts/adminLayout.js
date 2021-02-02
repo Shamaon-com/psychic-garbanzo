@@ -39,7 +39,7 @@ export default function AdminLayout({ children, ...pageProps }) {
 
   const renderAdminLayout = () => {
     return (
-      <div class="min-h-screen flex flex-row bg-gray-100">
+      <div class="min-h-screen h-screen flex flex-row bg-gray-100">
         <div class="flex w-full max-w-xs p-4 bg-white">
           <ul class="flex flex-col w-full">
             <li class="my-px">
