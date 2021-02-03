@@ -6,7 +6,7 @@ import { AuthContext } from "../utils/functionsLib";
 export default function GeneralLayout({ children, ...pageProps }) {
 
   const [isLoading, setIsLoading] = useState(true);
-
+  const [enabledPages, setEnabledPages] = useState([])
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(true)
   const authContext = useContext(AuthContext);
@@ -22,15 +22,30 @@ export default function GeneralLayout({ children, ...pageProps }) {
     if ( authContext.isLoggedIn == false ) {
       router.push("/login");
     } 
-    /**
     else if (authContext.generalSettings.length === 0){
 			console.log("pushing to settings")
 			router.push("/control/settings");
     }
-    */
     else {
+      checkEnabledPages();
       setIsLoading(false);
     }
+  }
+
+
+  const checkEnabledPages = () => {
+    const pageArray = ["pageAgenda", "pageContacto", "pagePonentes", "pagePatrocinadores", "pagePrensa"]
+    const generalSettings = authContext.generalSettings[0]
+
+    var enabledPages = []
+
+    for(let i=0; i < pageArray.length; i++){
+      if(generalSettings[pageArray[i]]){
+        enabledPages.push(pageArray[i])
+      }
+    }
+
+    setEnabledPages(enabledPages);
   }
 
 
@@ -157,34 +172,22 @@ export default function GeneralLayout({ children, ...pageProps }) {
             <div  className="flex space-x-4">
               <a
                 href="/"
-                className="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
+                className="px-3 py-2 font-bold rounded-md text-lg font-medium"
+                style={{color:authContext.generalSettings[0].textColor }}
               >
                 Evento
-          </a>
-              <a
-                href="/agenda"
-                className="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
-              >
-                Agenda
-          </a>
-              <a
-                href="/ponentes"
-                className="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
-              >
-                Ponentes
-          </a>
-              <a
-                href="/patrocinadores"
-                className="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
-              >
-                Patrocinadores
-          </a>
-              <a
-                href="/recursos"
-                className="text-blue-900  px-3 py-2 font-bold rounded-md text-lg font-medium"
-              >
-                Recursos
-          </a>
+              </a>
+              {enabledPages.map((page, index) => {
+                return (
+                  <a
+                    href={"/" + page.match(/[A-Z][a-z]+/g)[0].toLowerCase()}
+                    className="px-3 py-2 font-bold rounded-md text-lg font-medium"
+                    style={{color:authContext.generalSettings[0].textColor }}
+                  >
+                    {page.match(/[A-Z][a-z]+/g)[0]}
+                  </a>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -196,17 +199,14 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
 
   const renderLayout = () => {
+
     return (
-      <>
-        <head>
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"/>
-        </head>
-        <div  className="min-h-screen h-screen flex flex-col font-NanumGothic">
+        <div  className="min-h-screen h-screen flex flex-col font-NanumGothic"
+              style={{backgroundColor: authContext.generalSettings[0].backgroundColor}}
+        >
             {isMobile ? renderMobileMenu(): renderPcNavBar()}
             {children}
         </div>
-      </>
     )
   }
 
