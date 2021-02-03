@@ -168,11 +168,11 @@ export default function Ponentes() {
   const renderPonente = (ponente) => {
 
     return (
-      <div key={ponente.id} className="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:h-64  bg-blue-50">
+      <div key={ponente.id}  className="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:h-64  bg-blue-50">
         {authContext.isAdmin && (
           <div
             id={ponente.id}
-            className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0"
+             className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0"
             style={{ width: "30px" }}
             onClick={(e) => {
               deletePonente(e.target.id);
@@ -181,19 +181,19 @@ export default function Ponentes() {
             -
           </div>
         )}
-        <div className="flex justify-center items-center h-2/3">
+        <div  className="flex justify-center items-center h-2/3">
           <LazyImage s3Key={ponente.image} type="rounded" />
         </div>
-        <div className="m-2 h-1/3">
-          <h3 className="text-center sm:text-xl text-gray-900 font-medium leading-8">
+        <div  className="m-2 h-1/3">
+          <h3  className="text-center sm:text-xl text-gray-900 font-medium leading-8">
             {ponente.name}
           </h3>
-          <div className="text-center text-gray-400 text-xs font-semibold">
+          <div  className="text-center text-gray-400 text-xs font-semibold">
             <p>{ponente.title}</p>
           </div>
-          <div className="text-center my-3">
+          <div  className="text-center my-3">
             <a
-              className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
+               className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
               href="#"
             >
               View Profile
@@ -217,12 +217,12 @@ export default function Ponentes() {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div className="flex flex-row mx-5 sm:mx-0">
-        <div className="flex text-xl my-8 sm:text-3xl">Ponentes</div>
+      <div  className="flex flex-row mx-5 sm:mx-0">
+        <div  className="flex text-xl my-8 sm:text-3xl">Ponentes</div>
         {authContext.isAdmin && (
-          <div className="flex my-8 sm:text-3xl mx-3">
+          <div  className="flex my-8 sm:text-3xl mx-3">
             <div
-              className="bg-blue-500 text-white text-center cursor-pointer"
+               className="bg-blue-500 text-white text-center cursor-pointer"
               style={{ width: "40px" }}
               onClick={(e) => {
                 setShowModal(true);

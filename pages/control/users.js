@@ -126,11 +126,11 @@ export default function UserControl(props) {
 				{users.map((user, index) => {
 					return (
 						<tr key={index}>
-							<td class="border-dashed border-t border-gray-200 px-3">
-								<label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+							<td  className="border-dashed border-t border-gray-200 px-3">
+								<label  className="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
 									<input
 										type="checkbox"
-										class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
+										 className="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline"
 										onClick={(e) => {
 											setIndex(index);
 										}}
@@ -139,8 +139,8 @@ export default function UserControl(props) {
 							</td>
 							{keys.map((item, index) => {
 								return (
-									<td class="border-dashed border-t border-gray-200">
-										<span class="text-gray-700 px-6 py-3 flex items-center">
+									<td  className="border-dashed border-t border-gray-200">
+										<span  className="text-gray-700 px-6 py-3 flex items-center">
 											{item}
 										</span>
 									</td>
@@ -162,7 +162,7 @@ export default function UserControl(props) {
 				<>
 				{keys.map((item, key) => {
 						return (
-							<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6
+							<th  className="bg-gray-100 sticky top-0 border-b border-gray-200 px-6
 								py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">
 								{item}
 							</th>
@@ -177,17 +177,17 @@ export default function UserControl(props) {
 	const renderMain = () => {
 		return (
 			<div
-				class="overflow-x-scroll bg-white rounded-lg shadow overflow-y-auto relative w-full"
+				 className="overflow-x-scroll bg-white rounded-lg shadow overflow-y-auto relative w-full"
 				style={{ height: '90%'}}
 			>
-				<table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+				<table  className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
 					<thead>
-						<tr class="text-left">
-							<th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
-								<label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
+						<tr  className="text-left">
+							<th  className="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
+								<label className="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
 									<input
 										type="checkbox"
-										class="form-checkbox-disabled"
+										 className="form-checkbox-disabled"
 										disabled
 									/>
 								</label>
@@ -204,24 +204,24 @@ export default function UserControl(props) {
 	return (
 		<AdminLayout>            
 			<ContainerPage>
-				<div class=" w-full space-y-8">
-					<div class=" mb-4 flex justify-between items-center">
-						<div class="flex pr-4">
+				<div  className=" w-full space-y-8">
+					<div  className=" mb-4 flex justify-between items-center">
+						<div  className="flex pr-4">
 							<input
 								type="text"
 								name="number"
 								value={fields.number}
 								id="number"
-								class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+								 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
 								onChange={handleFieldChange}
 							/>
 						</div>
-						<div class="flex pr-4 mr-auto">
+						<div  className="flex pr-4 mr-auto">
 							<select
 								id="group"
 								name="group"
 								value={searchByGroup}
-								class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+								 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
 								onChange={(e) => {
 									setSearchByGroup(e.target.value);
 									listUsers(e.target.value);
@@ -232,9 +232,9 @@ export default function UserControl(props) {
 								<option>Usuario</option>
 							</select>
 						</div>
-						<div class="flex pr-4 ml-auto">
+						<div  className="flex pr-4 ml-auto">
 							<button
-								class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+								 className="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
 								onClick={(e) => {
 									setIsCreating(true);
 								}}
@@ -242,9 +242,9 @@ export default function UserControl(props) {
 								+
 							</button>
 						</div>
-						<div class="flex pr-4">
+						<div  className="flex pr-4">
 							<button
-								class="h-10 px-5 m-2 text-indigo-100 transition-colors 
+								 className="h-10 px-5 m-2 text-indigo-100 transition-colors 
 										duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
 								onClick={(e) => {
 									disableUser();

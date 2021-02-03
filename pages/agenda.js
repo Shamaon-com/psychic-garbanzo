@@ -159,24 +159,24 @@ export default function Agenda() {
   const renderTabs = () => {
     let dataArray = [];
     let index = 0;
-    let classNameString;
+    let  classNameString;
 
     for (var key in parsedAgendas) {
       switch (index) {
         case selectedTab:
-          classNameString = "px-28 bg-blue-900 hover:bg-blue-800";
+           classNameString = "px-28 bg-blue-900 hover:bg-blue-800";
           break;
         case selectedTab + 1:
-          classNameString = "px-10 hover:bg-gray-500 bg-gray-400";
+           classNameString = "px-10 hover:bg-gray-500 bg-gray-400";
           break;
         default:
-          classNameString = "px-10 hover:bg-gray-400 bg-gray-300";
+           classNameString = "px-10 hover:bg-gray-400 bg-gray-300";
       }
 
       dataArray.push(
         <div
-          className={
-            "text-white py-0.5 text-lg cursor-pointer " + classNameString
+           className={
+            "text-white py-0.5 text-lg cursor-pointer " +  classNameString
           }
           id={key}
           tabIndex={index}
@@ -216,7 +216,7 @@ export default function Agenda() {
 
     return (
       <select
-        className="mt-1 self-center block py-2 px-3 border border-gray-300 bg-white rounded-md text-center
+         className="mt-1 self-center block py-2 px-3 border border-gray-300 bg-white rounded-md text-center
       shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm w-48"
         onChange={(e) => {
           setSelectedTab(e.target.value);
@@ -246,9 +246,9 @@ export default function Agenda() {
         {parsedAgendas[currentKey] ? (
           parsedAgendas[currentKey].map((agenda, key) => {
             return (
-              <div className="w-full h-24 border-dashed flex flex-col justify-center align-center items-center">
-                <div id="head" className="h-1/4 flex flex-row w-full">
-                  <div className="text-center bg-gray-400 text-gray-100 w-full">
+              <div  className="w-full h-24 border-dashed flex flex-col justify-center align-center items-center">
+                <div id="head"  className="h-1/4 flex flex-row w-full">
+                  <div  className="text-center bg-gray-400 text-gray-100 w-full">
                     {agenda.title} - {" "}
                     {new Date(agenda.date).toLocaleTimeString([], {
                       timeStyle: "short"
@@ -257,7 +257,7 @@ export default function Agenda() {
                   {authContext.isAdmin && (
                     <div
                       id={agenda.id}
-                      className="bg-red-500 text-white text-center cursor-pointer"
+                       className="bg-red-500 text-white text-center cursor-pointer"
                       style={{ width: "5%" }}
                       onClick={(e) => {
                         deleteAgenda((e.target.id));
@@ -269,7 +269,7 @@ export default function Agenda() {
                 </div>
 
                 <div
-                  className="font-thin h-3/4 bg-blue-50 w-full text-blue-700 p-2 text-center"
+                   className="font-thin h-3/4 bg-blue-50 w-full text-blue-700 p-2 text-center"
                   id="body"
                 >
                   {agenda.description}
@@ -282,13 +282,13 @@ export default function Agenda() {
         )}
         {authContext.isAdmin && (
           <div
-            className="w-full h-24 border-dashed flex border-gray-400 border-2 cursor-pointer justify-center text-gray-500
+             className="w-full h-24 border-dashed flex border-gray-400 border-2 cursor-pointer justify-center text-gray-500
                    align-center items-center hover:bg-gray-400 hover:text-white"
             onClick={(e) => {
               setShowModal(true);
             }}
           >
-            <div className="text-lg" id="body">
+            <div  className="text-lg" id="body">
               AÑADE UNA NUEVA ENTRADA
             </div>
           </div>
@@ -309,14 +309,14 @@ export default function Agenda() {
           setShowModal={setShowModal}
           isCreating={isCreating}
         />
-        <div className="mb-auto mx-auto w-full max-w-screen-md">
-          <div className="flex text-xl my-8 sm:text-2x1 lg:text-3xl">
+        <div  className="mb-auto mx-auto w-full max-w-screen-md">
+          <div  className="flex text-xl my-8 sm:text-2x1 lg:text-3xl">
             Agenda
           </div>
-          <div className="flex mx-auto justify-center mb-3 sm:p-8">
+          <div  className="flex mx-auto justify-center mb-3 sm:p-8">
             {isMobile ? renderTabsMobile() : renderTabs()}
           </div>
-          <div className="flex flex-col space-y-4">{renderAgendas()}</div>
+          <div  className="flex flex-col space-y-4">{renderAgendas()}</div>
         </div>
       </ContainerPage>
     </GeneralLayout>

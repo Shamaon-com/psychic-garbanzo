@@ -164,11 +164,11 @@ export default function Patrocinador() {
   const renderPatrocinador = (patrocinador) => {
     console.log(patrocinador)
     return (
-      <div  class="py-5 px-5 sm:max-w-xs max-h-40 relative">
+      <div  className="py-5 px-5 sm:max-w-xs max-h-40 relative">
         {authContext.isAdmin && (
           <div
             id={patrocinador.id}
-            class="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
+            className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
             style={{ width: "30px" }}
             onClick={(e) => {
               deletePatrocinador(e.target.id);
@@ -178,7 +178,7 @@ export default function Patrocinador() {
           </div>
         )}
         <a href={patrocinador.link}>
-          <div key={patrocinador.id} class="flex justify-center photo-wrapper w-full h-full">
+          <div key={patrocinador.id} className="flex justify-center photo-wrapper w-full h-full">
               <LazyImage s3Key={patrocinador.file} />
           </div>
         </a>
@@ -199,12 +199,12 @@ export default function Patrocinador() {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div className="flex flex-row mx-5 sm:mx-0">
-        <div className="flex text-xl my-8 sm:text-3xl">Patrocinadores</div>
+      <div  className="flex flex-row mx-5 sm:mx-0">
+        <div  className="flex text-xl my-8 sm:text-3xl">Patrocinadores</div>
         {authContext.isAdmin && (
-          <div className="flex my-8 sm:text-3xl mx-3">
+          <div  className="flex my-8 sm:text-3xl mx-3">
             <div
-              className="bg-blue-500 text-white text-center cursor-pointer"
+               className="bg-blue-500 text-white text-center cursor-pointer"
               style={{ width: "40px" }}
               onClick={(e) => {
                 setShowModal(true);

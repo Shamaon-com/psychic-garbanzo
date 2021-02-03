@@ -16,45 +16,51 @@ export default function PlatformControl(props) {
   const [appID, setAppId] = useState(null);
   const [getRef, setRef] = useDynamicRefs();
   const [tab, setTab] = useState(0);
-
-  const [dict, setDict] = setDictValue({
-    login: "",
-    mainLogo: "",
-    backgroundLoginImage: "",
-    backgroundColor: "",
-    boxBackgroundColor: "",
-    boxBorderColor: "",
-    boxInnerTextColor: "",
-    boxTitleColor: "",
-    titleColor: "",
-    textColor: "",
+  const [loaded, setIsLoaded] = useState(false)
+  const [initalState, setInitalState] = useState({
+    login: "con-registro",
+    mainLogo: "a",
+    backgroundLoginImage: "a",
+    backgroundColor: "#ffffff",
+    boxBackgroundColor: "#eff6ff",
+    boxBorderColor: "#9ca3af",
+    boxInnerTextColor: "#1d4fd8",
+    boxTitleColor: "#ffffff",
+    titleColor: "#6b7280",
+    textColor: "#1e3a8a",
     pageAgenda: false,
     pagePonentes: false,
     pagePatrocinadores: false,
     pagePrensa: false,
     pageContacto: false,
-  });
+  })
+
+  const [dict, setDict] = setDictValue(initalState);
 
   useEffect(() => {
-    //set value from loaded general settings into local dict
-    try {
-      for (let key in authContext.generalSettings[0]) {
-        if (key === "id") {
-          setAppId(authContext.generalSettings[0][key]);
-        } else {
-          setDict(key, authContext.generalSettings[0][key]);
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
 
-  const setDictFromInput = (event) => {
-    console.log(event);
-    setDict(event.target.id, event.target.value);
-    setDisabled(false);
-  };
+
+    /**
+     * Assing incoming settings object to inital state,
+     * respecting intial state keys without adding more keys.
+     * https://stackoverflow.com/questions/40573555/merge-two-objects-but-only-existing-properties
+     */
+
+    if (authContext.generalSettings[0] !== undefined) {
+      setAppId(authContext.generalSettings[0]["id"]);
+      let obj1 = initalState;
+      
+      Object.keys(authContext.generalSettings[0]).forEach(function (key) {
+        if (key in obj1) {
+          obj1[key] = authContext.generalSettings[0][key];
+        }
+      });
+
+      setInitalState(obj1);
+    }
+
+    setIsLoaded(true);
+  }, []);
 
   const setValue = () => {
     /**
@@ -71,18 +77,38 @@ export default function PlatformControl(props) {
     }
   };
 
+
   const createSettings = () => {
+
+    setIsLoaded(false);
     API.graphql(
       graphqlOperation(mutations.createGeneralSettings, { input: dict })
     );
+
+    setIsLoaded(true);
+    setDisabled(true);
   };
 
   const updateSettings = () => {
+
+    setIsLoaded(false);
     const dictAndId = { ...dict, id: appID };
 
     API.graphql(
       graphqlOperation(mutations.updateGeneralSettings, { input: dictAndId })
     );
+    setIsLoaded(true);
+    setDisabled(true);
+  };
+
+  const deleteSettings= () => {
+
+    if(window.confirm('Are you sure you wish to delete this item?')){
+      console.log(appID)
+      API.graphql(
+        graphqlOperation(mutations.deleteGeneralSettings, { input: {id: appID} })
+      );
+    }
   };
 
   const validate = () => {
@@ -93,27 +119,27 @@ export default function PlatformControl(props) {
         return false;
       }
     }
+    setDisabled(false);
     return true;
   };
 
   const renderColorPicker = (refId) => {
-    console.log(refId);
     return (
-      <div className="absolute">
+      <div  className="absolute">
         <div
-          className="relative"
+           className="relative"
           ref={setRef(refId)}
           style={{ display: "none" }}
         >
-          <div className="flex flex-row">
-            <div className="flex w-4/5">
+          <div  className="flex flex-row">
+            <div  className="flex w-4/5">
               <ChromePicker
                 color={dict[refId]}
-                onChange={(color) => setDict(refId, color.hex)}
+                onChange={(color) => {validate(); setDict(refId, color.hex)}}
               />
             </div>
             <div
-              className="flex w-1/5 justify-center bg-white h-8 shadow-lg font-bold"
+               className="flex w-1/5 justify-center bg-white h-8 shadow-lg font-bold"
               onClick={() => (getRef(refId).current.style.display = "none")}
             >
               hide
@@ -163,14 +189,15 @@ export default function PlatformControl(props) {
       },
     ];
 
+    console.log(JSON.stringify(dict))
     return data.map((item, index) => {
       return (
-        <div key={index} className="flex flex-row mb-3 py-3 border-b">
-          <p className="flex text-gray-600 w-1/5">{item.name}</p>
-          <p className="flex mr-auto font-light w-3/5">{item.description}</p>
-          <div className="mr-auto flex w-2/6">
+        <div key={index}  className="flex flex-row mb-3 py-3 border-b">
+          <p  className="flex text-gray-600 w-1/5">{item.name}</p>
+          <p  className="flex mr-auto font-light w-3/5">{item.description}</p>
+          <div  className="mr-auto flex w-2/6">
             <input
-              className="w-full border-2"
+               className="w-full border-2"
               style={{ backgroundColor: dict[item.id] }}
               onFocus={() => (getRef(item.id).current.style.display = "block")}
             />
@@ -181,20 +208,76 @@ export default function PlatformControl(props) {
     });
   };
 
-  const renderMain = () => {
+  const renderToggleInput = () => {
+    const data = [
+      {
+        id: "pageAgenda",
+        name: "Agenda",
+        description: "Habilita el modulo de agenda",
+      },
+      {
+        id: "pagePonentes",
+        name: "Ponentes",
+        description: "Habilita el modulo de ponentes",
+      },
+      {
+        id: "pagePrensa",
+        name: "Recursos",
+        description: "Habilita el modulo de recursos",
+      },
+      {
+        id: "pagePatrocinadores",
+        name: "Patrocinadores",
+        description: "Habilita el modulo de patrocinadores",
+      }
+    ]
+
+    console.log("rendering")
+
     return (
       <>
-        <div className="py-5 border-b flex">
-          <div className="flex flex-col w-1/2">
-            <p className="text-xl mb-3">Diseño general</p>
-            <p className="text-gray-500 font-extralight">
-              Cambia el diseño del evento
+        {data.map((item, index) => {
+
+          return (
+            <div key={index}  className="flex flex-row mb-3 py-3 border-b">
+              <p  className="flex text-gray-600 w-1/5">{item.name}</p>
+              <p  className="flex mr-auto font-light w-3/5">{item.description}</p>
+              <div  className="mr-auto flex w-2/6 justify-center">
+                <span  className="relative">
+                  <span  className="block w-10 h-6 bg-gray-400 rounded-full shadow-inner"
+                  onClick={() => {validate();  setDict(item.id, !dict[item.id])}}></span>
+                  <span  className={ dict[item.id] ?
+                              "absolute block w-4 h-4 mt-1 ml-1 rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out bg-purple-600 transform translate-x-full"
+                            : "absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 left-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
+                  }>
+                    <input type="checkbox"  className="w-full absolute opacity-0 w-0 h-0"/>
+                  </span>
+                </span>
+              </div>
+            </div>
+          )
+        })}
+      </>
+    )
+  }
+
+
+
+  const renderModulosTab = () => {
+    return (
+      <>
+        <div  className="py-5 border-b flex">
+          <div  className="flex flex-col w-1/2">
+            <p  className="text-xl mb-3">Modulos</p>
+            <p  className="text-gray-500 font-extralight">
+              Activa o desactiva ciertos modulos
             </p>
           </div>
-          <div className="flex flex-col w-1/2 justify-center items-end">
+          <div  className="flex flex-col w-1/2 justify-center items-end">
+            {renderSpinner()}
             <button
               disabled={disabled}
-              className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
+               className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
                         bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800
                         disabled:opacity-50 disabled:cursor-default"
               onClick={setValue}
@@ -203,46 +286,47 @@ export default function PlatformControl(props) {
             </button>
           </div>
         </div>
-        <div className="flex flex-col">
-          <div className="flex flex-row mb-3 py-3 border-b">
-            <p className="text-gray-600 w-1/5">Login</p>
-            <p className="mr-auto font-light w-3/5">
+        <div  className="flex flex-col">
+          <div  className="flex flex-row mb-3 py-3 border-b">
+            <p  className="text-gray-600 w-1/5">Login</p>
+            <p  className="mr-auto font-light w-3/5">
               Selecciona el tipo de autetificacion que quieres usar
             </p>
             <select
               id="login"
-              className="py-2 px-3 border border-gray-300 w-2/6
+               className="py-2 px-3 border border-gray-300 w-2/6
                         bg-white rounded-md shadow-sm focus:outline-none 
                         focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               value={dict.login}
-              onChange={setDictFromInput}
+              onChange={(e) => {validate(); setDict(e.target.id, e.target.value)}}
             >
               <option value=""></option>
               <option value="con-registro">Con registro</option>
               <option value="sin-registro">Sin registro</option>
             </select>
           </div>
-
-          {renderColorInput()}
         </div>
+        {renderToggleInput()}
       </>
     );
   };
 
-  const renderImageTab = () => {
+  const renderColoresTab = () => {
+
     return (
       <>
-        <div className="py-5 border-b flex">
-          <div className="flex flex-col w-1/2">
-            <p className="text-xl mb-3">Diseño general</p>
-            <p className="text-gray-500 font-extralight">
-              Cambia el diseño del evento
+        <div  className="py-5 border-b flex">
+          <div  className="flex flex-col w-1/2">
+            <p  className="text-xl mb-3">Diseño colores</p>
+            <p  className="text-gray-500 font-extralight">
+              Cambia los colores de la plataforma
             </p>
           </div>
-          <div className="flex flex-col w-1/2 justify-center items-end">
+          <div  className="flex flex-col w-1/2 justify-center items-end">
+            {renderSpinner()}
             <button
               disabled={disabled}
-              className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
+               className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
                         bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800
                         disabled:opacity-50 disabled:cursor-default"
               onClick={setValue}
@@ -251,19 +335,48 @@ export default function PlatformControl(props) {
             </button>
           </div>
         </div>
-        <div className="flex flex-row mb-3 py-3 border-b">
-          <p className="text-gray-600 w-1/5">Logo</p>
-          <p className="mr-auto font-light w-3/5">
+        <div>
+          {renderColorInput()}
+        </div>
+      </>
+    )
+  }
+  const renderImageTab = () => {
+    return (
+      <>
+        <div  className="py-5 border-b flex">
+          <div  className="flex flex-col w-1/2">
+            <p  className="text-xl mb-3">Diseño imagenes</p>
+            <p  className="text-gray-500 font-extralight">
+              Cambia las imagenes de la plataforma
+            </p>
+          </div>
+          <div  className="flex flex-col w-1/2 justify-center items-end">
+            <button
+              disabled={disabled}
+               className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
+                        bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800
+                        disabled:opacity-50 disabled:cursor-default"
+              onClick={setValue}
+            >
+              Guardar
+            </button>
+          </div>
+          {renderSpinner()}
+        </div>
+        <div  className="flex flex-row mb-3 py-3 border-b">
+          <p  className="text-gray-600 w-1/5">Logo</p>
+          <p  className="mr-auto font-light w-3/5">
             Logo principal de la pagina
           </p>
-          <input className="w-2/6" id="mainLogo" accept="png" type="file" />
+          <input  className="w-2/6" id="mainLogo" accept="png" type="file" />
         </div>
-        <div className="flex flex-row mb-3 py-3 border-b">
-          <p className="text-gray-600 w-1/5">Fondo 1</p>
-          <p className="mr-auto font-light w-3/5">
+        <div  className="flex flex-row mb-3 py-3 border-b">
+          <p  className="text-gray-600 w-1/5">Fondo 1</p>
+          <p  className="mr-auto font-light w-3/5">
             Imagen de fondo en la pagina de inicio
           </p>
-          <input className="w-2/6" id="mainLogo" accept="png" type="file" />
+          <input  className="w-2/6" id="mainLogo" accept="png" type="file" />
         </div>
       </>
     );
@@ -272,30 +385,59 @@ export default function PlatformControl(props) {
   const renderTabContent = () => {
     switch (tab) {
       case 0:
-        return renderMain();
+        return renderModulosTab();
       case 1:
         return renderImageTab();
       default:
-        return <Chat />;
+        return renderColoresTab();
     }
   };
+
+  const renderSpinner = () => {
+    return (
+      <>
+        {!loaded &&
+          <div className="flex flex-col justify-center items-center mx-3">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="black" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        }
+      </>
+    )
+  }
+
 
   return (
     <AdminLayout>
       <ContainerPage>
         <div
-          className="flex flex-row items-center text-3xl "
-          style={{ height: "6%" }}
+           className="flex flex-row items-center text-3xl"
         >
-          <div className="mx-10 w-24 h-full bg-white rounded-lg rounded-b-none shadow" onClick={() => setTab(0)}>
-            0
+          <div  className={"flex cursor-pointer justify-center items-center ml-5 w-24 h-10 mb-0 rounded-lg rounded-b-none " 
+                          + (tab === 0 ? "z-10 bg-white border-t-2 border-l-2 border-r-2 border-gray-200" : "bg-gray-300")}
+
+                onClick={() => setTab(0)}>
+            <p  className="text-sm">Modulos</p>
           </div>
-          <div className="" onClick={() => setTab(1)}>
-            1
+          <div  className={"flex cursor-pointer justify-center items-center ml-2 w-24 h-10 mb-0 rounded-lg rounded-b-none "
+                          + (tab === 1 ? "z-10 bg-white border-t-2 border-l-2 border-r-2 border-gray-200" : "bg-gray-300")}
+                onClick={() => setTab(1)}>
+            <p  className="text-sm">Imagenes</p>
+          </div>
+          <div  className={"flex cursor-pointer justify-center items-center ml-2 w-24 h-10 mb-0 rounded-lg rounded-b-none "
+                          + (tab === 2 ? "z-10 bg-white border-t-2 border-l-2 border-r-2 border-gray-200" : "bg-gray-300")}
+                onClick={() => setTab(2)}>
+            <p  className="text-sm">Colores</p>
+          </div>
+          <div  className={"flex cursor-pointer justify-center items-center ml-2 w-24 h-10 mb-0 rounded-lg rounded-b-none bg-red-500"}
+                onClick={() => deleteSettings()}>
+            <p  className="text-sm">Reset</p>
           </div>
         </div>
         <div
-          className="bg-white rounded-lg shadow py-10 px-20 overflow-auto"
+           className="bg-white rounded-lg shadow py-10 px-20 overflow-auto"
           style={{ height: "94%" }}
         >
           {renderTabContent()}

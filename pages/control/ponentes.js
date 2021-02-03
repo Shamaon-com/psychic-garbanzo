@@ -114,7 +114,7 @@ export default function Ponentes() {
 
 	// const renderQuestionList = () => {
 	// 	return (
-	// 		<tbody class="bg-white text-gray-700 p-4 self-start m-3 rounded-xl shadow-lg">
+	// 		<tbody className="bg-white text-gray-700 p-4 self-start m-3 rounded-xl shadow-lg">
 	// 			{questions.map((question, key) => {
 	// 				return <div>{question.question}</div>;
 	// 			})}
@@ -124,18 +124,18 @@ export default function Ponentes() {
 
 	const renderMain = () => {
 		return questions.length === 0 ? (
-			<div class="m-auto">
-				<div class="bg-white shadow-xl rounded-xl">
-					<div class="font-sans text-xl text-gray-600 p-5">
+			<div  className="m-auto">
+				<div  className="bg-white shadow-xl rounded-xl">
+					<div  className="font-sans text-xl text-gray-600 p-5">
 						Aquí aparecerán las preguntas
 						<div ref={questionsEndRef}></div>
 					</div>
 				</div>
 			</div>
 		) : (
-			<div class=" w-full space-y-8">
+			<div  className=" w-full space-y-8">
 				<div
-					class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
+					 className="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
 					style={{ height: '100%', maxHeight: '75%' }}
 				>
 					<QuestionList

@@ -11,6 +11,9 @@ module.exports = {
       height: {
         'mobile': "40rem",
       },
+      shadow: {
+        'left': "-10px 0px 10px 1px #aaaaaa"
+      }
     },
   },
   variants: {
