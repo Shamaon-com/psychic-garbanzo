@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { capitalize } from '../utils/functionsLib';
+import { capitalize } from '../../utils/functionsLib';
 
 
 

@@ -1,26 +1,31 @@
-import { AuthContext } from '../utils/functionsLib';
-import GeneralLayout from '../layouts/generalLayout';
-import Chat from '../components/chat';
-import Iframe from '../components/iframe';
+import React, { useState, useEffect } from 'react';
 
-import React, { useState, useEffect, useContext } from 'react';
-
+// Amplify
 import { API, graphqlOperation } from 'aws-amplify';
-import * as mutations from '../config/graphql/mutations';
-import * as queries from '../config/graphql/queries';
-import * as subscriptions from '../config/graphql/subscriptions';
+import * as mutations from '../src/graphql/mutations';
+import * as queries from '../src/graphql/queries';
+import * as subscriptions from '../src/graphql/subscriptions';
 
-import Modal from '../components/modal';
+// Utils
 import { useModalFields } from '../utils/hooksLib';
-import QuestionBox from '../components/questionBox';
 
-export default function Home(props) {
-	const authContext = useContext(AuthContext);
+// Components
+import GeneralLayout from '../layouts/generalLayout';
+import Chat from '../components/eventoPage/chat';
+import Iframe from '../components/generalComponents/iframe';
+import Modal from '../components/generalComponents/modal';
+import QuestionBox from '../components/eventoPage/questionBox';
+import DeleteButton from '../components/adminComponentes/deleteButton';
+import Tabs from '../components/generalComponents/tabs';
+import AddButtonAndTabs from '../components/adminComponentes/addButtonAndTitle';
+
+export default function Home() {
+
 
 	const [iframe, setIframe] = useState({});
 	const [showModal, setShowModal] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
-	const [tab, setTab] = useState(0);
+
 
 	const [fields, handleFieldChange] = useModalFields({
 		title: { type: 'default', value: '' },
@@ -28,7 +33,6 @@ export default function Home(props) {
 	});
 
 	useEffect(() => {
-
 		onPageRendered();
 	}, []);
 
@@ -84,18 +88,6 @@ export default function Home(props) {
 	};
 
 
-	const renderTabContent = () => {
-
-		switch (tab) {
-			case 0:
-				return <Chat />
-			case 1:
-				return <QuestionBox />
-			default:
-				return <Chat />
-		}
-	}
-
 
 
 	return (
@@ -109,71 +101,33 @@ export default function Home(props) {
 				setShowModal={setShowModal}
 				isCreating={isCreating}
 			/>
-			<div  className="h-mobile flex mx-auto container w-full lg:items-center lg:h-4/5  lg:px-8">
-				<div  className="flex flex-col mx-auto h-full w-full lg:flex-row">
-					{iframe ? (
-						<div  className="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
-							<div
-								 className="text-5x1 lg:text-5xl text-gray-500"
-								style={{ height: '10%' }}
-							>
-								{iframe.title}
-							</div>
-							<div
-								 className="flex-1 w-full h-full relative"
-								style={{ height: '90%' }}
-							>
-								{authContext.isAdmin && (
-									<div
-										id={iframe.id}
-										 className="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
-										style={{ width: "50px" }}
-										onClick={(e) => {
-											deleteIframe(e.target.id);
-										}}
-									>
-										-
-									</div>
-								)}
-								<Iframe
-									src={iframe.url}
-								/>
-							</div>
-						</div>
-					) : (
-							<div  className="flex flex-row w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+			<div className="h-mobile flex mx-auto container w-full lg:items-center lg:h-4/5  lg:px-8">
+				<div className="flex flex-col mx-auto h-full w-full lg:flex-row">
+					<div className="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+						{iframe ? (
+							<>
 								<div
-									 className="text-5x1 lg:text-5xl text-gray-500"
+									className="text-5x1 lg:text-5xl text-gray-500"
 									style={{ height: '10%' }}
 								>
-									Crea un nuevo evento
+									{iframe.title}
+								</div>
 								<div
-										 className="bg-blue-500 text-white text-center cursor-pointer  my-5"
-										style={{ width: '40px' }}
-										onClick={(e) => {
-											setShowModal(true);
-										}}
-									>
-										+
+									className="flex-1 w-full h-full relative"
+									style={{ height: '90%' }}
+								>
+									<DeleteButton id={iframe.id} deleteFunction={deleteIframe} />
+									<Iframe src={iframe.url} />
 								</div>
-								</div>
-							</div>
+							</>
+						) : (
+							<AddButtonAndTabs />
 						)}
-					<div  className="h-full lg:py-10 lg:w-1/4 my-auto">
-						<div  className="flex flex-row" style={{ height: '10%' }}>
-							<div  className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 0 && " text-blue-500 border-b-2 font-medium border-blue-500")}
-								onClick={(e) => setTab(0)}>
-								Chat
-							</div>
-							<div  className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 1 && " text-blue-500 border-b-2 font-medium border-blue-500")}
-								onClick={(e) => setTab(1)}>
-								Preguntas
-							</div>
-						</div>
-						<div  className="flex" style={{ height: '90%' }}>
-							{renderTabContent()}
-						</div>
 					</div>
+					<Tabs data={[
+						{ id: 'chat', component: <Chat />, name: 'Chat' },
+						{ id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
+					]} />
 				</div>
 			</div>
 		</GeneralLayout>

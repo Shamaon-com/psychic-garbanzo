@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import * as mutations from '../config/graphql/mutations';
-import * as queries from '../config/graphql/queries';
-import * as subscriptions from '../config/graphql/subscriptions';
-import { AuthContext } from '../utils/functionsLib';
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
+import * as subscriptions from '../../src/graphql/subscriptions';
+import { AuthContext } from '../../utils/functionsLib';
 
 import useDynamicRefs from 'use-dynamic-refs';
 
 export default function Chat({ ...props }) {
+	
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
 	const [getRef, setRef] = useDynamicRefs();

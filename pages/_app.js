@@ -1,14 +1,14 @@
 import "tailwindcss/tailwind.css";
 import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
-import awsconfig from "../config/aws-exports";
+import awsconfig from "../src/aws-exports";
 import { useRouter } from 'next/router';
 
 import React, { useState, useEffect } from "react";
-import LoadingAnimation from "../components/loadingAnimation";
+import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 
 import { AuthContext } from "../utils/functionsLib";
 
-import * as queries from "../config/graphql/queries";
+import * as queries from "../src/graphql/queries";
 
 
 

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
-import * as mutations from '../config/graphql/mutations';
+import * as mutations from '../../src/graphql/mutations';
 
-import { AuthContext } from '../utils/functionsLib';
+import { AuthContext } from '../../utils/functionsLib';
 
 
 

@@ -1,19 +1,24 @@
-import React, { useState, useEffect, useContext } from "react";
-import { API, graphqlOperation } from "aws-amplify";
+import React, { useState, useEffect, useContext } from 'react';
 
-import GeneralLayout from "../layouts/generalLayout";
-import ContainerPage from "../components/containers";
-import Modal from "../components/modal";
+// Amplify
+import { API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../src/graphql/mutations';
+import * as queries from '../src/graphql/queries';
+import * as subscriptions from '../src/graphql/subscriptions';
 
+// Utils
+import { useModalFields } from '../utils/hooksLib';
 import { AuthContext } from "../utils/functionsLib";
-import { useModalFields } from "../utils/hooksLib";
 
-import * as mutations from "../config/graphql/mutations";
-import * as queries from "../config/graphql/queries";
-import * as subscriptions from "../config/graphql/subscriptions";
+// Components
+import GeneralLayout from '../layouts/generalLayout';
+import Modal from '../components/generalComponents/modal';
+import FullPage from '../components/containers/fullPage';
+import EntryList from '../components/agendaPage/entryList';
+import Tabs from '../components/generalComponents/tabs'
 
 export default function Agenda() {
-  /**
+  /**º
    * To do
    *
    * - Improve modal
@@ -46,6 +51,10 @@ export default function Agenda() {
   }, [agendas])
 
 
+  /**
+   * 
+   * Move thsi up to layout
+   */
   useEffect(() => {
     handleResize();
     // Add event listener
@@ -133,10 +142,12 @@ export default function Agenda() {
 
 
 
-  const parseDates = (dataArray) => {
+  const parseDates = () => {
     /**
      * set dates as key and group items by date
      */
+
+    let dataArray = agendas;
 
     let dataDict = {};
 
@@ -153,8 +164,22 @@ export default function Agenda() {
       }
     });
 
-    return dataDict;
+    let returnArray = []
+
+    for (let dictKey in dataDict) {
+      returnArray.push(
+        {
+          id: dictKey,
+          component: <EntryList data={dataDict[dictKey]} deleteFunction={deleteAgenda} />,
+          name: dictKey
+        }
+      )
+    }
+
+    return returnArray;
   };
+
+
 
   const renderTabs = () => {
     let dataArray = [];
@@ -241,6 +266,8 @@ export default function Agenda() {
       index++;
     }
 
+    console.log(parsedAgendas);
+
     return (
       <>
         {parsedAgendas[currentKey] ? (
@@ -297,9 +324,16 @@ export default function Agenda() {
     );
   };
  
+  /**
+   *           <div  className="flex mx-auto justify-center mb-3 sm:p-8">
+            {isMobile ? renderTabsMobile() : renderTabs()}
+          </div>
+          <div className="flex flex-col space-y-4">{renderAgendas()}</div>
+   */
+
   return (
     <GeneralLayout>
-      <ContainerPage>
+      <FullPage>
         <Modal
           element={"Agenda"}
           fields={fields}
@@ -313,12 +347,9 @@ export default function Agenda() {
           <div  className="flex text-xl my-8 sm:text-2x1 lg:text-3xl">
             Agenda
           </div>
-          <div  className="flex mx-auto justify-center mb-3 sm:p-8">
-            {isMobile ? renderTabsMobile() : renderTabs()}
-          </div>
-          <div  className="flex flex-col space-y-4">{renderAgendas()}</div>
+          <Tabs data={parseDates()} />
         </div>
-      </ContainerPage>
+      </FullPage>
     </GeneralLayout>
   );
 }
