@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../config/graphql/mutations';
 
 import { AuthContext } from '../utils/functionsLib';
 
-import useDynamicRefs from 'use-dynamic-refs';
+
 
 export default function QuestionBox() {
 	const [question, setQuestion] = useState('');
-	const questionsEndRef = useRef(null);
 	const authContext = useContext(AuthContext);
 
 	const createQuestion = (e) => {
@@ -30,38 +29,17 @@ export default function QuestionBox() {
 		alert('Pregunta enviada');
 	};
 
-	/**
-	 *
-	 * Utils
-	 */
-
-	const sortArray = (array) => {
-		return array.sort(function (a, b) {
-			var c = new Date(a.createdAt);
-			var d = new Date(b.createdAt);
-			return c - d;
-		});
-	};
-
-	/**
-	 * UI Functions
-	 */
-
-	const scrollToBottom = () => {
-		questionsEndRef.current.scrollIntoView();
-	};
-
 	return (
-		<div class="flex flex-col h-mobile lg:h-52 w-full border-8 border-gray-300">
-			<div class="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
-				<div class="flex items-center">
-					<h2 class="font-semibold tracking-wider">
+		<div  className="flex flex-col h-mobile lg:h-52 w-full border-8 border-gray-300">
+			<div  className="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
+				<div  className="flex items-center">
+					<h2  className="font-semibold tracking-wider">
 						Escribe tu pregunta
 					</h2>
 				</div>
 			</div>
 
-			<div class="relative bg-white h-full flex flex-col">
+			<div  className="relative bg-white h-full flex flex-col">
 				<textarea
 					type="text"
 					name="question"
@@ -70,10 +48,10 @@ export default function QuestionBox() {
 					onChange={(e) => {
 						setQuestion(e.target.value);
 					}}
-					class="py-2 border-none focus:border-none focus:outline-none focus:border-transparent w-full resize-none h-3/4 flex-row"
+					 className="py-2 border-none focus:border-none focus:outline-none focus:border-transparent w-full resize-none h-3/4 flex-row"
 				/>
 				<button
-					class="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
+					 className="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
                         px-3 py-1 w-auto transistion-color duration-100 focus:outline-none flex-row"
 					onClick={(e) => {
 						createQuestion(e);

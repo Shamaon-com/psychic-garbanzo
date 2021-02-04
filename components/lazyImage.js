@@ -35,7 +35,7 @@ export default function LazyImage({ ...props }) {
     return (
         
         <img
-            class={setClass()}
+            className={setClass()}
             src={source}
             alt="John Doe"
         />

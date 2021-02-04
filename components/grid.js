@@ -74,7 +74,7 @@ import React, { useState } from "react";
         const renderArray = array.slice(index, stopIndex);
 
         return (
-            <div className={createGridClass()}>
+            <div  className={createGridClass()}>
                 {renderArray.map((item) => {
                     return props.renderFunction(item);
                     })
@@ -84,16 +84,16 @@ import React, { useState } from "react";
     }
 
     return (
-      <div className="mb-auto w-full">
+      <div  className="mb-auto w-full">
         {renderGrid()}
-        <div className="flex flex-row justify-center my-5">
+        <div  className="flex flex-row justify-center my-5">
           {index !== 0 &&
-            <div id="backwards" className="mx-2 cursor-pointer bg-gray-400 w-12 text-center text-white" onClick={moveInGrid}>
+            <div id="backwards"  className="mx-2 cursor-pointer bg-gray-400 w-12 text-center text-white" onClick={moveInGrid}>
               &lt;
           </div>
           }
           {index + currentCols < array.length &&
-            <div id="forward" className="mx-2 cursor-pointer bg-gray-500 w-12 text-center text-white" onClick={moveInGrid}>
+            <div id="forward"  className="mx-2 cursor-pointer bg-gray-500 w-12 text-center text-white" onClick={moveInGrid}>
               &gt;
           </div>
           }

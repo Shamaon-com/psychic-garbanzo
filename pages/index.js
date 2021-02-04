@@ -3,7 +3,7 @@ import GeneralLayout from '../layouts/generalLayout';
 import Chat from '../components/chat';
 import Iframe from '../components/iframe';
 
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../config/graphql/mutations';
@@ -28,6 +28,7 @@ export default function Home(props) {
 	});
 
 	useEffect(() => {
+
 		onPageRendered();
 	}, []);
 
@@ -38,6 +39,7 @@ export default function Home(props) {
 
 	const getIframe = () => {
 		API.graphql(graphqlOperation(queries.listIframes)).then((data) => {
+			console.log(data.data.listIframes.items)
 			setIframe(data.data.listIframes.items[0]);
 		});
 	};
@@ -107,24 +109,24 @@ export default function Home(props) {
 				setShowModal={setShowModal}
 				isCreating={isCreating}
 			/>
-			<div className="h-mobile flex mx-auto container w-full lg:items-center lg:h-4/5  lg:px-8">
-				<div className="flex flex-col mx-auto h-full w-full lg:flex-row">
+			<div  className="h-mobile flex mx-auto container w-full lg:items-center lg:h-4/5  lg:px-8">
+				<div  className="flex flex-col mx-auto h-full w-full lg:flex-row">
 					{iframe ? (
-						<div class="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+						<div  className="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
 							<div
-								className="text-5x1 lg:text-5xl text-gray-500"
+								 className="text-5x1 lg:text-5xl text-gray-500"
 								style={{ height: '10%' }}
 							>
 								{iframe.title}
 							</div>
 							<div
-								className="flex-1 w-full h-full relative"
+								 className="flex-1 w-full h-full relative"
 								style={{ height: '90%' }}
 							>
 								{authContext.isAdmin && (
 									<div
 										id={iframe.id}
-										class="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
+										 className="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0 "
 										style={{ width: "50px" }}
 										onClick={(e) => {
 											deleteIframe(e.target.id);
@@ -139,14 +141,14 @@ export default function Home(props) {
 							</div>
 						</div>
 					) : (
-							<div class="flex flex-row w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+							<div  className="flex flex-row w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
 								<div
-									className="text-5x1 lg:text-5xl text-gray-500"
+									 className="text-5x1 lg:text-5xl text-gray-500"
 									style={{ height: '10%' }}
 								>
 									Crea un nuevo evento
 								<div
-										className="bg-blue-500 text-white text-center cursor-pointer  my-5"
+										 className="bg-blue-500 text-white text-center cursor-pointer  my-5"
 										style={{ width: '40px' }}
 										onClick={(e) => {
 											setShowModal(true);
@@ -157,18 +159,18 @@ export default function Home(props) {
 								</div>
 							</div>
 						)}
-					<div class="h-full lg:py-10 lg:w-1/4 my-auto">
-						<div className="flex flex-row" style={{ height: '10%' }}>
-							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 0 && " text-blue-500 border-b-2 font-medium border-blue-500")}
+					<div  className="h-full lg:py-10 lg:w-1/4 my-auto">
+						<div  className="flex flex-row" style={{ height: '10%' }}>
+							<div  className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 0 && " text-blue-500 border-b-2 font-medium border-blue-500")}
 								onClick={(e) => setTab(0)}>
 								Chat
 							</div>
-							<div className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 1 && " text-blue-500 border-b-2 font-medium border-blue-500")}
+							<div  className={"flex flex-col w-1/2 text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" + (tab == 1 && " text-blue-500 border-b-2 font-medium border-blue-500")}
 								onClick={(e) => setTab(1)}>
 								Preguntas
 							</div>
 						</div>
-						<div class="flex" style={{ height: '90%' }}>
+						<div  className="flex" style={{ height: '90%' }}>
 							{renderTabContent()}
 						</div>
 					</div>

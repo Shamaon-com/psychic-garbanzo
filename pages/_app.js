@@ -1,14 +1,14 @@
 import "tailwindcss/tailwind.css";
-import { Amplify, Auth } from "aws-amplify";
+import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
 import awsconfig from "../config/aws-exports";
 import { useRouter } from 'next/router';
 
 import React, { useState, useEffect } from "react";
 import LoadingAnimation from "../components/loadingAnimation";
-import type { AppProps /*, AppContext */ } from 'next/app'
+
 import { AuthContext } from "../utils/functionsLib";
 
-
+import * as queries from "../config/graphql/queries";
 
 
 
@@ -17,13 +17,14 @@ Amplify.configure(awsconfig);
 
 
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   
 
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [attributes, setAttributes] = useState({})
+  const [attributes, setAttributes] = useState({});
+  const [generalSettings, setGeneralSettings] = useState([]);
 
   const router = useRouter();
 
@@ -31,24 +32,40 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     async function onLoad() {
       try {
+        // load user data
         const userData = await Auth.currentUserInfo();
         setAttributes(userData.attributes);
-        const session:any = await Auth.currentSession();
+
+        // load user session
+        const session = await Auth.currentSession();
         setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
+        
+        // load settings data
+        const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
+        setGeneralSettings(settings.data.listGeneralSettingss.items);
+
         setIsLoggedIn(true);
         setIsAuthenticating(false);
+
       } catch (e) {
+        console.log(e);
         setIsAuthenticating(false);
       }
     }
     onLoad();
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (username, password) => {
     try {
+      // Sign in user
       const user = await Auth.signIn(username, password);
       setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
       setAttributes(user.attributes);
+
+      // Check if settings are set 
+      const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
+      setGeneralSettings(settings.data.listGeneralSettingss.items);
+
       setIsLoggedIn(true);
       router.push("/");
     }
@@ -61,14 +78,20 @@ function MyApp({ Component, pageProps }: AppProps) {
     setIsLoggedIn(false);
   };
 
+
   return (
     <>
+      <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"/>
+      </head>
       {!isAuthenticating ? (
         <AuthContext.Provider
           value={{
             isLoggedIn: isLoggedIn,
             isAdmin: isAdmin,
             attributes: attributes,
+            generalSettings: generalSettings,
             login: login,
             logout: logout
           }}

@@ -157,7 +157,20 @@ export const getGeneralSettings = /* GraphQL */ `
     getGeneralSettings(id: $id) {
       id
       login
-      indexPage
+      mainLogo
+      backgroundLoginImage
+      backgroundColor
+      boxBackgroundColor
+      boxBorderColor
+      boxInnerTextColor
+      boxTitleColor
+      titleColor
+      textColor
+      pageAgenda
+      pagePonentes
+      pagePatrocinadores
+      pagePrensa
+      pageContacto
       createdAt
       updatedAt
     }
@@ -177,7 +190,20 @@ export const listGeneralSettingss = /* GraphQL */ `
       items {
         id
         login
-        indexPage
+        mainLogo
+        backgroundLoginImage
+        backgroundColor
+        boxBackgroundColor
+        boxBorderColor
+        boxInnerTextColor
+        boxTitleColor
+        titleColor
+        textColor
+        pageAgenda
+        pagePonentes
+        pagePatrocinadores
+        pagePrensa
+        pageContacto
         createdAt
         updatedAt
       }

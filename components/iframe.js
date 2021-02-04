@@ -58,14 +58,14 @@ export default function Iframe({ ...props }) {
 
       <div
         ref={parentRef}
-        class="w-full h-full"
+        className="w-full h-full"
       >
         <iframe
-          class="z-10"
+          className="z-10"
           src={src}
           scrolling="no"
-          frameborder="1"
-          marginheight="0px"
+          frameBorder="1"
+          marginHeight="0px"
           marginwidth="0px"
           width="100%"
           height={height}

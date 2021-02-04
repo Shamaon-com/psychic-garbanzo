@@ -4,7 +4,7 @@ import { API, graphqlOperation, Storage } from "aws-amplify";
 import GeneralLayout from "../layouts/generalLayout";
 import Modal from "../components/modal";
 import IframeModal from "../components/iframeModal";
-import { ContainerPage } from "../components/containers";
+import ContainerPage from "../components/containers";
 import { icon, videoIcon } from "../utils/svg";
 
 import * as mutations from "../config/graphql/mutations";
@@ -180,18 +180,18 @@ export default function Recursos() {
 
 
     return (
-      <div className="flex flex-col w-full max-w-2xl mx-auto">
-        <div className="w-full bg-gray-100 shadow">
-          <div className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
+      <div  className="flex flex-col w-full max-w-2xl mx-auto">
+        <div  className="w-full bg-gray-100 shadow">
+          <div  className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
             Documentos
           </div>
           {documnetRecurso.map((recurso, index) => {
             return (
-              <div className="flex w-full flex-row h-20 relative">
+              <div  className="flex w-full flex-row h-20 relative">
                 {authContext.isAdmin && (
                   <div
                     id={recurso.id}
-                    className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
+                     className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
                     style={{ width: "30px" }}
                     onClick={(e) => {
                       deleteRecurso(e.target.id);
@@ -200,13 +200,13 @@ export default function Recursos() {
                     -
                   </div>
                 )}
-                <div className="flex flex-col w-1/6 h-full justify-center items-center">
+                <div  className="flex flex-col w-1/6 h-full justify-center items-center">
                   <a href="http://www.google.com">
                     {icon()}
                   </a>
                 </div>
-                <div className="flex flex-col w-5/6 justify-center align-center">
-                  <div className="mb-1 text-blue-700">
+                <div  className="flex flex-col w-5/6 justify-center align-center">
+                  <div  className="mb-1 text-blue-700">
                     {recurso.name}
                   </div>
                   {recurso.text}
@@ -215,17 +215,17 @@ export default function Recursos() {
             )
           })}
         </div>
-        <div className="w-full bg-gray-100 shadow mt-5">
-          <div className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
+        <div  className="w-full bg-gray-100 shadow mt-5">
+          <div  className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
             Videos
                     </div>
           {videoRecurso.map((recurso, index) => {
             return (
-              <div className="flex w-full flex-row h-20 relative">
+              <div  className="flex w-full flex-row h-20 relative">
                 {authContext.isAdmin && (
                   <div
                     id={recurso.id}
-                    className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
+                     className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
                     style={{ width: "30px" }}
                     onClick={(e) => {
                       deleteRecurso(e.target.id);
@@ -234,13 +234,13 @@ export default function Recursos() {
                     -
                   </div>
                 )}
-                <div className="flex flex-col w-1/6 h-full justify-center items-center">
+                <div  className="flex flex-col w-1/6 h-full justify-center items-center">
                   <div onClick={(e) => setIframeSrc(recurso.videoUrl)}>
                     {videoIcon()}
                   </div>
                 </div>
-                <div className="flex flex-col w-5/6 justify-center align-center">
-                  <div className="mb-1 text-blue-700">
+                <div  className="flex flex-col w-5/6 justify-center align-center">
+                  <div  className="mb-1 text-blue-700">
                     {recurso.name}
                   </div>
                   {recurso.text}
@@ -270,12 +270,12 @@ export default function Recursos() {
           iframeSrc={iframeSrc}
           setIframeSrc={setIframeSrc}
         />
-        <div className="flex flex-row mx-5 sm:mx-0">
-          <div className="flex text-xl my-8 sm:text-3xl">Recursos</div>
+        <div  className="flex flex-row mx-5 sm:mx-0">
+          <div  className="flex text-xl my-8 sm:text-3xl">Recursos</div>
           {authContext.isAdmin && (
-            <div className="flex my-8 sm:text-3xl mx-3">
+            <div  className="flex my-8 sm:text-3xl mx-3">
               <div
-                className="bg-blue-500 text-white text-center cursor-pointer"
+                 className="bg-blue-500 text-white text-center cursor-pointer"
                 style={{ width: "40px" }}
                 onClick={(e) => {
                   setShowModal(true);

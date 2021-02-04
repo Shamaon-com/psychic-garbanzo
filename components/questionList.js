@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { a, API, graphqlOperation } from 'aws-amplify';
-import * as mutations from '../config/graphql/mutations';
-import * as queries from '../config/graphql/queries';
-import * as subscriptions from '../config/graphql/subscriptions';
-import { AuthContext } from '../utils/functionsLib';
+import React, { useState, useEffect} from 'react';
 
-import useDynamicRefs from 'use-dynamic-refs';
-import Ponentes from '../pages/control/ponentes';
+
 
 export default function QuestionList({ ...props }) {
 	const [array, setArray] = useState([]);
-	const [getRef, setRef] = useDynamicRefs();
-	const questionsEndRef = useRef(null);
 
-	const authContext = useContext(AuthContext);
 
 	useEffect(() => {
 		console.log(props);
@@ -26,10 +17,10 @@ export default function QuestionList({ ...props }) {
 				let classVar =
 					'bg-white text-gray-700 p-4 self-start m-3 rounded-xl shadow-lg';
 				return (
-					<div key={key} id={item.id} className={classVar}>
+					<div key={key} id={item.id}  className={classVar}>
 						<svg
 							style={{ width: '20px' }}
-							className="ml-auto p-0.5 cursor-pointer"
+							 className="ml-auto p-0.5 cursor-pointer"
 							viewBox="0 0 512 512"
 							width="512pt"
 							xmlns="http://www.w3.org/2000/svg"
@@ -44,8 +35,8 @@ export default function QuestionList({ ...props }) {
 								fill="#fafafa"
 							/>
 						</svg>
-						<div className="font-medium mb-1">{item.question}</div>
-						<div className="text-xs font-light font-sans">
+						<div  className="font-medium mb-1">{item.question}</div>
+						<div  className="text-xs font-light font-sans">
 							{item.user.split('@')[0]} -{' '}
 							{new Date(item.createdAt).toLocaleTimeString()}
 						</div>

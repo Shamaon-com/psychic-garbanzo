@@ -14,6 +14,24 @@ export function useFormFields(initialState) {
   ];
 }
 
+export function setDictValue(initialState) {
+
+  const [fields, setValues] = useState(initialState);
+
+  return [
+    fields,
+    function (key, value) {
+      if(fields[key] !== undefined){
+        console.log(fields[key]);
+        setValues({
+          ...fields,
+          [key]: value,
+        });
+      }
+    }
+  ];
+}
+
 
 export function useModalFields(initialState) {
   const [fields, setValues] = useState(initialState);

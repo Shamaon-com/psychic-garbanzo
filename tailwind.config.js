@@ -1,5 +1,4 @@
 module.exports = {
-  purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
@@ -12,11 +11,24 @@ module.exports = {
       height: {
         'mobile': "40rem",
       },
+      shadow: {
+        'left': "-10px 0px 10px 1px #aaaaaa"
+      }
     },
   },
   variants: {
-    extend: {},
-  },
+    extend: {
+        opacity: [
+            "disabled"
+        ],
+        backgroundColor: [
+            "disabled"
+        ],
+        cursor: [
+            "disabled"
+        ]
+    }
+},
   plugins: [
     // ...
     require('@tailwindcss/forms'),

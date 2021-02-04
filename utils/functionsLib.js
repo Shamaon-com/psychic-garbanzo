@@ -1,15 +1,13 @@
 
 import { createContext } from "react";
-import { CognitoUser } from '@aws-amplify/auth';
-
-
 
 
 export  const AuthContext = createContext({
     isLoggedIn: false,
     isAdmin: false,
     attributes: {},
-    login: (username: string, password: string) => {},
+    pageSettings: {},
+    login: (username, password) => {},
     logout: () => {}
   });
 

@@ -112,20 +112,28 @@ type Iframe
 }
 
 type GeneralSettings
-	@model
-	@auth(
-		rules: [
-			{
-				allow: groups
-				groups: ["admins"]
-				queries: [get, list]
-				mutations: [create, update, delete]
-			}
-		]
-	) {
-	id: ID!
-	login: Boolean!
-	indexPage: String!
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+    ]
+  ) {
+  id: ID!
+  login: String!
+  mainLogo: String!
+  backgroundLoginImage: String!
+  backgroundColor: String!
+  boxBackgroundColor: String!
+  boxBorderColor: String!
+  boxInnerTextColor: String!
+  boxTitleColor: String!
+  titleColor: String!
+  textColor: String!
+  pageAgenda: Boolean!
+  pagePonentes: Boolean!
+  pagePatrocinadores: Boolean!
+  pagePrensa: Boolean! 
+  pageContacto: Boolean!
 }
 
 type Ponente
