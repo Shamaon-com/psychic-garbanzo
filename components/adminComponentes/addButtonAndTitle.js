@@ -1,10 +1,14 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../utils/functionsLib";
 
-export default function AddButtonAndTabs({ ...props }) {
+export default function AddButtonAndTitle({ ...props }) {
     /**
      * Recives item id to delete and delete function to be called
      *
+     * props = {
+        title: ...
+        
+        }
      */
 
     const authContext = useContext(AuthContext);
@@ -16,12 +20,14 @@ export default function AddButtonAndTabs({ ...props }) {
                     <div
                         className="text-5x1 lg:text-5xl text-gray-500"
                     >
-                        Crea un nuevo evento
+                        {props.title}
                     </div>
                     <div
-                        className="bg-blue-500 text-white text-center cursor-pointer mx-5 my-4 w-10 h-6"
-                        onClick={(e) => {
-                            setShowModal(true);
+                        className="
+                            flex flex-col justify-center
+                            bg-blue-500 text-white text-center cursor-pointer mx-5 my-4 w-10 h-8"
+                        onClick={() => {
+                            props.setShowModal(true);
                         }}
                     >
                         +
