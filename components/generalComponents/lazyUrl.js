@@ -11,7 +11,7 @@ export default function LazyImage({ ...props }) {
     const [source, setSource] = useState("")
 
     useEffect(() => {
-        getImage(props.s3Key);
+        getImage(props.data);
 
     }, []);
 
@@ -22,23 +22,13 @@ export default function LazyImage({ ...props }) {
         })
     }; 
 
-    const setClass = () => {
-
-        switch(props.type){
-            case "rounded":
-                return "h-48 w-48 sm:h-36 sm:w-36 md rounded-full relative"
-            default:
-                return ""
-        }
-    }
-
     return (
-        
-        <img
-            className={setClass()}
-            src={source}
-            alt="img"
-        />
+        <a
+            className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
+            href={source}
+        >
+            {props.text}
+       </a>
        
     );
 

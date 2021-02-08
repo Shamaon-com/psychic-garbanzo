@@ -21,7 +21,7 @@ export default function DeleteButton({ ...props }) {
             {authContext.isAdmin && (
                 <div
                     id={props.id}
-                    className="bg-red-500 text-white text-center cursor-pointer z-50 absolute top-0 right-0"
+                    className="bg-red-500 text-white text-center cursor-pointer absolute top-0 right-0"
                     style={{ width: "50px" }}
                     onClick={(e) => {
                         deleteItem(e.target.id);

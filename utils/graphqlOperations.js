@@ -14,7 +14,6 @@ export const graphqlGet = async (funcName, setter) => {
     });
 }
 
-
 export const graphqlCreate = async (funcName, itemData) => {
    
     API.graphql(
@@ -27,20 +26,5 @@ export const graphqlDelete = async (funcName, itemID) => {
     API.graphql(
         graphqlOperation(mutations[funcName], { input: {id: itemID} })
       );
-
-}
-
-export const subscribeCreate = async (funcName, setter, arrayItem) => {
-    
-
-
-    API.graphql(graphqlOperation(subscriptions.onCreateAgenda)).subscribe({
-        next: (subRecived) => {
-            setter((arrayItem) => [
-                ...arrayItem,
-                subRecived.value.data[funcName]
-            ]);
-        }
-    });
 
 }

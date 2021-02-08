@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
+// Amplify
+import { API, graphqlOperation } from "aws-amplify";
+import * as subscriptions from "../src/graphql/subscriptions";
 
 // Utils
 import { useModalFields } from '../utils/hooksLib';
-import { AuthContext } from "../utils/functionsLib";
-import * as operation from "../utils/graphqlOperations";
+import {graphqlGet, graphqlCreate }  from "../utils/graphqlOperations";
 
 // Components
 import GeneralLayout from '../layouts/generalLayout';
@@ -12,24 +14,16 @@ import Modal from '../components/generalComponents/modal';
 import FullPage from '../components/containers/fullPage';
 import ComponentList from '../components/generalComponents/componentList';
 import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
-
 import EntryCard from '../components/agendaPage/entryCard';
-
 import Tabs from '../components/generalComponents/tabs'
 
 
 
 export default function Agenda() {
-  /**º
-   * To do
-   *
-   * - Improve modal
-   * - Display date in a cleaner way
-   */
 
-  const [showModal, setShowModal] = useState(false);
   const [agendas, setAgendas] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
 
   const [fields, handleFieldChange] = useModalFields({
@@ -41,16 +35,39 @@ export default function Agenda() {
 
   useEffect(() => {
     //onPageRendered();
-    operation.graphqlGet('listAgendas', setAgendas);
+    graphqlGet('listAgendas', setAgendas);
+    subscribeCreateAgenda();
+    subscribeDeleteAgenda();
+
   }, []);
 
+  const subscribeDeleteAgenda = async () => {
+    await API.graphql(graphqlOperation(subscriptions.onDeleteAgenda)).subscribe({
+      next: (subonDeleteAgenda) => {
+        setAgendas((agendas) => [
+          ...agendas.filter(
+            (agenda) => agenda.id != subonDeleteAgenda.value.data.onDeleteAgenda.id
+          ),
+        ]);
+      },
+    });
+  };
 
+  const subscribeCreateAgenda = async () => {
+    await API.graphql(graphqlOperation(subscriptions.onCreateAgenda)).subscribe({
+      next: (subonCreateAgenda) => {
+        setAgendas((agendas) => [
+          ...agendas,
+          subonCreateAgenda.value.data.onCreateAgenda,
+        ]);
+      },
+    });
+  };
 
 
   const createAgenda = (e) => {
     setIsCreating(true);
  
-
     
     var itemDetails = {
       title: fields.title.value,
@@ -64,10 +81,8 @@ export default function Agenda() {
       ).toString()
     };
 
-    console.log("Agenda Details : " + JSON.stringify(itemDetails));
-    API.graphql(
-      graphqlOperation(mutations.createAgenda, { input: itemDetails })
-    );
+    graphqlCreate("createAgenda", itemDetails);
+
     setIsCreating(false);
     setShowModal(false);
   };
@@ -109,7 +124,6 @@ export default function Agenda() {
         }
       )
     }
-
     return returnArray;
   };
 
