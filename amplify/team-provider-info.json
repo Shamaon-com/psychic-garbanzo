@@ -15,11 +15,6 @@
       "auth": {
         "userPoolGroups": {},
         "garbanzoauth": {}
-      },
-      "function": {
-        "garbanzoauthPostConfirmation": {
-          "GROUP": "users"
-        }
       }
     }
   }

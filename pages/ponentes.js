@@ -1,23 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
-import { API, graphqlOperation, Storage } from "aws-amplify";
+import React, { useState, useEffect } from 'react';
 
-import GeneralLayout from "../layouts/generalLayout";
-import Modal from "../components/modal";
-import LazyImage from "../components/lazyImage";
-import Grid from "../components/grid";
-import ContainerPage from "../components/containers";
+// Amplify
+import { API, graphqlOperation } from "aws-amplify";
+import * as subscriptions from "../src/graphql/subscriptions";
 
-import * as mutations from "../config/graphql/mutations";
-import * as queries from "../config/graphql/queries";
-import * as subscriptions from "../config/graphql/subscriptions";
+// Utils
+import { useModalFields } from '../utils/hooksLib';
+import {uploadToS3, validate } from '../utils/functionsLib';
+import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 
-import { AuthContext } from "../utils/functionsLib";
-import { useModalFields } from "../utils/hooksLib";
+// Components
+import GeneralLayout from '../layouts/generalLayout';
+import Modal from '../components/generalComponents/modal';
+import FullPage from '../components/containers/fullPage';
+import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
+import PonenteCard from '../components/ponentePage/ponenteCard';
+import Grid from '../components/containers/grid';
+
 
 
 export default function Ponentes() {
 
-  const authContext = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -32,16 +35,12 @@ export default function Ponentes() {
   });
 
   useEffect(() => {
-    onPageRendered();
+    graphqlGet("listPonentes", setPonentes);
+    subscribeCreatePonente();
+    subscribeDeletePonente();
 
   }, []);
 
-
-  const onPageRendered = async () => {
-    getPonentes();
-    subscribeCreatePonente();
-    subscribeDeletePonente();
-  };
 
   /**
    * GRAPHQL CRUD functions and subscribres
@@ -59,30 +58,6 @@ export default function Ponentes() {
     });
   };
 
-  const createPonente = () => {
-
-    var itesmetails = {
-      name: fields.name.value,
-      title: fields.title.value,
-      pdf: fields.pdf.value.name,
-      image: fields.image.value.name
-    };
-
-    console.log("Ponente Details : " + JSON.stringify(itesmetails));
-    API.graphql(
-      graphqlOperation(mutations.createPonente, { input: itesmetails })
-    );
-  };
-
-  const deletePonente = (id) => {
-    var itesmetails = {
-      id: id,
-    };
-    API.graphql(
-      graphqlOperation(mutations.deletePonente, { input: itesmetails })
-    );
-  };
-
   const subscribeDeletePonente = async () => {
     await API.graphql(
       graphqlOperation(subscriptions.onDeletePonente)
@@ -98,40 +73,18 @@ export default function Ponentes() {
     });
   };
 
-  const getPonentes = () => {
-    API.graphql(graphqlOperation(queries.listPonentes)).then((data) => {
-      setPonentes(data.data.listPonentes.items);
-    }
-    );
+
+  const createPonente = () => {
+
+    var itemDetails = {
+      name: fields.name.value,
+      title: fields.title.value,
+      pdf: fields.pdf.value.name,
+      image: fields.image.value.name
+    };
+
+    graphqlCreate('createPonente', itemDetails);
   };
-
-
-  /**
-   * UI Operation functions
-   */
-
-  const validate = () => {
-    for (var field in fields) {
-      if (fields[field] === "") {
-        alert("Rellene todos los campos");
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const uploadToS3 = async (file) => {
-
-    Storage.put(file.name.replace(/\s+/g, ''), file, {
-      contentType: file.type,
-    }).then((result) => {
-      console.log(result);
-    }).catch((err) => {
-      alert(err);
-    })
-  }
-
-
 
   const submit = () => {
     /**
@@ -141,13 +94,9 @@ export default function Ponentes() {
     setIsCreating(true);
 
     if (validate()) {
-
       for (var field in fields) {
         if (fields[field].type === "file") {
-          console.log(fields[field].value);
-
           uploadToS3(fields[field].value);
-
         }
       }
 
@@ -159,88 +108,38 @@ export default function Ponentes() {
 
 
 
-
-  /**
-   * 
-   * Render Functions
-   */
-
-  const renderPonente = (ponente) => {
-
+  const generateData = () => {
     return (
-      <div key={ponente.id}  className="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:h-64  bg-blue-50">
-        {authContext.isAdmin && (
-          <div
-            id={ponente.id}
-             className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0"
-            style={{ width: "30px" }}
-            onClick={(e) => {
-              deletePonente(e.target.id);
-            }}
-          >
-            -
-          </div>
-        )}
-        <div  className="flex justify-center items-center h-2/3">
-          <LazyImage s3Key={ponente.image} type="rounded" />
-        </div>
-        <div  className="m-2 h-1/3">
-          <h3  className="text-center sm:text-xl text-gray-900 font-medium leading-8">
-            {ponente.name}
-          </h3>
-          <div  className="text-center text-gray-400 text-xs font-semibold">
-            <p>{ponente.title}</p>
-          </div>
-          <div  className="text-center my-3">
-            <a
-               className="text-xs text-indigo-500 italic hover:underline hover:text-indigo-600 font-medium"
-              href="#"
-            >
-              View Profile
-              </a>
-          </div>
-        </div>
-      </div>
-    );
-  };
+      ponentes.map((ponente) => {
+        return (
+          <PonenteCard data={ponente} />
+        )
+      })
+    )
+  }
 
 
   return (
     <GeneralLayout>
-      <ContainerPage>
-      <Modal
-        element={"Ponente"}
-        fields={fields}
-        handleFieldChange={handleFieldChange}
-        submit={submit}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        isCreating={isCreating}
-      />
-      <div  className="flex flex-row mx-5 sm:mx-0">
-        <div  className="flex text-xl my-8 sm:text-3xl">Ponentes</div>
-        {authContext.isAdmin && (
-          <div  className="flex my-8 sm:text-3xl mx-3">
-            <div
-               className="bg-blue-500 text-white text-center cursor-pointer"
-              style={{ width: "40px" }}
-              onClick={(e) => {
-                setShowModal(true);
-              }}
-            >
-              +
-            </div>
-          </div>
-        )}
-      </div>
-
-      <Grid
-        array={ponentes}
-        renderFunction={renderPonente}
-        pcCols={6}
-        mobileCols={1}
-      />
-      </ContainerPage>
+      <FullPage>
+        <Modal
+          element={"Ponente"}
+          fields={fields}
+          handleFieldChange={handleFieldChange}
+          submit={submit}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          isCreating={isCreating}
+        />
+        <div className="flex flex-col justify-center" style={{ height: "20%" }}>
+          <AddButtonAndTitle title={"Ponente"} setShowModal={setShowModal} />
+        </div>
+        <Grid
+          data={ generateData() }
+          pcCols={6}
+          mobileCols={1}
+        />
+      </FullPage>
     </GeneralLayout>
   );
 }

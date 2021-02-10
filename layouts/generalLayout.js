@@ -1,4 +1,4 @@
-import LoadingAnimation from "../components/loadingAnimation";
+import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
@@ -18,7 +18,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
   }, []);
 
   async function onLoad() {
-    console.log(authContext);
+
     if ( authContext.isLoggedIn == false ) {
       router.push("/login");
     } 

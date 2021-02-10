@@ -13,9 +13,9 @@ import React, { useState } from "react";
 
 
     useEffect(() => {
-        setArray(props.array);
+        setArray(props.data);
 
-    }, [props.array]);
+    }, [props.data]);
 
     useEffect(() => {
         handleResize();
@@ -76,7 +76,7 @@ import React, { useState } from "react";
         return (
             <div  className={createGridClass()}>
                 {renderArray.map((item) => {
-                    return props.renderFunction(item);
+                    return item
                     })
                 }
             </div>

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { AuthContext } from "../utils/functionsLib";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function Iframe({ ...props }) {
   const [src, setSrc] = useState("");
@@ -7,9 +6,6 @@ export default function Iframe({ ...props }) {
 
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-
-  const authContext = useContext(AuthContext);
-
 
   /**
    * 

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { capitalize } from '../utils/functionsLib';
+import { capitalize } from '../../utils/functionsLib';
 
 
 
@@ -209,6 +209,8 @@ export default function Modal({ ...props }) {
         case "date":
           dataArray.push(renderDateField(field, props.fields[field]));
           break;
+        case "disabled":
+          break;
         default:
           dataArray.push(renderTextField(field, props.fields[field]));
       }
@@ -221,7 +223,7 @@ export default function Modal({ ...props }) {
     return (
       <div
         style={{ backgroundColor: "rgba(0, 0, 0, 0.8)" }}
-         className="fixed z-40 top-0 right-0 left-0 bottom-0 h-full w-full"
+         className="fixed z-10 top-0 right-0 left-0 bottom-0 h-full w-full"
       >
         <div  className="p-4 max-w-xl mx-auto relative absolute left-0 right-0 overflow-hidden mt-24">
           <div
