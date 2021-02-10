@@ -1,23 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
-import { API, graphqlOperation, Storage } from "aws-amplify";
+import React, { useState, useEffect } from 'react';
 
-import GeneralLayout from "../layouts/generalLayout";
-import Modal from "../components/modal";
-import LazyImage from "../components/lazyImage";
-import Grid from "../components/grid";
-import ContainerPage from "../components/containers";
+// Amplify
+import { API, graphqlOperation } from "aws-amplify";
+import * as subscriptions from "../src/graphql/subscriptions";
 
-import * as mutations from "../config/graphql/mutations";
-import * as queries from "../config/graphql/queries";
-import * as subscriptions from "../config/graphql/subscriptions";
+// Utils
+import { useModalFields } from '../utils/hooksLib';
+import {uploadToS3, validate } from '../utils/functionsLib';
+import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 
-import { AuthContext } from "../utils/functionsLib";
-import { useModalFields } from "../utils/hooksLib";
+// Components
+import GeneralLayout from '../layouts/generalLayout';
+import Modal from '../components/generalComponents/modal';
+import FullPage from '../components/containers/fullPage';
+import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
+import PatrocinadorsCard from '../components/PatrocinadoresPage/patrocinadorCard';
+import Grid from '../components/containers/grid';
 
 
 export default function Patrocinador() {
 
-  const authContext = useContext(AuthContext);
+
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -31,22 +34,13 @@ export default function Patrocinador() {
 
 
   useEffect(() => {
-    onPageRendered();
+    graphqlGet("listPatrocinadors", setPatrocinadors);
+    subscribeCreatePatrocinador();
+    subscribeDeletePatrocinador();
 
   }, []);
 
 
-
-
-  const onPageRendered = async () => {
-    getPatrocinadors();
-    subscribeCreatePatrocinador();
-    subscribeDeletePatrocinador();
-  };
-
-  /**
-   * GRAPHQL CRUD functions and subscribres
-   */
   const subscribeCreatePatrocinador = async () => {
     await API.graphql(
       graphqlOperation(subscriptions.onCreatePatrocinador)
@@ -58,30 +52,6 @@ export default function Patrocinador() {
         ]);
       }
     });
-  };
-
-  const createPatrocinador = () => {
-
-
-    var itesmetails = {
-      name: fields.name.value,
-      link: fields.url.value,
-      file: fields.image.value.name
-    };
-
-
-    API.graphql(
-      graphqlOperation(mutations.createPatrocinador, { input: itesmetails })
-    );
-  };
-
-  const deletePatrocinador = (id) => {
-    var itesmetails = {
-      id: id,
-    };
-    API.graphql(
-      graphqlOperation(mutations.deletePatrocinador, { input: itesmetails })
-    );
   };
 
   const subscribeDeletePatrocinador = async () => {
@@ -99,38 +69,16 @@ export default function Patrocinador() {
     });
   };
 
-  const getPatrocinadors = () => {
-    API.graphql(graphqlOperation(queries.listPatrocinadors)).then((data) => {
-      setPatrocinadors(data.data.listPatrocinadors.items)
-    });
+  const createPatrocinador = () => {
+    var itemDetails = {
+      name: fields.name.value,
+      link: fields.url.value,
+      file: fields.image.value.name
+    };
+
+    graphqlCreate('createPatrocinadors', itemDetails);
   };
 
-
-  /**
-   * UI Operation functions
-   */
-
-  const validate = () => {
-    for (var field in fields) {
-      if (fields[field] === "") {
-        alert("Rellene todos los campos");
-        return false;
-      }
-    }
-    return true;
-  };
-
-
-  const uploadToS3 = async (file) => {
-
-    Storage.put(file.name.replace(/\s+/g, ''), file, {
-      contentType: file.type,
-    }).then((result) => {
-      console.log(result);
-    }).catch((err) => {
-      alert(err);
-    })
-  }
 
   const submit = () => {
     /**
@@ -138,18 +86,12 @@ export default function Patrocinador() {
      * it will create ponente and upload the correspoing image to s3
      */
     setIsCreating(true);
-
     if (validate()) {
-
       for (var field in fields) {
         if (fields[field].type === "file") {
-          console.log(fields[field].value);
-
           uploadToS3(fields[field].value);
-
         }
       }
-
       createPatrocinador();
       setIsCreating(false);
       setShowModal(false);
@@ -158,38 +100,19 @@ export default function Patrocinador() {
 
 
 
- 
-
-
-  const renderPatrocinador = (patrocinador) => {
-    console.log(patrocinador)
+  const generateData = () => {
     return (
-      <div  className="py-5 px-5 sm:max-w-xs max-h-40 relative">
-        {authContext.isAdmin && (
-          <div
-            id={patrocinador.id}
-            className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
-            style={{ width: "30px" }}
-            onClick={(e) => {
-              deletePatrocinador(e.target.id);
-            }}
-          >
-            -
-          </div>
-        )}
-        <a href={patrocinador.link}>
-          <div key={patrocinador.id} className="flex justify-center photo-wrapper w-full h-full">
-              <LazyImage s3Key={patrocinador.file} />
-          </div>
-        </a>
-      </div>
-    );
-  };
-
+      patrocinadors.map((item) => {
+        return (
+          <PatrocinadorsCard data={item} />
+        )
+      })
+    )
+  }
 
   return (
     <GeneralLayout>
-      <ContainerPage>
+      <FullPage>
       <Modal
         element={"Patrocinador"}
         fields={fields}
@@ -199,30 +122,15 @@ export default function Patrocinador() {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div  className="flex flex-row mx-5 sm:mx-0">
-        <div  className="flex text-xl my-8 sm:text-3xl">Patrocinadores</div>
-        {authContext.isAdmin && (
-          <div  className="flex my-8 sm:text-3xl mx-3">
-            <div
-               className="bg-blue-500 text-white text-center cursor-pointer"
-              style={{ width: "40px" }}
-              onClick={(e) => {
-                setShowModal(true);
-              }}
-            >
-              +
-            </div>
-          </div>
-        )}
+      <div className="flex flex-col justify-center" style={{ height: "20%" }}>
+        <AddButtonAndTitle title={"Patrocinadores"} setShowModal={setShowModal} />
       </div>
-
       <Grid
-        array={patrocinadors}
-        renderFunction={renderPatrocinador}
-        pcCols={8}
+        data={ generateData() }
+        pcCols={6}
         mobileCols={1}
       />
-      </ContainerPage>
+      </FullPage>
     </GeneralLayout>
   );
 }

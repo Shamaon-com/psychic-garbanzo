@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 
 
-export default function ComponentList({ ...props }) {
+export default function List({ ...props }) {
     /**
      * Recives array of items to display as list for agenda
      props = {

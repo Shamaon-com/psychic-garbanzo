@@ -18,7 +18,7 @@ export default function PonenteCard({ ...props }) {
       console.log(props.data)
     })
     return (
-      <div key={props.data.id}  className="py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:h-64  bg-blue-50">
+      <div key={props.data.id}  className="shadow py-3 px-3 h-96 mx-5 relative sm:mx-0 sm:h-64  bg-blue-50">
         <DeleteButton id={props.data.id} item={"Ponente"} />
         <div  className="flex justify-center items-center h-2/3">
           <LazyImage s3Key={props.data.image} type="rounded" />

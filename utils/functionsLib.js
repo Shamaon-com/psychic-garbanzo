@@ -20,3 +20,25 @@ export const capitalize = (str) => {
     }
 };
 
+
+
+export const uploadToS3 = async (file) => {
+
+    Storage.put(file.name.replace(/\s+/g, ''), file, {
+      contentType: file.type,
+    }).then((result) => {
+      console.log(result);
+    }).catch((err) => {
+      alert(err);
+    })
+  }
+
+  export const validate = () => {
+    for (var field in fields) {
+      if (fields[field] === "") {
+        alert("Rellene todos los campos");
+        return false;
+      }
+    }
+    return true;
+  };

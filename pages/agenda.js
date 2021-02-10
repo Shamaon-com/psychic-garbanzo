@@ -6,16 +6,16 @@ import * as subscriptions from "../src/graphql/subscriptions";
 
 // Utils
 import { useModalFields } from '../utils/hooksLib';
-import {graphqlGet, graphqlCreate }  from "../utils/graphqlOperations";
+import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 
 // Components
 import GeneralLayout from '../layouts/generalLayout';
 import Modal from '../components/generalComponents/modal';
 import FullPage from '../components/containers/fullPage';
-import ComponentList from '../components/generalComponents/componentList';
+import List from '../components/containers/list';
 import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
 import EntryCard from '../components/agendaPage/entryCard';
-import Tabs from '../components/generalComponents/tabs'
+import Tabs from '../components/containers/tabs';
 
 
 
@@ -29,7 +29,7 @@ export default function Agenda() {
   const [fields, handleFieldChange] = useModalFields({
     title: { type: "default", value: "" },
     description: { type: "default", value: "" },
-    date: { type: "date", value: {day: 0, month: 0, hour: 0, minute: 0} },
+    date: { type: "date", value: { day: 0, month: 0, hour: 0, minute: 0 } },
   });
 
 
@@ -67,8 +67,8 @@ export default function Agenda() {
 
   const createAgenda = (e) => {
     setIsCreating(true);
- 
-    
+
+
     var itemDetails = {
       title: fields.title.value,
       description: fields.description.value,
@@ -102,12 +102,12 @@ export default function Agenda() {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
 
-    dataArray.map(( item ) => {
+    dataArray.map((item) => {
       let key = new Date(item.date).toDateString();
       if (dataDict[key] === undefined) {
-        dataDict[key] = [<EntryCard data={item}/>];
+        dataDict[key] = [<EntryCard data={item} />];
       } else {
-        dataDict[key].push(<EntryCard data={item}/>);
+        dataDict[key].push(<EntryCard data={item} />);
       }
     });
 
@@ -117,7 +117,7 @@ export default function Agenda() {
       returnArray.push(
         {
           id: dictKey,
-          component: <ComponentList data={dataDict[dictKey]} />,
+          component: <List data={dataDict[dictKey]} />,
           name: new Date(dictKey).toLocaleDateString([], {
             dateStyle: "medium",
           })
@@ -139,8 +139,8 @@ export default function Agenda() {
           setShowModal={setShowModal}
           isCreating={isCreating}
         />
-        <div className="flex flex-col justify-center" style={{height: "20%"}}>
-          <AddButtonAndTitle title={"Agenda"} setShowModal={setShowModal}/>
+        <div className="flex flex-col justify-center" style={{ height: "20%" }}>
+          <AddButtonAndTitle title={"Agenda"} setShowModal={setShowModal} />
         </div>
         <Tabs data={parseDates()} />
 

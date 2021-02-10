@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Amplify
 import { API, graphqlOperation } from "aws-amplify";
@@ -6,6 +6,7 @@ import * as subscriptions from "../src/graphql/subscriptions";
 
 // Utils
 import { useModalFields } from '../utils/hooksLib';
+import {uploadToS3, validate } from '../utils/functionsLib';
 import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 
 // Components
@@ -14,7 +15,7 @@ import Modal from '../components/generalComponents/modal';
 import FullPage from '../components/containers/fullPage';
 import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
 import PonenteCard from '../components/ponentePage/ponenteCard';
-import Grid from '../components/generalComponents/grid';
+import Grid from '../components/containers/grid';
 
 
 
@@ -75,39 +76,15 @@ export default function Ponentes() {
 
   const createPonente = () => {
 
-    var itesmetails = {
+    var itemDetails = {
       name: fields.name.value,
       title: fields.title.value,
       pdf: fields.pdf.value.name,
       image: fields.image.value.name
     };
 
-    console.log("Ponente Details : " + JSON.stringify(itesmetails));
-    API.graphql(
-      graphqlOperation(mutations.createPonente, { input: itesmetails })
-    );
+    graphqlCreate('createPonente', itemDetails);
   };
-
-  const validate = () => {
-    for (var field in fields) {
-      if (fields[field] === "") {
-        alert("Rellene todos los campos");
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const uploadToS3 = async (file) => {
-
-    Storage.put(file.name.replace(/\s+/g, ''), file, {
-      contentType: file.type,
-    }).then((result) => {
-      console.log(result);
-    }).catch((err) => {
-      alert(err);
-    })
-  }
 
   const submit = () => {
     /**
@@ -117,13 +94,9 @@ export default function Ponentes() {
     setIsCreating(true);
 
     if (validate()) {
-
       for (var field in fields) {
         if (fields[field].type === "file") {
-          console.log(fields[field].value);
-
           uploadToS3(fields[field].value);
-
         }
       }
 
@@ -137,7 +110,7 @@ export default function Ponentes() {
 
   const generateData = () => {
     return (
-      ponentes.map((ponente, index) => {
+      ponentes.map((ponente) => {
         return (
           <PonenteCard data={ponente} />
         )

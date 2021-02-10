@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { capitalize } from '../../utils/functionsLib';
-import Iframe from "../components/iframe";
+import Iframe from "./iframe";
 
 
 

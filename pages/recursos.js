@@ -1,23 +1,25 @@
-import React, { useState, useEffect, useContext } from "react";
-import { API, graphqlOperation, Storage } from "aws-amplify";
+import React, { useState, useEffect } from 'react';
 
-import GeneralLayout from "../layouts/generalLayout";
-import Modal from "../components/modal";
-import IframeModal from "../components/iframeModal";
-import ContainerPage from "../components/containers";
-import { icon, videoIcon } from "../utils/svg";
+// Amplify
+import { API, graphqlOperation } from "aws-amplify";
+import * as subscriptions from "../src/graphql/subscriptions";
 
-import * as mutations from "../config/graphql/mutations";
-import * as queries from "../config/graphql/queries";
-import * as subscriptions from "../config/graphql/subscriptions";
+// Utils
+import { useModalFields } from '../utils/hooksLib';
+import {uploadToS3, validate } from '../utils/functionsLib';
+import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 
-import { AuthContext } from "../utils/functionsLib";
-import { useModalFields } from "../utils/hooksLib";
-
+// Components
+import GeneralLayout from '../layouts/generalLayout';
+import Modal from '../components/generalComponents/modal';
+import FullPage from '../components/containers/fullPage';
+import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
+import FileCard from '../components/recursosPage/fileCard';
+import List  from '../components/containers/list';
+import IframeModal from '../components/generalComponents/iframeModal';
 
 export default function Recursos() {
 
-  const authContext = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -26,7 +28,13 @@ export default function Recursos() {
   const [iframeSrc, setIframeSrc] = useState(null);
 
   const [fields, handleFieldChange] = useModalFields({
-    type: { type: "select", value: "document", options: [{ key: "document", text: "Documentos" }, { key: "video", text: "Video" }] },
+    type: { 
+      type: "select", value: "document",
+       options: [
+        { key: "document", text: "Documentos" }, 
+        { key: "video", text: "Video" }
+      ] 
+    },
     name: { type: "default", value: "" },
     text: { type: "default", value: "" },
     videoUrl: { type: "default", value: "" },
@@ -35,16 +43,11 @@ export default function Recursos() {
   });
 
   useEffect(() => {
-    onPageRendered();
-
-  }, []);
-
-
-  const onPageRendered = async () => {
-    getRecursos();
+    graphqlGet("listRecursos", setRecursos);
     subscribeCreateRecurso();
     subscribeDeleteRecurso();
-  };
+
+  }, []);
 
   /**
    * GRAPHQL CRUD functions and subscribres
@@ -64,31 +67,6 @@ export default function Recursos() {
     });
   };
 
-  const createRecurso = () => {
-
-    var itesmetails = {
-      name: fields.name.value,
-      type: fields.type.value,
-      file: fields.file.value.name,
-      videoUrl: fields.videoUrl.value,
-      text: fields.text.value
-    };
-
-    console.log("Recurso Details : " + JSON.stringify(itesmetails));
-    API.graphql(
-      graphqlOperation(mutations.createRecurso, { input: itesmetails })
-    );
-  };
-
-  const deleteRecurso = (id) => {
-    var itesmetails = {
-      id: id,
-    };
-    API.graphql(
-      graphqlOperation(mutations.deleteRecurso, { input: itesmetails })
-    );
-  };
-
   const subscribeDeleteRecurso = async () => {
     await API.graphql(
       graphqlOperation(subscriptions.onDeleteRecurso)
@@ -104,41 +82,19 @@ export default function Recursos() {
     });
   };
 
-  // list
-  const getRecursos = () => {
-    API.graphql(graphqlOperation(queries.listRecursos)).then((data) => {
-      setRecursos(data.data.listRecursos.items);
-    }
-    );
+  const createRecurso = () => {
+
+    var itemDetails = {
+      name: fields.name.value,
+      type: fields.type.value,
+      file: fields.file.value.name,
+      videoUrl: fields.videoUrl.value,
+      text: fields.text.value
+    };
+
+    graphqlCreate('createRecursos', itemDetails);
+
   };
-
-
-  /**
-   * UI Operation functions
-   */
-
-  const validate = () => {
-    for (var field in fields) {
-      if (fields[field] === "" && field !== "videoUrl") {
-        alert("Rellene todos los campos");
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const uploadToS3 = async (file) => {
-
-    Storage.put(file.name.replace(/\s+/g, ''), file, {
-      contentType: file.type,
-    }).then((result) => {
-      console.log(result);
-    }).catch((err) => {
-      alert(err);
-    })
-  }
-
-
 
   const submit = () => {
     /**
@@ -146,15 +102,10 @@ export default function Recursos() {
      * it will create Recurso and upload the correspoing image to s3
      */
     setIsCreating(true);
-
     if (validate()) {
-
       for (var field in fields) {
         if (fields[field].type === "file") {
-          console.log(fields[field].value);
-
           uploadToS3(fields[field].value);
-
         }
       }
 
@@ -172,6 +123,22 @@ export default function Recursos() {
    * Render Functions
    */
 
+
+  const generateFileCardData = () => {
+
+    const videoRecurso = recursos.filter(recurso => recurso.type === "video");
+
+
+    return (
+      videoRecurso.map((item) => {
+        return (
+          <FileCard data={item} setIframeSrc={setIframeSrc} />
+        )
+      })
+    )
+  }
+
+  /*
   const renderRecurso = () => {
 
     const documnetRecurso = recursos.filter(recurso => recurso.type === "document");
@@ -252,11 +219,11 @@ export default function Recursos() {
       </div>
     );
   };
-
+  */
 
   return (
     <GeneralLayout>
-      <ContainerPage>
+      <FullPage>
         <Modal
           element={"Recurso"}
           fields={fields}
@@ -270,24 +237,11 @@ export default function Recursos() {
           iframeSrc={iframeSrc}
           setIframeSrc={setIframeSrc}
         />
-        <div  className="flex flex-row mx-5 sm:mx-0">
-          <div  className="flex text-xl my-8 sm:text-3xl">Recursos</div>
-          {authContext.isAdmin && (
-            <div  className="flex my-8 sm:text-3xl mx-3">
-              <div
-                 className="bg-blue-500 text-white text-center cursor-pointer"
-                style={{ width: "40px" }}
-                onClick={(e) => {
-                  setShowModal(true);
-                }}
-              >
-                +
-            </div>
-            </div>
-          )}
+        <div className="flex flex-col justify-center" style={{ height: "20%" }}>
+          <AddButtonAndTitle title={"Ponente"} setShowModal={setShowModal} />
         </div>
-        {renderRecurso()}
-      </ContainerPage>
+        <List data = {generateFileCardData() } />
+      </FullPage>
     </GeneralLayout>
   );
 }
