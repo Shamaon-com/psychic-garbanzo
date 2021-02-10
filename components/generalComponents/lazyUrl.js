@@ -11,6 +11,7 @@ export default function LazyImage({ ...props }) {
     const [source, setSource] = useState("")
 
     useEffect(() => {
+        console.log(props.data)
         getImage(props.data);
 
     }, []);

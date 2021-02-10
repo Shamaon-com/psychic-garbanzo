@@ -16,7 +16,7 @@ import Iframe from '../components/generalComponents/iframe';
 import Modal from '../components/generalComponents/modal';
 import QuestionBox from '../components/eventoPage/questionBox';
 import DeleteButton from '../components/adminComponentes/deleteButton';
-import Tabs from '../components/generalComponents/tabs';
+import Tabs from '../components/containers/tabs';
 import AddButtonAndTabs from '../components/adminComponentes/addButtonAndTitle';
 
 export default function Home() {

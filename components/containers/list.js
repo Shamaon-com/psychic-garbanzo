@@ -12,12 +12,9 @@ export default function List({ ...props }) {
          ]
      }
      */
-    useEffect(() => {
-        console.log(props.data)
-    })
 
     return (
-        <div className="flex flex-col items-center space-y-4 w-full">
+        <div className="flex flex-col items-center space-y-4 w-full mb-10">
             {props.data.map((component, key) => {
                 return (
                     component

@@ -5,14 +5,11 @@ import DeleteButton from '../adminComponentes/deleteButton';
 
 export default function EntryCard({ ...props }) {
     /**
-     * Recives array of items to display as list for agenda
-     
-     props = {
-        data = { id: ..., title: ..., date: ...}
-     }
-
-     */
-
+        Recives array of items to display as list for agenda
+        props = {
+            data = { id: ..., title: ..., date: ...}
+        }
+    */
 
     return (
         <div className="shadow h-24 w-10/12 flex flex-col justify-center align-center items-center">

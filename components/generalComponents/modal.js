@@ -209,6 +209,8 @@ export default function Modal({ ...props }) {
         case "date":
           dataArray.push(renderDateField(field, props.fields[field]));
           break;
+        case "disabled":
+          break;
         default:
           dataArray.push(renderTextField(field, props.fields[field]));
       }

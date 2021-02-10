@@ -9,7 +9,6 @@ import * as subscriptions from '../src/graphql/subscriptions';
 export const graphqlGet = async (funcName, setter) => {
 
     API.graphql(graphqlOperation(queries[funcName])).then((data) => {
-        console.log(data.data[funcName].items)
         setter(data.data[funcName].items);
     });
 }

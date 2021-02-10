@@ -18,7 +18,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
   }, []);
 
   async function onLoad() {
-    console.log(authContext);
+
     if ( authContext.isLoggedIn == false ) {
       router.push("/login");
     } 

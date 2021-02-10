@@ -1,5 +1,6 @@
 
 import { createContext } from "react";
+import { Storage } from "aws-amplify";
 
 
 export  const AuthContext = createContext({
@@ -33,7 +34,7 @@ export const uploadToS3 = async (file) => {
     })
   }
 
-  export const validate = () => {
+  export const validate = (fields) => {
     for (var field in fields) {
       if (fields[field] === "") {
         alert("Rellene todos los campos");

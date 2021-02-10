@@ -15,8 +15,10 @@ import Modal from '../components/generalComponents/modal';
 import FullPage from '../components/containers/fullPage';
 import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
 import FileCard from '../components/recursosPage/fileCard';
+import VideoCard from '../components/recursosPage/videoCard';
 import List  from '../components/containers/list';
 import IframeModal from '../components/generalComponents/iframeModal';
+
 
 export default function Recursos() {
 
@@ -28,19 +30,18 @@ export default function Recursos() {
   const [iframeSrc, setIframeSrc] = useState(null);
 
   const [fields, handleFieldChange] = useModalFields({
-    type: { 
-      type: "select", value: "document",
-       options: [
-        { key: "document", text: "Documentos" }, 
-        { key: "video", text: "Video" }
-      ] 
-    },
     name: { type: "default", value: "" },
     text: { type: "default", value: "" },
     videoUrl: { type: "default", value: "" },
     file: { type: "file", value: {} }
-
   });
+
+
+  const [currentRecurso, setCurrentRecurso] = useState({});
+
+  const documentType = "document";
+  const videoResourceType = "video";
+
 
   useEffect(() => {
     graphqlGet("listRecursos", setRecursos);
@@ -49,16 +50,12 @@ export default function Recursos() {
 
   }, []);
 
-  /**
-   * GRAPHQL CRUD functions and subscribres
-   */
 
   const subscribeCreateRecurso = async () => {
     await API.graphql(
       graphqlOperation(subscriptions.onCreateRecurso)
     ).subscribe({
       next: (subonCreateRecurso) => {
-        console.log(subonCreateRecurso.value.data.onCreateRecurso)
         setRecursos((recursos) => [
           ...recursos,
           subonCreateRecurso.value.data.onCreateRecurso,
@@ -86,13 +83,15 @@ export default function Recursos() {
 
     var itemDetails = {
       name: fields.name.value,
-      type: fields.type.value,
+      type: currentRecurso.type.value,
       file: fields.file.value.name,
       videoUrl: fields.videoUrl.value,
       text: fields.text.value
     };
 
-    graphqlCreate('createRecursos', itemDetails);
+    console.log(itemDetails);
+
+    graphqlCreate('createRecurso', itemDetails);
 
   };
 
@@ -101,11 +100,14 @@ export default function Recursos() {
      * This function is trigged when create button is pressed in Modal component,
      * it will create Recurso and upload the correspoing image to s3
      */
+
     setIsCreating(true);
-    if (validate()) {
-      for (var field in fields) {
-        if (fields[field].type === "file") {
-          uploadToS3(fields[field].value);
+    if (validate(fields)) {
+      if(status.type == videoResourceType){
+        for (var field in fields) {
+          if (fields[field].type === "file") {
+            uploadToS3(fields[field].value);
+          }
         }
       }
 
@@ -115,20 +117,22 @@ export default function Recursos() {
     }
   };
 
+  const generateVideoCardData = () => {
 
-
-
-  /**
-   * 
-   * Render Functions
-   */
+    const videoRecurso = recursos.filter(recurso => recurso.type === videoResourceType);
+    return (
+      videoRecurso.map((item) => {
+        return (
+          <VideoCard data={item} setIframeSrc={setIframeSrc} />
+        )
+      })
+    )
+  }
 
 
   const generateFileCardData = () => {
 
-    const videoRecurso = recursos.filter(recurso => recurso.type === "video");
-
-
+    const videoRecurso = recursos.filter(recurso => recurso.type === documentType);
     return (
       videoRecurso.map((item) => {
         return (
@@ -138,95 +142,40 @@ export default function Recursos() {
     )
   }
 
-  /*
-  const renderRecurso = () => {
+  const modifyState = (typeOfRecurso) => {
+    if(typeOfRecurso == documentType){
+      var diccionario = {type: {type: "disabled", value: documentType}};
 
-    const documnetRecurso = recursos.filter(recurso => recurso.type === "document");
+      for(let key in fields){
+        if(key != "videoUrl"){
+          diccionario[key] = fields[key];
+        }
+      }
 
-    const videoRecurso = recursos.filter(recurso => recurso.type === "video");
+      setCurrentRecurso(diccionario);
+      setShowModal(true);
 
+    } else if(typeOfRecurso == videoResourceType){
+      var diccionario = {type: {type: "disabled", value: videoResourceType}};
 
-    return (
-      <div  className="flex flex-col w-full max-w-2xl mx-auto">
-        <div  className="w-full bg-gray-100 shadow">
-          <div  className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
-            Documentos
-          </div>
-          {documnetRecurso.map((recurso, index) => {
-            return (
-              <div  className="flex w-full flex-row h-20 relative">
-                {authContext.isAdmin && (
-                  <div
-                    id={recurso.id}
-                     className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
-                    style={{ width: "30px" }}
-                    onClick={(e) => {
-                      deleteRecurso(e.target.id);
-                    }}
-                  >
-                    -
-                  </div>
-                )}
-                <div  className="flex flex-col w-1/6 h-full justify-center items-center">
-                  <a href="http://www.google.com">
-                    {icon()}
-                  </a>
-                </div>
-                <div  className="flex flex-col w-5/6 justify-center align-center">
-                  <div  className="mb-1 text-blue-700">
-                    {recurso.name}
-                  </div>
-                  {recurso.text}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-        <div  className="w-full bg-gray-100 shadow mt-5">
-          <div  className="flex w-full h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
-            Videos
-                    </div>
-          {videoRecurso.map((recurso, index) => {
-            return (
-              <div  className="flex w-full flex-row h-20 relative">
-                {authContext.isAdmin && (
-                  <div
-                    id={recurso.id}
-                     className="bg-red-500 text-white text-center cursor-pointer z-3 absolute top-0 right-0 "
-                    style={{ width: "30px" }}
-                    onClick={(e) => {
-                      deleteRecurso(e.target.id);
-                    }}
-                  >
-                    -
-                  </div>
-                )}
-                <div  className="flex flex-col w-1/6 h-full justify-center items-center">
-                  <div onClick={(e) => setIframeSrc(recurso.videoUrl)}>
-                    {videoIcon()}
-                  </div>
-                </div>
-                <div  className="flex flex-col w-5/6 justify-center align-center">
-                  <div  className="mb-1 text-blue-700">
-                    {recurso.name}
-                  </div>
-                  {recurso.text}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    );
-  };
-  */
+      for(let key in fields){
+        if(key != "file"){
+          diccionario[key] = fields[key];
+        }
+      }
+
+      setCurrentRecurso(diccionario);
+      setShowModal(true);
+    }
+  }
+
 
   return (
     <GeneralLayout>
       <FullPage>
         <Modal
           element={"Recurso"}
-          fields={fields}
+          fields={currentRecurso}
           handleFieldChange={handleFieldChange}
           submit={submit}
           showModal={showModal}
@@ -238,9 +187,20 @@ export default function Recursos() {
           setIframeSrc={setIframeSrc}
         />
         <div className="flex flex-col justify-center" style={{ height: "20%" }}>
-          <AddButtonAndTitle title={"Ponente"} setShowModal={setShowModal} />
+          <AddButtonAndTitle title={"Recursos"} setShowModal={setShowModal} />
+        </div>
+        <div 
+          className="flex w-10/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
+          onClick={() => modifyState(documentType)}
+        >
+          Documentos
         </div>
         <List data = {generateFileCardData() } />
+        <div className="flex w-10/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
+        onClick={() => modifyState(videoResourceType)}>
+          Videos
+        </div>
+        <List data = {generateVideoCardData() } />
       </FullPage>
     </GeneralLayout>
   );
