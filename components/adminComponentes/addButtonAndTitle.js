@@ -7,7 +7,7 @@ export default function AddButtonAndTitle({ ...props }) {
      *
      * props = {
         title: ...
-        
+        setShowModal: setShowModal()
         }
      */
 

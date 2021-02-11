@@ -9,7 +9,7 @@ module.exports = {
         'hero-lg': "url('/img/handshake.jpeg')",
       },
       height: {
-        'mobile': "40rem",
+        'mobile': "25rem",
       },
       shadow: {
         'left': "-10px 0px 10px 1px #aaaaaa"
@@ -19,7 +19,7 @@ module.exports = {
   variants: {
     extend: {
         opacity: [
-            "disabled"
+          "disabled"
         ],
         backgroundColor: [
             "disabled"

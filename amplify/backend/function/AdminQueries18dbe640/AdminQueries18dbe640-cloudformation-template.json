@@ -8,6 +8,12 @@
     "authgarbanzoauthUserPoolId": {
       "Type": "String",
       "Default": "authgarbanzoauthUserPoolId"
+    },
+    "deploymentBucketName": {
+      "Type": "String"
+    },
+    "s3Key": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -67,8 +73,12 @@
         "Runtime": "nodejs10.x",
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-garbanzo-dev-141821-deployment",
-          "S3Key": "amplify-builds/AdminQueries18dbe640-415a2f30754b48454278-build.zip"
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": {
+            "Ref": "s3Key"
+          }
         }
       }
     },

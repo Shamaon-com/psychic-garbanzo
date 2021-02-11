@@ -30,7 +30,7 @@ export default function QuestionBox() {
 	};
 
 	return (
-		<div  className="flex flex-col h-mobile lg:h-52 w-full border-8 border-gray-300">
+		<div  className="flex flex-col h-full lg:h-52 w-full border-8 border-gray-300">
 			<div  className="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
 				<div  className="flex items-center">
 					<h2  className="font-semibold tracking-wider">

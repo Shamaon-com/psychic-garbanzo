@@ -17,7 +17,7 @@ import Modal from '../components/generalComponents/modal';
 import QuestionBox from '../components/eventoPage/questionBox';
 import DeleteButton from '../components/adminComponentes/deleteButton';
 import Tabs from '../components/containers/tabs';
-import AddButtonAndTabs from '../components/adminComponentes/addButtonAndTitle';
+import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
 
 export default function Home() {
 
@@ -39,6 +39,7 @@ export default function Home() {
 	const onPageRendered = async () => {
 		getIframe();
 		subscribeCreateIframe();
+		subscribeDeleteIframe();
 	};
 
 	const getIframe = () => {
@@ -46,16 +47,6 @@ export default function Home() {
 			console.log(data.data.listIframes.items)
 			setIframe(data.data.listIframes.items[0]);
 		});
-	};
-
-	const deleteIframe = (id) => {
-		var itemDetails = {
-			id: id,
-		};
-		API.graphql(
-			graphqlOperation(mutations.deleteIframe, { input: itemDetails })
-		);
-		setIframe(null);
 	};
 
 	const subscribeCreateIframe = async () => {
@@ -67,6 +58,14 @@ export default function Home() {
 			},
 		});
 	};
+
+	const subscribeDeleteIframe = async () => {
+		await API.graphql(graphqlOperation(subscriptions.onDeleteIframe)).subscribe({
+		  next: (subonDeleteIframe) => {
+			setIframe(null)
+		  },
+		});
+	  };
 
 	const createIframe = (e) => {
 		if (fields.title === '' || fields.url === '') {
@@ -101,13 +100,13 @@ export default function Home() {
 				setShowModal={setShowModal}
 				isCreating={isCreating}
 			/>
-			<div className="h-mobile flex mx-auto container w-full lg:items-center lg:h-4/5  lg:px-8">
+			<div className="flex mx-auto container w-full lg:items-center h-full lg:h-4/5  lg:px-8">
 				<div className="flex flex-col mx-auto h-full w-full lg:flex-row">
-					<div className="flex flex-col w-full h-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+					<div className="flex flex-col w-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
 						{iframe ? (
 							<>
 								<div
-									className="text-5x1 lg:text-5xl text-gray-500"
+									className="lg:text-5xl text-gray-500"
 									style={{ height: '10%' }}
 								>
 									{iframe.title}
@@ -116,18 +115,20 @@ export default function Home() {
 									className="flex-1 w-full h-full relative"
 									style={{ height: '90%' }}
 								>
-									<DeleteButton id={iframe.id} deleteFunction={deleteIframe} />
+									<DeleteButton id={iframe.id} item={'Iframe'} />
 									<Iframe src={iframe.url} />
 								</div>
 							</>
 						) : (
-							<AddButtonAndTabs />
+							<AddButtonAndTitle title={"Anade un nuevo evento"} setShowModal={setShowModal}/>
 						)}
 					</div>
-					<Tabs data={[
-						{ id: 'chat', component: <Chat />, name: 'Chat' },
-						{ id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
-					]} />
+					<div className="flex flex-col w-full flex-grow pt-4 lg:my-auto lg:pt-8 lg:px-5 lg:h-5/6 lg:w-1/4">
+						<Tabs data={[
+							{ id: 'chat', component: <Chat />, name: 'Chat' },
+							{ id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
+						]} />
+					</div>
 				</div>
 			</div>
 		</GeneralLayout>

@@ -206,7 +206,7 @@ export default function Chat({ ...props }) {
 	};
 
 	return (
-		<div  className="flex flex-col h-mobile lg:h-full w-full border-8 border-gray-300">
+		<div  className="flex flex-col h-full w-full border-8 border-gray-300">
 			<div  className="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
 				<div  className="flex items-center">
 					<h2  className="font-semibold tracking-wider">Chat</h2>
@@ -229,9 +229,9 @@ export default function Chat({ ...props }) {
 				<button
 					 className="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
                         px-3 py-1 w-auto transistion-color duration-100 focus:outline-none"
-					onClick={(e) => {
-						createMessage(e);
-					}}
+						onClick={(e) => {
+							createMessage(e);
+						}}
 				>
 					Send
 				</button>

@@ -104,11 +104,11 @@ export default function Tabs({ ...props }) {
     }
 
     return (
-        <div className="my-auto flex flex-col justify-center items-center">
-            <div className="flex flex-row mb-10">
+        <div className="flex flex-col justify-center items-center h-full">
+            <div className="flex flex-row mb-5 w-full justify-center">
                 {isMobile ? renderTabsMobile() : renderTabs()}
             </div>
-            <div className="flex w-full">
+            <div className="flex w-full h-full">
                 {renderTabContent()}
             </div>
         </div>
