@@ -142,8 +142,9 @@ export default function Agenda() {
         <div className="flex flex-col justify-center" style={{ height: "20%" }}>
           <AddButtonAndTitle title={"Agenda"} setShowModal={setShowModal} />
         </div>
-        <Tabs data={parseDates()} />
-
+        <div style={{ height: "80%"}}>
+          <Tabs data={parseDates()} />
+        </div>
       </FullPage>
     </GeneralLayout>
   );

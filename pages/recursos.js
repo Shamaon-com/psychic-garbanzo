@@ -190,13 +190,13 @@ export default function Recursos() {
           <AddButtonAndTitle title={"Recursos"} setShowModal={setShowModal} />
         </div>
         <div 
-          className="flex w-10/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
+          className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
           onClick={() => modifyState(documentType)}
         >
           Documentos
         </div>
         <List data = {generateFileCardData() } />
-        <div className="flex w-10/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
+        <div className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
         onClick={() => modifyState(videoResourceType)}>
           Videos
         </div>

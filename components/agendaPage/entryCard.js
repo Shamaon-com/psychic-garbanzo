@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import { AuthContext } from "../../utils/functionsLib";
 
 import DeleteButton from '../adminComponentes/deleteButton';
 
@@ -11,10 +12,16 @@ export default function EntryCard({ ...props }) {
         }
     */
 
+   const authContext = useContext(AuthContext);
+   const generalSettings = authContext.generalSettings[0]
+
+
     return (
         <div className="shadow h-24 w-10/12 flex flex-col justify-center align-center items-center">
             <div className="h-1/4 flex flex-row w-full relative">
-                <div className="text-center bg-gray-400 text-gray-100 w-full">
+                <div className="text-center text-gray-100 w-full"
+                     style={{backgroundColor: generalSettings.boxBorderColor}}
+                >
                     {props.data.title} - {" "}
                     {new Date(props.data.date).toLocaleTimeString([], {
                         timeStyle: "short"
@@ -23,7 +30,8 @@ export default function EntryCard({ ...props }) {
                 <DeleteButton id={props.data.id} item={"Agenda"} />
             </div>
             <div
-                className="font-thin h-3/4 bg-blue-50 w-full text-blue-700 p-2 text-center"
+                className="font-thin h-3/4 w-full text-blue-700 p-2 text-center"
+                style={{backgroundColor: generalSettings.boxBackgroundColor}}
                 id="body"
             >
                 {props.data.description}

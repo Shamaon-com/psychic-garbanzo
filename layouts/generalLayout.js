@@ -10,7 +10,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(true)
   const authContext = useContext(AuthContext);
-
+  const generalSettings = authContext.generalSettings[0]
 
   useEffect(() => {
     onLoad();
@@ -34,7 +34,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
 
   const checkEnabledPages = () => {
-    const pageArray = ["pageAgenda", "pageContacto", "pagePonentes", "pagePatrocinadores", "pagePrensa"]
+    const pageArray = ["pageAgenda", "pageContacto", "pagePonentes", "pagePatrocinadores", "pageRecursos"]
     const generalSettings = authContext.generalSettings[0]
 
     var enabledPages = []
@@ -45,6 +45,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
       }
     }
 
+    enabledPages.push("pageControl")
     setEnabledPages(enabledPages);
   }
 
@@ -202,7 +203,7 @@ export default function GeneralLayout({ children, ...pageProps }) {
 
     return (
         <div  className="min-h-screen h-screen flex flex-col font-NanumGothic"
-              style={{backgroundColor: authContext.generalSettings[0].backgroundColor}}
+              style={{backgroundColor: generalSettings.backgroundColor, color: generalSettings.textColor}}
         >
             {isMobile ? renderMobileMenu(): renderPcNavBar()}
             {children}

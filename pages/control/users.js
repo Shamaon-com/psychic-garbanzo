@@ -1,20 +1,9 @@
 import AdminLayout from '../../layouts/adminLayout';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormFields } from '../../utils/hooksLib';
 import { Auth, API } from 'aws-amplify';
-import ContainerPage from '../../components/containers';
+import ContainerPage from '../../components/containers/containerPage';
 
-/**
-TODO
-
-- Delete user
-- Search for user
-- Bulk update
-- Bulk delete
-- Reset password
-- Email integration
-- Integration with graphqlsaa a
-*/
 
 export default function UserControl(props) {
 	const [users, setUsers] = useState([]);

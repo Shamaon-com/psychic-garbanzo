@@ -22,6 +22,7 @@ export function setDictValue(initialState) {
     fields,
     function (key, value) {
       if(fields[key] !== undefined){
+        console.log(key, value)
         setValues({
           ...fields,
           [key]: value,

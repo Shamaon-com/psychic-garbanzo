@@ -132,7 +132,7 @@ export default function Ponentes() {
           isCreating={isCreating}
         />
         <div className="flex flex-col justify-center" style={{ height: "20%" }}>
-          <AddButtonAndTitle title={"Ponente"} setShowModal={setShowModal} />
+          <AddButtonAndTitle title={"Ponentes"} setShowModal={setShowModal} />
         </div>
         <Grid
           data={ generateData() }

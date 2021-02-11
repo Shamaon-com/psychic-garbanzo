@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import DeleteButton from '../adminComponentes/deleteButton';
 import LazyImage from '../generalComponents/lazyImage';
-import LazyUrl from '../generalComponents/lazyUrl'
+
 
 export default function PatrocinadorsCard({ ...props }) {
     /**
@@ -14,7 +14,7 @@ export default function PatrocinadorsCard({ ...props }) {
      */
 
     return (
-      <div key={props.data.id}  className="shadow py-5 px-5 sm:max-w-xs max-h-40 relative mb-5">
+      <div key={props.data.id}  className="shadow bg-white py-5 px-5 sm:max-w-xs max-h-40 relative mb-5">
         <DeleteButton id={props.data.id} item={"Patrocinador"} />
         <a href={props.data.link}>
           <div key={props.data.id} className="flex justify-center photo-wrapper w-full h-full">

@@ -1,14 +1,14 @@
 import AdminLayout from "../../layouts/adminLayout";
-import ContainerPage from "../../components/containers";
+import ContainerPage from "../../components/containers/containerPage";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 
 import { setDictValue } from "../../utils/hooksLib";
-import { AuthContext } from "../../utils/functionsLib";
+import { AuthContext, uploadToS3 } from "../../utils/functionsLib";
 import { ChromePicker } from "react-color";
 import useDynamicRefs from "use-dynamic-refs";
 
-import * as mutations from "../../config/graphql/mutations";
+import * as mutations from "../../src/graphql/mutations";
 
 export default function PlatformControl(props) {
   const authContext = useContext(AuthContext);
@@ -19,8 +19,8 @@ export default function PlatformControl(props) {
   const [loaded, setIsLoaded] = useState(false)
   const [initalState, setInitalState] = useState({
     login: "con-registro",
-    mainLogo: "a",
-    backgroundLoginImage: "a",
+    mainLogo: null,
+    backgroundLoginImage: null,
     backgroundColor: "#ffffff",
     boxBackgroundColor: "#eff6ff",
     boxBorderColor: "#9ca3af",
@@ -38,7 +38,6 @@ export default function PlatformControl(props) {
   const [dict, setDict] = setDictValue(initalState);
 
   useEffect(() => {
-
 
     /**
      * Assing incoming settings object to inital state,
@@ -81,6 +80,7 @@ export default function PlatformControl(props) {
   const createSettings = () => {
 
     setIsLoaded(false);
+
     API.graphql(
       graphqlOperation(mutations.createGeneralSettings, { input: dict })
     );
@@ -93,6 +93,16 @@ export default function PlatformControl(props) {
 
     setIsLoaded(false);
     const dictAndId = { ...dict, id: appID };
+
+    if (dict["mainLogo"] !== null) {
+      dictAndId["mainLogo"] = dict["mainLogo"].value.name;
+      uploadToS3(dict["mainLogo"].value);
+    }
+
+    if (dict["backgroundLoginImage"] !== null) {
+      dictAndId["backgroundLoginImage"] = dict["backgroundLoginImage"].value.name;
+      uploadToS3(dict["backgroundLoginImage"].value);
+    }
 
     API.graphql(
       graphqlOperation(mutations.updateGeneralSettings, { input: dictAndId })
@@ -369,14 +379,42 @@ export default function PlatformControl(props) {
           <p  className="mr-auto font-light w-3/5">
             Logo principal de la pagina
           </p>
-          <input  className="w-2/6" id="mainLogo" accept="png" type="file" />
+          { dict["mainLogo"] != null ? 
+            <div className="flex flex-row">
+              <div className = "mx-5">
+                {dict["mainLogo"]}
+              </div>
+              <div className="text-purple-500 cursor-pointer" onClick={()=> setDict("mainLogo", null)}> Cambiar </div>
+            </div>
+            :
+            <input className="w-2/6" id="mainLogo" accept="png" type="file" 
+              onChange={(e) => {
+                validate(); 
+                setDict(e.target.id, {"type": "file", "value": e.target.files[0]})}
+              }
+            />
+          }
         </div>
         <div  className="flex flex-row mb-3 py-3 border-b">
           <p  className="text-gray-600 w-1/5">Fondo 1</p>
           <p  className="mr-auto font-light w-3/5">
             Imagen de fondo en la pagina de inicio
           </p>
-          <input  className="w-2/6" id="mainLogo" accept="png" type="file" />
+          { dict["backgroundLoginImage"] != null ? 
+            <div className="flex flex-row">
+              <div className = "mx-5">
+                {dict["backgroundLoginImage"]}
+              </div>
+              <div className="text-purple-500 cursor-pointer" onClick={()=> setDict("backgroundLoginImage", null)}> Cambiar </div>
+            </div>
+            :
+            <input className="w-2/6" id="backgroundLoginImage" accept="png" type="file" 
+              onChange={(e) => {
+                validate(); 
+                setDict(e.target.id, {"type": "file", "value": e.target.files[0]})}
+              }
+            />
+          }
         </div>
       </>
     );

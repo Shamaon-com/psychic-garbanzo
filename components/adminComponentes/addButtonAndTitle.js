@@ -11,14 +11,18 @@ export default function AddButtonAndTitle({ ...props }) {
         }
      */
 
+
     const authContext = useContext(AuthContext);
+    const generalSettings = authContext.generalSettings[0];
+
 
     return (
         <>
             { authContext.isAdmin &&
                 <div class="flex flex-row items-center">
                     <div
-                        className="text-3xl lg:text-5xl text-gray-500"
+                        className="text-3xl lg:text-5xl"
+                        style={{color: generalSettings.titleColor}}
                     >
                         {props.title}
                     </div>

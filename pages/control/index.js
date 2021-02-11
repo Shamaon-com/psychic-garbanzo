@@ -1,5 +1,5 @@
 import AdminLayout from '../../layouts/adminLayout';
-import ContainerPage from '../../components/containers';
+import ContainerPage from '../../components/containers/containerPage';
 import React, { useContext, useEffect } from 'react';
 
 import { AuthContext } from '../../utils/functionsLib';
