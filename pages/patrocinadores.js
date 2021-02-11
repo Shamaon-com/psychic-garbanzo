@@ -76,7 +76,7 @@ export default function Patrocinador() {
       file: fields.image.value.name
     };
 
-    graphqlCreate('createPatrocinadors', itemDetails);
+    graphqlCreate('createPatrocinador', itemDetails);
   };
 
 
@@ -128,7 +128,7 @@ export default function Patrocinador() {
       <Grid
         data={ generateData() }
         pcCols={6}
-        mobileCols={1}
+        mobileCols={4}
       />
       </FullPage>
     </GeneralLayout>
