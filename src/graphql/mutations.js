@@ -53,10 +53,14 @@ export const createEvento = /* GraphQL */ `
   ) {
     createEvento(input: $input, condition: $condition) {
       id
-      type
+      url
       title
-      startData
+      startDate
       endDate
+      chat
+      questions
+      allowed
+      image
       createdAt
       updatedAt
     }
@@ -69,10 +73,14 @@ export const updateEvento = /* GraphQL */ `
   ) {
     updateEvento(input: $input, condition: $condition) {
       id
-      type
+      url
       title
-      startData
+      startDate
       endDate
+      chat
+      questions
+      allowed
+      image
       createdAt
       updatedAt
     }
@@ -85,10 +93,14 @@ export const deleteEvento = /* GraphQL */ `
   ) {
     deleteEvento(input: $input, condition: $condition) {
       id
-      type
+      url
       title
-      startData
+      startDate
       endDate
+      chat
+      questions
+      allowed
+      image
       createdAt
       updatedAt
     }
@@ -173,48 +185,6 @@ export const deleteQuestion = /* GraphQL */ `
       id
       user
       question
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createIframe = /* GraphQL */ `
-  mutation CreateIframe(
-    $input: CreateIframeInput!
-    $condition: ModelIframeConditionInput
-  ) {
-    createIframe(input: $input, condition: $condition) {
-      id
-      url
-      title
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateIframe = /* GraphQL */ `
-  mutation UpdateIframe(
-    $input: UpdateIframeInput!
-    $condition: ModelIframeConditionInput
-  ) {
-    updateIframe(input: $input, condition: $condition) {
-      id
-      url
-      title
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteIframe = /* GraphQL */ `
-  mutation DeleteIframe(
-    $input: DeleteIframeInput!
-    $condition: ModelIframeConditionInput
-  ) {
-    deleteIframe(input: $input, condition: $condition) {
-      id
-      url
-      title
       createdAt
       updatedAt
     }

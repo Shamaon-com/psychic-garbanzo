@@ -20,8 +20,8 @@ const PlatformControl = (props) => {
   const [loaded, setIsLoaded] = useState(false)
   const [initalState, setInitalState] = useState({
     login: "con-registro",
-    mainLogo: null,
-    backgroundLoginImage: null,
+    mainLogo: "a",
+    backgroundLoginImage: "a",
     backgroundColor: "#ffffff",
     boxBackgroundColor: "#eff6ff",
     boxBorderColor: "#9ca3af",
@@ -32,7 +32,7 @@ const PlatformControl = (props) => {
     pageAgenda: false,
     pagePonentes: false,
     pagePatrocinadores: false,
-    pagePrensa: false,
+    pageRecursos: false,
     pageContacto: false,
   })
 
@@ -232,7 +232,7 @@ const PlatformControl = (props) => {
         description: "Habilita el modulo de ponentes",
       },
       {
-        id: "pagePrensa",
+        id: "pageRecursos",
         name: "Recursos",
         description: "Habilita el modulo de recursos",
       },

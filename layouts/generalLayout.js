@@ -3,29 +3,31 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
 
-export default function GeneralLayout({ children, ...pageProps }) {
+
+
+
+export default function GeneralLayout({ children }) {
 
   const [isLoading, setIsLoading] = useState(true);
   const [enabledPages, setEnabledPages] = useState([])
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(true)
   const authContext = useContext(AuthContext);
+  
   const generalSettings = authContext.generalSettings[0]
 
   useEffect(() => {
     onLoad();
-
   }, []);
 
   async function onLoad() {
-
+    console.log(authContext)
     if ( authContext.isLoggedIn == false ) {
       router.push("/login");
     } 
     else if (authContext.generalSettings.length === 0){
-			// console.log("pushing to settings")
-			// router.push("/control/settings");
-      setIsLoading(false)
+			console.log("pushing to settings")
+			router.push("/control/settings");
     }
     else {
       checkEnabledPages();

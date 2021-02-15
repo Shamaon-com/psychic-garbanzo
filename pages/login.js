@@ -3,7 +3,8 @@ import { AuthContext } from "../utils/functionsLib";
 import { useFormFields } from '../utils/hooksLib';
 import ContainerFull from "../components/containers/contaierFull"
 
-export default function Login() {
+
+const Login = () => {
 
   // General variables
   const authContext = useContext(AuthContext);
@@ -13,8 +14,6 @@ export default function Login() {
     password: "",
     email: ""
   }) 
-
-
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -108,7 +107,7 @@ export default function Login() {
 
   return (
     <ContainerFull>
-      <div  className="w-full h-1/4 flex flex-row">
+      <div className="w-full h-1/4 flex flex-row">
         <img
            className="mx-auto h-full"
           src="/img/Screen Capture_select-area_20201221163707.png"
@@ -127,3 +126,6 @@ export default function Login() {
     </ContainerFull>
   );
 }
+
+
+export default Login;

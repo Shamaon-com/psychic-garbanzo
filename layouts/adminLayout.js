@@ -22,7 +22,7 @@ export default function AdminLayout({ children, ...pageProps }) {
       // };
       setIsLoading(false);
     } else {
-      router.push("/");
+      router.push("/login");
     }
   }
 
