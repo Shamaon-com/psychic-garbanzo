@@ -67,12 +67,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "garbanzoauthPostConfirmation",
+            "psychicgarbanzo9d2c3b48PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "garbanzoauthPostConfirmation",
+                  "psychicgarbanzo9d2c3b48PostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -122,12 +122,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "garbanzoauthPostConfirmation",
+            "psychicgarbanzo9d2c3b48PostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "garbanzoauthPostConfirmation",
+                  "psychicgarbanzo9d2c3b48PostConfirmation",
                   "-",
                   {
                     "Ref": "env"

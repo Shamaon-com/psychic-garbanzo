@@ -1,14 +1,18 @@
 [
-  {
-    "groupName": "adins",
-    "precedence": 1
-  },
-  {
-    "groupName": "admins",
-    "precedence": 2
-  },
-  {
-    "groupName": "users",
-    "precedence": 3
-  }
+    {
+        "groupName": "admins",
+        "precedence": 1
+    },
+    {
+        "groupName": "moderators",
+        "precedence": 2
+    },
+    {
+        "groupName": "ponentes",
+        "precedence": 3
+    },
+    {
+        "groupName": "users",
+        "precedence": 4
+    }
 ]

@@ -28,6 +28,8 @@ function MyApp({ Component, pageProps }) {
 
   const router = useRouter();
 
+  const Layout = Component.layout || (children => <>{children}</>)
+
   useEffect(() => {
 
     async function onLoad() {
@@ -48,7 +50,7 @@ function MyApp({ Component, pageProps }) {
         setIsAuthenticating(false);
 
       } catch (e) {
-        console.log(e);
+        //console.log(e);
         setIsAuthenticating(false);
       }
     }
@@ -59,18 +61,26 @@ function MyApp({ Component, pageProps }) {
     try {
       // Sign in user
       const user = await Auth.signIn(username, password);
-      setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
-      setAttributes(user.attributes);
 
+      if(user.challengeName){
+        router.push('/verify');
+      }else{
+        setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
+        setAttributes(user.attributes);
+      }
+    } catch (e){
+      console.log(e)
+    }
+
+    try {
       // Check if settings are set 
       const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
       setGeneralSettings(settings.data.listGeneralSettingss.items);
 
       setIsLoggedIn(true);
       router.push("/");
-    }
-    catch(e){
-      alert(e.message);
+    } catch(e){
+      console.log(e);
     }
   }
 
@@ -80,7 +90,7 @@ function MyApp({ Component, pageProps }) {
 
 
   return (
-    <>
+    <Layout>
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"/>
@@ -101,7 +111,7 @@ function MyApp({ Component, pageProps }) {
       ) : (
         <LoadingAnimation />
       )}
-    </>
+    </Layout>
   );
 }
 

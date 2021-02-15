@@ -1,23 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authgarbanzoauthUserPoolId": {
+        "authpsychicgarbanzo9d2c3b48UserPoolId": {
             "Type": "String",
-            "Default": "authgarbanzoauthUserPoolId"
+            "Default": "authpsychicgarbanzo9d2c3b48UserPoolId"
         },
         
-        "authgarbanzoauthIdentityPoolId": {
+        "authpsychicgarbanzo9d2c3b48IdentityPoolId": {
             "Type": "String",
-            "Default": "authgarbanzoauthIdentityPoolId"
+            "Default": "authpsychicgarbanzo9d2c3b48IdentityPoolId"
         },
         
-        "authgarbanzoauthAppClientID": {
+        "authpsychicgarbanzo9d2c3b48AppClientID": {
             "Type": "String",
-            "Default": "authgarbanzoauthAppClientID"
+            "Default": "authpsychicgarbanzo9d2c3b48AppClientID"
         },
-        "authgarbanzoauthAppClientIDWeb": {
+        "authpsychicgarbanzo9d2c3b48AppClientIDWeb": {
             "Type": "String",
-            "Default": "authgarbanzoauthAppClientIDWeb"
+            "Default": "authpsychicgarbanzo9d2c3b48AppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -41,65 +41,11 @@
     },
     "Resources": {
     
-        "adinsGroup": {
-          "Type" : "AWS::Cognito::UserPoolGroup",
-          "Properties" : {
-              "GroupName" : "adins",
-              "Precedence" : 1,
-              
-              "RoleArn" : {
-                "Fn::GetAtt": [
-                    "adinsGroupRole",
-                    "Arn"
-                ]
-              },
-              
-              "UserPoolId" : {
-                "Ref": "authgarbanzoauthUserPoolId"
-              } 
-            }
-        },
-        
-        "adinsGroupRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "RoleName":{
-                    "Fn::Join": [
-                        "",
-                        [
-                          {
-                            "Ref": "authgarbanzoauthUserPoolId"
-                          },
-                          "-adinsGroupRole"
-                        ]
-                    ]
-                },
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Sid": "",
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Federated": "cognito-identity.amazonaws.com"
-                            },
-                            "Action": "sts:AssumeRoleWithWebIdentity",
-                            "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authgarbanzoauthIdentityPoolId"}},
-                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-     
-    
         "adminsGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "admins",
-              "Precedence" : 2,
+              "Precedence" : 1,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -109,7 +55,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authgarbanzoauthUserPoolId"
+                "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
               } 
             }
         },
@@ -122,7 +68,7 @@
                         "",
                         [
                           {
-                            "Ref": "authgarbanzoauthUserPoolId"
+                            "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
                           },
                           "-adminsGroupRole"
                         ]
@@ -139,7 +85,115 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authgarbanzoauthIdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authpsychicgarbanzo9d2c3b48IdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
+        "moderatorsGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "moderators",
+              "Precedence" : 2,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "moderatorsGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
+              } 
+            }
+        },
+        
+        "moderatorsGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
+                          },
+                          "-moderatorsGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authpsychicgarbanzo9d2c3b48IdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
+        "ponentesGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "ponentes",
+              "Precedence" : 3,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "ponentesGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
+              } 
+            }
+        },
+        
+        "ponentesGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
+                          },
+                          "-ponentesGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authpsychicgarbanzo9d2c3b48IdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -153,7 +207,7 @@
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
               "GroupName" : "users",
-              "Precedence" : 3,
+              "Precedence" : 4,
               
               "RoleArn" : {
                 "Fn::GetAtt": [
@@ -163,7 +217,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authgarbanzoauthUserPoolId"
+                "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
               } 
             }
         },
@@ -176,7 +230,7 @@
                         "",
                         [
                           {
-                            "Ref": "authgarbanzoauthUserPoolId"
+                            "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
                           },
                           "-usersGroupRole"
                         ]
@@ -193,7 +247,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authgarbanzoauthIdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authpsychicgarbanzo9d2c3b48IdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -219,7 +273,7 @@
                                 "",
                                 [
                                   
-                                  "garbanzoauth",
+                                  "psychicgarbanzo9d2c3b48",
                                   "-ExecutionRole-",
                                   {
                                     "Ref": "env"
@@ -378,16 +432,16 @@
                     "Ref": "UnauthRoleArn"
                 },
                 "identityPoolId": {
-                    "Ref": "authgarbanzoauthIdentityPoolId"
+                    "Ref": "authpsychicgarbanzo9d2c3b48IdentityPoolId"
                 },
                 "userPoolId": {
-                    "Ref": "authgarbanzoauthUserPoolId"
+                    "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
                 },
                 "appClientIDWeb": {
-                    "Ref": "authgarbanzoauthAppClientIDWeb"
+                    "Ref": "authpsychicgarbanzo9d2c3b48AppClientIDWeb"
                 },
                 "appClientID": {
-                    "Ref": "authgarbanzoauthAppClientID"
+                    "Ref": "authpsychicgarbanzo9d2c3b48AppClientID"
                 },
                 "region": {
                     "Ref": "AWS::Region"
@@ -403,10 +457,10 @@
     
     "Outputs": {
       
-        "adinsGroupRole": {
+        "adminsGroupRole": {
             "Value": {
                 "Fn::GetAtt": [
-                    "adinsGroupRole",
+                    "adminsGroupRole",
                     "Arn"
                 ]
             }
@@ -414,10 +468,21 @@
         },
         
       
-        "adminsGroupRole": {
+        "moderatorsGroupRole": {
             "Value": {
                 "Fn::GetAtt": [
-                    "adminsGroupRole",
+                    "moderatorsGroupRole",
+                    "Arn"
+                ]
+            }
+         
+        },
+        
+      
+        "ponentesGroupRole": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "ponentesGroupRole",
                     "Arn"
                 ]
             }

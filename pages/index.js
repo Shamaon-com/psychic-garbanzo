@@ -19,7 +19,7 @@ import DeleteButton from '../components/adminComponentes/deleteButton';
 import Tabs from '../components/containers/tabs';
 import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
 
-export default function Home() {
+const Home = () => {
 
 
 	const [iframe, setIframe] = useState({});
@@ -90,7 +90,7 @@ export default function Home() {
 
 
 	return (
-		<GeneralLayout>
+		<>
 			<Modal
 				element={'Evento'}
 				fields={fields}
@@ -131,6 +131,11 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-		</GeneralLayout>
+		</>
 	);
 }
+
+Home.layout = GeneralLayout;
+
+export default Home;
+

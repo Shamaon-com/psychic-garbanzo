@@ -10,7 +10,8 @@ import useDynamicRefs from "use-dynamic-refs";
 
 import * as mutations from "../../src/graphql/mutations";
 
-export default function PlatformControl(props) {
+const PlatformControl = (props) => {
+
   const authContext = useContext(AuthContext);
   const [disabled, setDisabled] = useState(true);
   const [appID, setAppId] = useState(null);
@@ -448,7 +449,6 @@ export default function PlatformControl(props) {
 
 
   return (
-    <AdminLayout>
       <ContainerPage>
         <div
            className="flex flex-row items-center text-3xl"
@@ -481,6 +481,11 @@ export default function PlatformControl(props) {
           {renderTabContent()}
         </div>
       </ContainerPage>
-    </AdminLayout>
   );
 }
+
+PlatformControl.layout = AdminLayout;
+
+export default PlatformControl;
+
+

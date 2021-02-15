@@ -5,9 +5,9 @@
     "env": {
       "Type": "String"
     },
-    "authgarbanzoauthUserPoolId": {
+    "authpsychicgarbanzo9d2c3b48UserPoolId": {
       "Type": "String",
-      "Default": "authgarbanzoauthUserPoolId"
+      "Default": "authpsychicgarbanzo9d2c3b48UserPoolId"
     },
     "deploymentBucketName": {
       "Type": "String"
@@ -38,12 +38,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "AdminQueries18dbe640",
+            "AdminQueries9594c6ac",
             {
               "Fn::Join": [
                 "",
                 [
-                  "AdminQueries18dbe640",
+                  "AdminQueries9594c6ac",
                   "-",
                   {
                     "Ref": "env"
@@ -60,7 +60,7 @@
             },
             "GROUP": "admins",
             "USERPOOL": {
-              "Ref": "authgarbanzoauthUserPoolId"
+              "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
             }
           }
         },
@@ -88,12 +88,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "AdminQueries18dbe640LambdaRole",
+            "AdminQueries9594c6acLambdaRole",
             {
               "Fn::Join": [
                 "",
                 [
-                  "AdminQueries18dbe640LambdaRole",
+                  "AdminQueries9594c6acLambdaRole",
                   "-",
                   {
                     "Ref": "env"
@@ -172,7 +172,8 @@
                 "cognito-idp:AdminListGroupsForUser",
                 "cognito-idp:AdminGetUser",
                 "cognito-idp:AdminConfirmSignUp",
-                "cognito-idp:ListUsers"
+                "cognito-idp:ListUsers",
+                "cognito-idp:ListGroups"
               ],
               "Resource": {
                 "Fn::Join": [
@@ -188,7 +189,7 @@
                     },
                     ":userpool/",
                     {
-                      "Ref": "authgarbanzoauthUserPoolId"
+                      "Ref": "authpsychicgarbanzo9d2c3b48UserPoolId"
                     }
                   ]
                 ]

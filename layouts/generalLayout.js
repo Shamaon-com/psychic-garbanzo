@@ -23,8 +23,9 @@ export default function GeneralLayout({ children, ...pageProps }) {
       router.push("/login");
     } 
     else if (authContext.generalSettings.length === 0){
-			console.log("pushing to settings")
-			router.push("/control/settings");
+			// console.log("pushing to settings")
+			// router.push("/control/settings");
+      setIsLoading(false)
     }
     else {
       checkEnabledPages();

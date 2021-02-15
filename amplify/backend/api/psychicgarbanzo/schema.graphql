@@ -132,7 +132,7 @@ type GeneralSettings
   pageAgenda: Boolean!
   pagePonentes: Boolean!
   pagePatrocinadores: Boolean!
-  pagePrensa: Boolean! 
+  pageRecursos: Boolean! 
   pageContacto: Boolean!
 }
 

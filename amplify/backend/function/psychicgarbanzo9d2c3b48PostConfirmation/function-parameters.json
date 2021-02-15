@@ -3,14 +3,15 @@
   "modules": [
     "add-to-group"
   ],
-  "parentResource": "garbanzoauth",
-  "functionName": "garbanzoauthPostConfirmation",
-  "resourceName": "garbanzoauthPostConfirmation",
+  "parentResource": "psychicgarbanzo9d2c3b48",
+  "functionName": "psychicgarbanzo9d2c3b48PostConfirmation",
+  "resourceName": "psychicgarbanzo9d2c3b48PostConfirmation",
   "parentStack": "auth",
   "triggerEnvs": [],
   "triggerDir": "/usr/local/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/PostConfirmation",
   "triggerTemplate": "PostConfirmation.json.ejs",
-  "roleName": "garbanzoauthPostConfirmation",
+  "triggerEventPath": "PostConfirmation.event.json",
+  "roleName": "psychicgarbanzo9d2c3b48PostConfirmation",
   "skipEdit": true,
   "GROUP": "users",
   "enableCors": false

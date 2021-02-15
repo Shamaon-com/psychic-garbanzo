@@ -1,130 +1,107 @@
 {
-	"function": {
-		"garbanzoauthPostConfirmation": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
-		},
-		"AdminQueries18dbe640": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "garbanzoauth",
-					"attributes": [
-						"UserPoolId"
-					]
-				}
-			]
-		}
-	},
-	"auth": {
-		"userPoolGroups": {
-			"service": "Cognito-UserPool-Groups",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "garbanzoauth",
-					"attributes": [
-						"UserPoolId",
-						"AppClientIDWeb",
-						"AppClientID",
-						"IdentityPoolId"
-					]
-				}
-			]
-		},
-		"garbanzoauth": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "garbanzoauthPostConfirmation",
-					"triggerProvider": "Cognito",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				}
-			],
-			"customAuth": false
-		}
-	},
-	"api": {
-		"AdminQueries": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "garbanzoauth",
-					"attributes": [
-						"UserPoolId"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "AdminQueries18dbe640",
-					"attributes": [
-						"Arn",
-						"Name"
-					]
-				}
-			]
-		},
-		"garbanzo": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authgarbanzoauth"
-						}
-					},
-					"additionalAuthenticationProviders": []
-				}
-			}
-		}
-	},
-	"storage": {
-		"garbanzoS3Bucket": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "auth",
-					"resourceName": "garbanzoauth",
-					"attributes": [
-						"UserPoolId"
-					]
-				},
-				{
-					"category": "auth",
-					"resourceName": "userPoolGroups",
-					"attributes": [
-						"adminsGroupRole"
-					]
-				},
-				{
-					"category": "auth",
-					"resourceName": "userPoolGroups",
-					"attributes": [
-						"usersGroupRole"
-					]
-				}
-			]
-		}
-	},
-	"hosting": {
-		"S3AndCloudFront": {
-			"service": "S3AndCloudFront",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+  "auth": {
+    "psychicgarbanzo9d2c3b48": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "psychicgarbanzo9d2c3b48PostConfirmation",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
+      "customAuth": false
+    },
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "psychicgarbanzo9d2c3b48",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ]
+    }
+  },
+  "function": {
+    "AdminQueries9594c6ac": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "psychicgarbanzo9d2c3b48",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ]
+    },
+    "psychicgarbanzo9d2c3b48PostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "api": {
+    "AdminQueries": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "psychicgarbanzo9d2c3b48",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "AdminQueries9594c6ac",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ]
+    },
+    "psychicgarbanzo": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authpsychicgarbanzo9d2c3b48"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
+  },
+  "storage": {
+    "s34c32cacf": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "analytics": {
+    "psychicgarbanzoKinesis": {
+      "service": "Kinesis",
+      "providerPlugin": "awscloudformation"
+    }
+  }
 }

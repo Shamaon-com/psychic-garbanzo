@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "garbanzoauth_identitypool_01a3d5f2",
+    "identityPoolName": "psychicgarbanzo9d2c3b48_identitypool_9d2c3b48",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "garband2f9d990",
-    "userPoolName": "garbanzoUserPool",
+    "resourceNameTruncated": "psychi9d2c3b48",
+    "userPoolName": "psychicgarbanzo9d2c3b48_userpool_9d2c3b48",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,25 +20,18 @@
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientGenerateSecret": true,
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-        "name",
-        "phone_number",
         "email"
     ],
     "userpoolClientReadAttributes": [
-        "email",
-        "name",
-        "phone_number",
-        "updated_at",
-        "email_verified",
-        "phone_number_verified"
+        "email"
     ],
-    "userpoolClientLambdaRole": "garband2f9d990_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": true,
-    "sharedId": "d2f9d990",
-    "resourceName": "garbanzoauth",
+    "userpoolClientLambdaRole": "psychi9d2c3b48_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "sharedId": "9d2c3b48",
+    "resourceName": "psychicgarbanzo9d2c3b48",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -53,20 +46,15 @@
         ]
     },
     "useDefault": "manual",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroups": true,
-    "adminQueries": true,
     "triggers": "{\n  \"PostConfirmation\": [\n    \"add-to-group\"\n  ]\n}",
-    "hostedUI": false,
     "userPoolGroupList": [
-        "adins",
         "admins",
+        "moderators",
+        "ponentes",
         "users"
     ],
-    "adminQueryGroup": "admins",
     "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
@@ -76,12 +64,16 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "garbanzoauthPostConfirmation",
+            "resourceName": "psychicgarbanzo9d2c3b48PostConfirmation",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",
                 "Name"
             ]
         }
-    ]
+    ],
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "hostedUI": false
 }
