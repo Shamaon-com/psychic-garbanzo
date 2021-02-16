@@ -18,14 +18,15 @@ export default function AddButtonAndTitle({ ...props }) {
 
     return (
         <>
-            { authContext.isAdmin &&
-                <div class="flex flex-row items-center">
-                    <div
-                        className="text-3xl sm:text-5xl"
-                        style={{color: generalSettings.titleColor}}
-                    >
-                        {props.title}
-                    </div>
+
+            <div class="flex flex-row items-center">
+                <div
+                    className="text-3xl sm:text-5xl"
+                    style={{ color: generalSettings.titleColor }}
+                >
+                    {props.title}
+                </div>
+                {authContext.isAdmin &&
                     <div
                         className="
                             flex flex-col justify-center
@@ -36,8 +37,8 @@ export default function AddButtonAndTitle({ ...props }) {
                     >
                         +
                     </div>
-                </div>
-            }
+                }
+            </div>
         </>
     );
 }

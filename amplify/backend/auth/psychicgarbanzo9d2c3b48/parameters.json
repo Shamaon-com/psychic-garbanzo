@@ -72,8 +72,9 @@
             ]
         }
     ],
-    "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
-    "hostedUI": false
+    "hostedUI": false,
+    "authProviders": [],
+    "thirdPartyAuth": false
 }

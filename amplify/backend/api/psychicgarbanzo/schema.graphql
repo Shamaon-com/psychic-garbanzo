@@ -22,8 +22,6 @@ type Agenda
 	date: String!
 }
 
-
-
 type Evento
 	@model
 	@auth(
@@ -96,9 +94,14 @@ type Question
 
 type GeneralSettings
   @model
-  @auth(
+    @aws_iam
+	@aws_cognito_user_pools
+    @auth(
     rules: [
       { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+	  { allow: groups, groups: ["users", "ponentes", "moderators"], queries: [get, list]}
+	  { allow: public, provider: iam, queries: [get, list] }
+
     ]
   ) {
   id: ID!

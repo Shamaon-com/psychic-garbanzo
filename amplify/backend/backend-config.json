@@ -87,7 +87,11 @@
               "userPoolId": "authpsychicgarbanzo9d2c3b48"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }

@@ -154,10 +154,6 @@ Parameters:
     Type: CommaDelimitedList
       
   
-  thirdPartyAuth:
-    Type: String
-            
-  
   userPoolGroups:
     Type: String
             
@@ -168,6 +164,15 @@ Parameters:
   
   hostedUI:
     Type: String
+            
+        
+  authProviders:
+    Type: CommaDelimitedList
+      
+  
+  thirdPartyAuth:
+    Type: String
+            
             
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
