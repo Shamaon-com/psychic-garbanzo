@@ -41,14 +41,10 @@ export const onCreateEvento = /* GraphQL */ `
   subscription OnCreateEvento {
     onCreateEvento {
       id
-      url
+      type
       title
-      startDate
+      startData
       endDate
-      chat
-      questions
-      allowed
-      image
       createdAt
       updatedAt
     }
@@ -58,14 +54,10 @@ export const onUpdateEvento = /* GraphQL */ `
   subscription OnUpdateEvento {
     onUpdateEvento {
       id
-      url
+      type
       title
-      startDate
+      startData
       endDate
-      chat
-      questions
-      allowed
-      image
       createdAt
       updatedAt
     }
@@ -75,14 +67,10 @@ export const onDeleteEvento = /* GraphQL */ `
   subscription OnDeleteEvento {
     onDeleteEvento {
       id
-      url
+      type
       title
-      startDate
+      startData
       endDate
-      chat
-      questions
-      allowed
-      image
       createdAt
       updatedAt
     }
@@ -149,6 +137,39 @@ export const onDeleteQuestion = /* GraphQL */ `
       id
       user
       question
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateIframe = /* GraphQL */ `
+  subscription OnCreateIframe {
+    onCreateIframe {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateIframe = /* GraphQL */ `
+  subscription OnUpdateIframe {
+    onUpdateIframe {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteIframe = /* GraphQL */ `
+  subscription OnDeleteIframe {
+    onDeleteIframe {
+      id
+      url
+      title
       createdAt
       updatedAt
     }

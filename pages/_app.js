@@ -10,15 +10,11 @@ import { AuthContext } from "../utils/functionsLib";
 
 import * as queries from "../src/graphql/queries";
 
-
-
 Amplify.configure(awsconfig);
 
 
+function MyApp({ Component, pageProps}) {
 
-
-function MyApp({ Component, pageProps }) {
-  
 
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,6 +24,8 @@ function MyApp({ Component, pageProps }) {
 
   const router = useRouter();
 
+  const Layout = Component.layout || (({children}) => <>{children}</>)
+  
   useEffect(() => {
 
     async function onLoad() {
@@ -35,7 +33,7 @@ function MyApp({ Component, pageProps }) {
         // load user data
         const userData = await Auth.currentUserInfo();
         setAttributes(userData.attributes);
-
+        
         // load user session
         const session = await Auth.currentSession();
         setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
@@ -55,23 +53,23 @@ function MyApp({ Component, pageProps }) {
     onLoad();
   }, []);
 
+
+
   const login = async (username, password) => {
     try {
       // Sign in user
       const user = await Auth.signIn(username, password);
-      setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
-      setAttributes(user.attributes);
 
-      // Check if settings are set 
-      const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
-      setGeneralSettings(settings.data.listGeneralSettingss.items);
+      if (user.challengeName) {
+        router.push('/verify');
+      } else {
+        setIsAdmin(user.signInUserSession.accessToken.payload['cognito:groups'].includes("admins"))
+        setAttributes(user.attributes);
+      }
+    } catch (e) {
+      console.log(e)
+    }
 
-      setIsLoggedIn(true);
-      router.push("/");
-    }
-    catch(e){
-      alert(e.message);
-    }
   }
 
   const logout = () => {
@@ -83,7 +81,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet" />
       </head>
       {!isAuthenticating ? (
         <AuthContext.Provider
@@ -96,11 +94,13 @@ function MyApp({ Component, pageProps }) {
             logout: logout
           }}
         >
-        <Component {...pageProps} /> 
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </AuthContext.Provider>
       ) : (
-        <LoadingAnimation />
-      )}
+          <LoadingAnimation />
+        )}
     </>
   );
 }

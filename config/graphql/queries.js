@@ -36,14 +36,10 @@ export const getEvento = /* GraphQL */ `
   query GetEvento($id: ID!) {
     getEvento(id: $id) {
       id
-      url
+      type
       title
-      startDate
+      startData
       endDate
-      chat
-      questions
-      allowed
-      image
       createdAt
       updatedAt
     }
@@ -58,14 +54,10 @@ export const listEventos = /* GraphQL */ `
     listEventos(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        url
+        type
         title
-        startDate
+        startData
         endDate
-        chat
-        questions
-        allowed
-        image
         createdAt
         updatedAt
       }
@@ -124,6 +116,35 @@ export const listQuestions = /* GraphQL */ `
         id
         user
         question
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getIframe = /* GraphQL */ `
+  query GetIframe($id: ID!) {
+    getIframe(id: $id) {
+      id
+      url
+      title
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listIframes = /* GraphQL */ `
+  query ListIframes(
+    $filter: ModelIframeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listIframes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        url
+        title
         createdAt
         updatedAt
       }

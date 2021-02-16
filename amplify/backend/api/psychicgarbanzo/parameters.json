@@ -1,10 +1,10 @@
 {
-  "AppSyncApiName": "garbanzo",
+  "AppSyncApiName": "psychicgarbanzo",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authgarbanzoauth",
+      "authpsychicgarbanzo9d2c3b48",
       "Outputs.UserPoolId"
     ]
   }

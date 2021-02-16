@@ -22,6 +22,8 @@ type Agenda
 	date: String!
 }
 
+
+
 type Evento
 	@model
 	@auth(
@@ -39,13 +41,17 @@ type Evento
 				mutations: [create]
 			}
 		]
-	) {
-	id: ID!
-	type: String!
-	title: String!
-	startData: String!
-	endDate: String!
-}
+	){
+		id: ID!
+		url: String!
+		title: String!
+		startDate: String!
+		endDate: String!
+		chat: Boolean!
+		questions: Boolean!
+		allowed: Boolean!
+		image: String
+	}
 
 type Message
 	@model
@@ -88,29 +94,6 @@ type Question
 	question: String!
 }
 
-type Iframe
-	@model
-	@auth(
-		rules: [
-			{
-				allow: groups
-				groups: ["admins"]
-				queries: [get, list]
-				mutations: [create, delete]
-			}
-			{
-				allow: groups
-				groups: ["users"]
-				queries: [get, list]
-				mutations: [create]
-			}
-		]
-	) {
-	id: ID!
-	url: String!
-	title: String!
-}
-
 type GeneralSettings
   @model
   @auth(
@@ -132,7 +115,7 @@ type GeneralSettings
   pageAgenda: Boolean!
   pagePonentes: Boolean!
   pagePatrocinadores: Boolean!
-  pagePrensa: Boolean! 
+  pageRecursos: Boolean! 
   pageContacto: Boolean!
 }
 

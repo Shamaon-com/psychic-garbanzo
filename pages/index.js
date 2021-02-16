@@ -1,136 +1,189 @@
 import React, { useState, useEffect } from 'react';
 
 // Amplify
-import { API, graphqlOperation } from 'aws-amplify';
-import * as mutations from '../src/graphql/mutations';
-import * as queries from '../src/graphql/queries';
-import * as subscriptions from '../src/graphql/subscriptions';
+import { API, graphqlOperation } from "aws-amplify";
+import * as subscriptions from "../src/graphql/subscriptions";
 
 // Utils
 import { useModalFields } from '../utils/hooksLib';
+import { uploadToS3, validate } from '../utils/functionsLib';
+import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 
 // Components
 import GeneralLayout from '../layouts/generalLayout';
-import Chat from '../components/eventoPage/chat';
-import Iframe from '../components/generalComponents/iframe';
 import Modal from '../components/generalComponents/modal';
-import QuestionBox from '../components/eventoPage/questionBox';
-import DeleteButton from '../components/adminComponentes/deleteButton';
-import Tabs from '../components/containers/tabs';
+import FullPage from '../components/containers/fullPage';
 import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
-
-export default function Home() {
-
-
-	const [iframe, setIframe] = useState({});
-	const [showModal, setShowModal] = useState(false);
-	const [isCreating, setIsCreating] = useState(false);
-
-
-	const [fields, handleFieldChange] = useModalFields({
-		title: { type: 'default', value: '' },
-		url: { type: 'default', value: '' },
-	});
-
-	useEffect(() => {
-		onPageRendered();
-	}, []);
-
-	const onPageRendered = async () => {
-		getIframe();
-		subscribeCreateIframe();
-		subscribeDeleteIframe();
-	};
-
-	const getIframe = () => {
-		API.graphql(graphqlOperation(queries.listIframes)).then((data) => {
-			console.log(data.data.listIframes.items)
-			setIframe(data.data.listIframes.items[0]);
-		});
-	};
-
-	const subscribeCreateIframe = async () => {
-		await API.graphql(
-			graphqlOperation(subscriptions.onCreateIframe)
-		).subscribe({
-			next: (subonCreateEvent) => {
-				setIframe(subonCreateEvent.value.data.onCreateIframe);
-			},
-		});
-	};
-
-	const subscribeDeleteIframe = async () => {
-		await API.graphql(graphqlOperation(subscriptions.onDeleteIframe)).subscribe({
-		  next: (subonDeleteIframe) => {
-			setIframe(null)
-		  },
-		});
-	  };
-
-	const createIframe = (e) => {
-		if (fields.title === '' || fields.url === '') {
-			alert('Mensaje vacio');
-			return;
-		}
-
-		var itemDetails = {
-			url: fields.url.value,
-			title: fields.title.value,
-		};
-
-		console.log('Event Details : ' + JSON.stringify(itemDetails));
-		API.graphql(
-			graphqlOperation(mutations.createIframe, { input: itemDetails })
-		);
-
-		setShowModal(false);
-	};
+import EventoCard from '../components/eventoPage/eventoCard';
+import Grid from '../components/containers/grid';
 
 
 
+const Eventos = () => {
 
-	return (
-		<GeneralLayout>
-			<Modal
-				element={'Evento'}
-				fields={fields}
-				handleFieldChange={handleFieldChange}
-				submit={createIframe}
-				showModal={showModal}
-				setShowModal={setShowModal}
-				isCreating={isCreating}
-			/>
-			<div className="flex mx-auto container w-full lg:items-center h-full lg:h-4/5  lg:px-8">
-				<div className="flex flex-col mx-auto h-full w-full lg:flex-row">
-					<div className="flex flex-col w-full pt-4 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
-						{iframe ? (
-							<>
-								<div
-									className="lg:text-5xl text-gray-500"
-									style={{ height: '10%' }}
-								>
-									{iframe.title}
-								</div>
-								<div
-									className="flex-1 w-full h-full relative"
-									style={{ height: '90%' }}
-								>
-									<DeleteButton id={iframe.id} item={'Iframe'} />
-									<Iframe src={iframe.url} />
-								</div>
-							</>
-						) : (
-							<AddButtonAndTitle title={"Anade un nuevo evento"} setShowModal={setShowModal}/>
-						)}
-					</div>
-					<div className="flex flex-col w-full flex-grow pt-4 lg:my-auto lg:pt-8 lg:px-5 lg:h-5/6 lg:w-1/4">
-						<Tabs data={[
-							{ id: 'chat', component: <Chat />, name: 'Chat' },
-							{ id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
-						]} />
-					</div>
-				</div>
-			</div>
-		</GeneralLayout>
-	);
+  /*
+
+      url: String!
+    title: String!
+    startDate: String!
+    endDate: String!
+    Chat: Boolean!
+    Questions: Boolean!
+    Allowed: Boolean!
+
+    */
+  const [showModal, setShowModal] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+
+  // Specifc to page 
+  const [eventos, setEventos] = useState([]);
+
+  const [fields, handleFieldChange] = useModalFields({
+    iframe: { type: "default", value: "" },
+    titulo: { type: "default", value: "" },
+    chat: {
+      type: "select", value: "",
+      options: [
+        { key: false, text: "Desactivado" },
+        { key: true, text: "Ativado" },
+      ]
+    },
+    preguntas: {
+      type: "select", value: "",
+      options: [
+        { key: false, text: "Desactivado" },
+        { key: true, text: "Ativado" },
+      ]
+    },
+    inicio: { type: "date", value: { day: 0, month: 0, hour: 0, minute: 0 }},
+    fin: { type: "date", value: { day: 0, month: 0, hour: 0, minute: 0 }},
+    image: { type: "file", value: {} }
+  });
+
+  useEffect(() => {
+    graphqlGet("listEventos", setEventos);
+    subscribeCreateEvento();
+    subscribeDeleteEvento();
+
+  }, []);
+
+
+  /**
+   * GRAPHQL CRUD functions and subscribres
+   */
+  const subscribeCreateEvento = async () => {
+    await API.graphql(
+      graphqlOperation(subscriptions.onCreateEvento)
+    ).subscribe({
+      next: (subonCreateEvento) => {
+        setEventos((eventos) => [
+          ...eventos,
+          subonCreateEvento.value.data.onCreateEvento,
+        ]);
+      }
+    });
+  };
+
+  const subscribeDeleteEvento = async () => {
+    await API.graphql(
+      graphqlOperation(subscriptions.onDeleteEvento)
+    ).subscribe({
+      next: (subonDeleteEvento) => {
+        setEventos((eventos) => [
+          ...eventos.filter(
+            (event) =>
+              event.id != subonDeleteEvento.value.data.onDeleteEvento.id
+          ),
+        ]);
+      },
+    });
+  };
+
+
+  const createEvento = () => {
+
+    var itemDetails = {
+      url: fields.iframe.value,
+      title: fields.titulo.value,
+      chat: fields.chat.value,
+      questions: fields.preguntas.value,
+      allowed: false,
+      startDate: new Date(
+        2020,
+        fields.inicio.value.month,
+        fields.inicio.value.day,
+        fields.inicio.value.hour,
+        fields.inicio.value.minute
+      ).toString(),
+      endDate: new Date(
+        2020,
+        fields.fin.value.month,
+        fields.fin.value.day,
+        fields.fin.value.hour,
+        fields.fin.value.minute
+      ).toString(),
+      image: fields.image.value.name
+    };
+
+    graphqlCreate('createEvento', itemDetails);
+  };
+
+  const submit = () => {
+    /**
+     * This function is trigged when create button is pressed in Modal component,
+     * it will create evento and upload the correspoing image to s3
+     */
+    setIsCreating(true);
+
+    if (validate()) {
+      for (var field in fields) {
+        if (fields[field].type === "file") {
+          uploadToS3(fields[field].value);
+        }
+      }
+
+      createEvento();
+      setIsCreating(false);
+      setShowModal(false);
+    }
+  };
+
+
+
+  const generateData = () => {
+    return (
+      eventos.map((evento) => {
+        return (
+          <EventoCard data={evento} />
+        )
+      })
+    )
+  }
+
+
+  return (
+    <FullPage>
+      <Modal
+        element={"Evento"}
+        fields={fields}
+        handleFieldChange={handleFieldChange}
+        submit={submit}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        isCreating={isCreating}
+      />
+      <div className="flex flex-col justify-center" style={{ height: "20%" }}>
+        <AddButtonAndTitle title={"Eventos"} setShowModal={setShowModal} />
+      </div>
+      <Grid
+        data={generateData()}
+        pcCols={6}
+        mobileCols={1}
+      />
+    </FullPage>
+  );
 }
+
+Eventos.layout = GeneralLayout;
+
+export default Eventos;

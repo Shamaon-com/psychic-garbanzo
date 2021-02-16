@@ -14,17 +14,15 @@ export default function AdminLayout({ children, ...pageProps }) {
   }, []);
 
   async function onLoad() {
-	console.log(authContext.generalSettings.length)
-	console.log(authContext.generalSettings.length === 0)
-	
+    console.log(authContext)
     if (authContext.isLoggedIn && authContext.isAdmin) {
-      if (authContext.generalSettings.length === 0){
-        console.log("pushing to settings")
-        router.push("/control/settings");
-      };
+      // if (authContext.generalSettings.length === 0){
+      //   console.log("pushing to settings")
+      //   router.push("/control/settings");
+      // };
       setIsLoading(false);
     } else {
-      router.push("/");
+      router.push("/login");
     }
   }
 

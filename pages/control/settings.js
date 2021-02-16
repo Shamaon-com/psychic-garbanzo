@@ -10,7 +10,8 @@ import useDynamicRefs from "use-dynamic-refs";
 
 import * as mutations from "../../src/graphql/mutations";
 
-export default function PlatformControl(props) {
+const PlatformControl = (props) => {
+
   const authContext = useContext(AuthContext);
   const [disabled, setDisabled] = useState(true);
   const [appID, setAppId] = useState(null);
@@ -19,8 +20,8 @@ export default function PlatformControl(props) {
   const [loaded, setIsLoaded] = useState(false)
   const [initalState, setInitalState] = useState({
     login: "con-registro",
-    mainLogo: null,
-    backgroundLoginImage: null,
+    mainLogo: "a",
+    backgroundLoginImage: "a",
     backgroundColor: "#ffffff",
     boxBackgroundColor: "#eff6ff",
     boxBorderColor: "#9ca3af",
@@ -31,7 +32,7 @@ export default function PlatformControl(props) {
     pageAgenda: false,
     pagePonentes: false,
     pagePatrocinadores: false,
-    pagePrensa: false,
+    pageRecursos: false,
     pageContacto: false,
   })
 
@@ -231,7 +232,7 @@ export default function PlatformControl(props) {
         description: "Habilita el modulo de ponentes",
       },
       {
-        id: "pagePrensa",
+        id: "pageRecursos",
         name: "Recursos",
         description: "Habilita el modulo de recursos",
       },
@@ -448,7 +449,6 @@ export default function PlatformControl(props) {
 
 
   return (
-    <AdminLayout>
       <ContainerPage>
         <div
            className="flex flex-row items-center text-3xl"
@@ -481,6 +481,11 @@ export default function PlatformControl(props) {
           {renderTabContent()}
         </div>
       </ContainerPage>
-    </AdminLayout>
   );
 }
+
+PlatformControl.layout = AdminLayout;
+
+export default PlatformControl;
+
+

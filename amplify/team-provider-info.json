@@ -1,20 +1,31 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-garbanzo-dev-141821-authRole",
-      "UnauthRoleArn": "arn:aws:iam::541276598152:role/amplify-garbanzo-dev-141821-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::541276598152:role/amplify-garbanzo-dev-141821-authRole",
+      "AuthRoleName": "amplify-psychicgarbanzo-dev-103459-authRole",
+      "UnauthRoleArn": "arn:aws:iam::541276598152:role/amplify-psychicgarbanzo-dev-103459-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::541276598152:role/amplify-psychicgarbanzo-dev-103459-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-garbanzo-dev-141821-deployment",
-      "UnauthRoleName": "amplify-garbanzo-dev-141821-unauthRole",
-      "StackName": "amplify-garbanzo-dev-141821",
-      "StackId": "arn:aws:cloudformation:eu-west-1:541276598152:stack/amplify-garbanzo-dev-141821/2aecc830-490f-11eb-8cc2-0aaeb5913bcd",
-      "AmplifyAppId": "d6k2vls7r42ez"
+      "DeploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
+      "UnauthRoleName": "amplify-psychicgarbanzo-dev-103459-unauthRole",
+      "StackName": "amplify-psychicgarbanzo-dev-103459",
+      "StackId": "arn:aws:cloudformation:eu-west-1:541276598152:stack/amplify-psychicgarbanzo-dev-103459/1323e840-6f71-11eb-830f-02b5ca390d7f",
+      "AmplifyAppId": "d3rha1918k7pep"
     },
     "categories": {
       "auth": {
-        "userPoolGroups": {},
-        "garbanzoauth": {}
+        "psychicgarbanzo9d2c3b48": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries9594c6ac": {
+          "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
+          "s3Key": "amplify-builds/AdminQueries9594c6ac-3844346a4b7264427a33-build.zip"
+        },
+        "psychicgarbanzo9d2c3b48PostConfirmation": {
+          "GROUP": "users",
+          "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
+          "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-4a77694d37367336307a-build.zip"
+        }
       }
     }
   }
