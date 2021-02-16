@@ -151,6 +151,7 @@ const Eventos = () => {
 
 
   const generateData = () => {
+    console.log(eventos)
     return (
       eventos.map((evento) => {
         return (
@@ -177,7 +178,7 @@ const Eventos = () => {
       </div>
       <Grid
         data={generateData()}
-        pcCols={6}
+        pcCols={4}
         mobileCols={1}
       />
     </FullPage>

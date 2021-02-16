@@ -95,6 +95,7 @@ const PlatformControl = (props) => {
     setIsLoaded(false);
     const dictAndId = { ...dict, id: appID };
 
+    /*
     if (dict["mainLogo"] !== null) {
       dictAndId["mainLogo"] = dict["mainLogo"].value.name;
       uploadToS3(dict["mainLogo"].value);
@@ -104,7 +105,7 @@ const PlatformControl = (props) => {
       dictAndId["backgroundLoginImage"] = dict["backgroundLoginImage"].value.name;
       uploadToS3(dict["backgroundLoginImage"].value);
     }
-
+    */
     API.graphql(
       graphqlOperation(mutations.updateGeneralSettings, { input: dictAndId })
     );

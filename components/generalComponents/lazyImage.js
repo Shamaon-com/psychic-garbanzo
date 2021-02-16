@@ -28,7 +28,7 @@ export default function LazyImage({ ...props }) {
             case "rounded":
                 return "h-48 w-48 sm:h-36 sm:w-36 md rounded-full relative"
             case "full":
-                return ""
+                return "w-full h-full"
             default:
                 return ""
         }
