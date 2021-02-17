@@ -35,17 +35,17 @@ export default function AdminLayout({ children, ...pageProps }) {
       text: 'Perfil'
     },
     questions: {
-      route: 'control/questions',
+      route: '/control/questions',
       image: svg.preguntas(),
       text: 'Preguntas'
     },
     settings: {
-      route: 'control/settings',
+      route: '/control/settings',
       image: svg.ajustes(),
       text: 'Configuracion'
     },
     users: {
-      route: 'control/users',
+      route: '/control/users',
       image: svg.users(),
       text: 'Usuarios'
     },
