@@ -1,7 +1,7 @@
 var aws = require('aws-sdk')
 var ddb = new aws.DynamoDB()
 
-exports.handler = async (event, context) => {
+exports.handler = async (event, context, callback) => {
   
   let date = new Date()
   if (event.request.userAttributes.sub) {
@@ -27,10 +27,10 @@ exports.handler = async (event, context) => {
       }
 
       console.log("Success: Everything executed correctly")
-      context.done(null, event)
+      callback(null, event);
 
   } else {
       console.log("Error: Nothing was written to DynamoDB")
-      context.done(null, event)
+      callback(null, event)
   }
 };

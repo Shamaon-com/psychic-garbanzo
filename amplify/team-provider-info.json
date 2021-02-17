@@ -24,7 +24,7 @@
         "psychicgarbanzo9d2c3b48PostConfirmation": {
           "GROUP": "users",
           "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
-          "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-44337a46616d2b416578-build.zip"
+          "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-633253746a6e61353075-build.zip"
         }
       }
     }
