@@ -9,6 +9,7 @@ import * as queries from '../src/graphql/queries';
 export const graphqlGet = async (funcName, setter) => {
 
     API.graphql(graphqlOperation(queries[funcName])).then((data) => {
+        console.log(data)
         setter(data.data[funcName].items);
     });
 }

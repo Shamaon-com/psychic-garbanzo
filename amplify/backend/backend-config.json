@@ -139,10 +139,5 @@
       ]
     }
   },
-  "analytics": {
-    "psychicgarbanzoKinesis": {
-      "service": "Kinesis",
-      "providerPlugin": "awscloudformation"
-    }
-  }
+  "analytics": {}
 }

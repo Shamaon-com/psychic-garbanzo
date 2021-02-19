@@ -11,6 +11,7 @@ exports.handler = async (event, context, callback) => {
               '__typename': {S: 'User'},
               'username': {S: event.userName},
               'email': {S: event.request.userAttributes.email},
+              'group': {S: 'Users'},
               'banned': {BOOL: false}, 
               'disabled': {BOOL: false},
               'createdAt': {S: date.toISOString()},

@@ -1,5 +1,5 @@
 import "tailwindcss/tailwind.css";
-import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
+import { Amplify, Auth, API, graphqlOperation, AWSKinesisFirehoseProvider, Analytics} from "aws-amplify";
 import awsconfig from "../src/aws-exports";
 import { useRouter } from 'next/router';
 import { AmplifyAuthenticator } from "@aws-amplify/ui-react";
@@ -12,6 +12,18 @@ import * as queries from "../src/graphql/queries";
 
 Amplify.configure(awsconfig);
 
+Analytics.addPluggable(new AWSKinesisFirehoseProvider());
+
+
+Analytics.configure({
+  AWSKinesisFirehose: {
+      region: 'eu-west-1',
+      bufferSize: 1000,
+      flushSize: 100,
+      flushInterval: 5000, // 5s
+      resendLimit: 5
+  } 
+});
 
 function MyApp({ Component, pageProps }) {
 

@@ -1,6 +1,6 @@
 type User @model
   @auth(rules: [
-    { allow: groups, groups: ["Admin"] },
+    { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] },
     { allow: owner, ownerField: "username", operations: [read] }
   ]) {
   id: ID!

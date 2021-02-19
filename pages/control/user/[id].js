@@ -52,6 +52,38 @@ const Home = () => {
 		};
 		return await API.post(apiName, path, myInit);
 	}
+
+    async function addToGroup() {
+		let group;
+		if (fields.group === 'Ponente') {
+			group = 'ponente';
+		}
+
+		if (fields.group === 'Administrador') {
+			group = 'admins';
+		}
+
+		if (fields.group === 'Usuario') {
+			group = 'users';
+		}
+
+		let apiName = 'AdminQueries';
+		let path = '/addUserToGroup';
+		let myInit = {
+			body: {
+				username: fields.email,
+				groupname: group,
+			},
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `${(await Auth.currentSession())
+					.getAccessToken()
+					.getJwtToken()}`,
+			},
+		};
+		return await API.post(apiName, path, myInit);
+	}
+    
     
 	return (
         <div className="flex mx-auto max-w-screen-2xl w-full h-full lg:items-center lg:h-4/5  lg:px-8">
