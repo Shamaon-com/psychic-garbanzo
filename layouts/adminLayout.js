@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { AuthContext } from "../utils/functionsLib";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 import * as svg from '../utils/svg';
-import { nav } from "@aws-amplify/ui";
+
 
 export default function AdminLayout({ children, ...pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,9 +18,11 @@ export default function AdminLayout({ children, ...pageProps }) {
   }, []);
 
   async function onLoad() {
+    console.log(router)
 
-    if (authContext.isAdmin && authContext.generalSettings.length === 0) {
+    if (router.pathname != "/control/settings" && authContext.isAdmin && authContext.generalSettings.length === 0) {
       router.push("/control/settings");
+      console.log("pushing")
     }
     else {
       checkEnabledPages();
