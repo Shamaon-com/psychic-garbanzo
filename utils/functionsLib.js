@@ -7,9 +7,7 @@ export  const AuthContext = createContext({
     isLoggedIn: false,
     isAdmin: false,
     attributes: {},
-    pageSettings: {},
-    login: (username, password) => {},
-    logout: () => {}
+    pageSettings: {}
   });
 
 

@@ -173,14 +173,16 @@ const Eventos = () => {
         setShowModal={setShowModal}
         isCreating={isCreating}
       />
-      <div className="flex flex-col justify-center" style={{ height: "20%" }}>
+      <div className="flex flex-col justify-center " style={{ height: "20%" }}>
         <AddButtonAndTitle title={"Eventos"} setShowModal={setShowModal} />
       </div>
-      <Grid
-        data={generateData()}
-        pcCols={4}
-        mobileCols={1}
-      />
+      <div style={{ height: "80%"}}>
+        <Grid
+          data={generateData()}
+          pcCols={4}
+          mobileCols={1}
+        />
+      </div>
     </FullPage>
   );
 }

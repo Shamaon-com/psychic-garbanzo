@@ -1,3 +1,15 @@
+type User @model
+  @auth(rules: [
+    { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] },
+    { allow: owner, ownerField: "username", operations: [read] }
+  ]) {
+  id: ID!
+  username: String!
+  email: String! 
+  banned: Boolean
+  disabled: Boolean
+}
+
 type Agenda
 	@model
 	@auth(
@@ -21,8 +33,6 @@ type Agenda
 	description: String
 	date: String!
 }
-
-
 
 type Evento
 	@model
@@ -96,9 +106,14 @@ type Question
 
 type GeneralSettings
   @model
-  @auth(
+    @aws_iam
+	@aws_cognito_user_pools
+    @auth(
     rules: [
       { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] }
+	  { allow: groups, groups: ["users", "ponentes", "moderators"], queries: [get, list]}
+	  { allow: public, provider: iam, queries: [get, list] }
+
     ]
   ) {
   id: ID!
