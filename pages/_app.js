@@ -89,7 +89,14 @@ function MyApp({ Component, pageProps }) {
     SignInButton: { 'backgroundColor': 'red' },
   }
 
+/*
 
+      <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet" />
+      </head>
+
+    */
   return (
     <AmplifyAuthenticator theme={MyTheme} hideDefault={true}>
       <AmplifySignUp
@@ -117,10 +124,6 @@ function MyApp({ Component, pageProps }) {
         ]}
       />
       <AmplifySignIn headerText="Login" slot="sign-in" usernameAlias="email" />
-      <head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet" />
-      </head>
       {!isAuthenticating && !isLoadingSettings ? (
         <AuthContext.Provider
           value={{

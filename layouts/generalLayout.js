@@ -5,6 +5,7 @@ import { AuthContext } from "../utils/functionsLib";
 import { Analytics } from 'aws-amplify';
 
 import LazyImage from '../components/generalComponents/lazyImage';
+import { generateKeyPair } from "crypto";
 
 
 export default function GeneralLayout({ children }) {
@@ -241,6 +242,6 @@ export default function GeneralLayout({ children }) {
     )
   }
 
-  return <>{!isLoading ? renderLayout() : <LoadingAnimation />}</>;
+  return <>{!isLoading ? renderLayout() : <LoadingAnimation src={generalSettings.mainLogo}/>}</>;
 
 }
