@@ -1,9 +1,7 @@
 import AdminLayout from '../../layouts/adminLayout';
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { AuthContext } from '../../utils/functionsLib';
-import { Auth, API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import QuestionList from '../../components/containers/questionList';
-import useDynamicRefs from 'use-dynamic-refs';
 
 
 import * as mutations from '../../config/graphql/mutations';
