@@ -5,7 +5,7 @@ import { AuthContext } from "../utils/functionsLib";
 import { Analytics } from 'aws-amplify';
 
 import LazyImage from '../components/generalComponents/lazyImage';
-import { generateKeyPair } from "crypto";
+
 
 
 export default function GeneralLayout({ children }) {
@@ -110,7 +110,7 @@ export default function GeneralLayout({ children }) {
               >
                 <a
                   href={"/" + page.match(/[A-Z][a-z]+/g)[0].toLowerCase()}
-                  className="px-3 cursor-pointer py-2 font-bold rounded-md text-lg font-medium"
+                  className="px-3 cursor-pointer py-2 rounded-md text-lg font-medium"
                   style={{ color: authContext.generalSettings[0].textColor }}
                 >
                   {page.match(/[A-Z][a-z]+/g)[0]}
@@ -120,7 +120,7 @@ export default function GeneralLayout({ children }) {
           })}
           <a
             onClick={() => setRenderMobileNav(false)}
-            className="px-3 py-2 cursor-pointer font-bold rounded-md text-lg font-small"
+            className="px-3 py-2 cursor-pointer rounded-md text-lg font-small"
           >
             Cerrar
       </a>
@@ -177,11 +177,6 @@ export default function GeneralLayout({ children }) {
             </div>
             <div className="h-16 ">
             <LazyImage s3Key={generalSettings.mainLogo} type="full" />
-              <img
-                className="object-contain h-full py-2"
-                src="/img/Screen Capture_select-area_20201221163707.png"
-                alt="Workflow"
-              />
             </div>
           </div>
           {renderMobileNav && renderNavModal()}
@@ -204,7 +199,7 @@ export default function GeneralLayout({ children }) {
                 <div className="flex space-x-4">
                   <a
                     href="/"
-                    className="px-3 py-2 font-bold rounded-md text-lg font-medium"
+                    className="px-3 py-2  rounded-md text-lg font-medium"
                     style={{ color: authContext.generalSettings[0].textColor }}
                   >
                     Evento
@@ -213,7 +208,7 @@ export default function GeneralLayout({ children }) {
                     return (
                       <a
                         href={"/" + page.match(/[A-Z][a-z]+/g)[0].toLowerCase()}
-                        className="px-3 cursor-pointer py-2 font-bold rounded-md text-lg font-medium"
+                        className="px-3 cursor-pointer py-2  rounded-md text-lg font-medium"
                         style={{ color: authContext.generalSettings[0].textColor }}
                       >
                         {page.match(/[A-Z][a-z]+/g)[0]}
