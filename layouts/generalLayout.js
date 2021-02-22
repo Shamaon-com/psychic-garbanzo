@@ -11,7 +11,7 @@ export default function GeneralLayout({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [enabledPages, setEnabledPages] = useState([])
   const router = useRouter();
-  const [isMobile, setIsMobile] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   const authContext = useContext(AuthContext);
   const [renderMobileNav, setRenderMobileNav] = useState(false);
 
@@ -68,7 +68,7 @@ export default function GeneralLayout({ children }) {
     if(!isMobile){
       enabledPages.push("pageControl");
     }
-    
+
     setEnabledPages(enabledPages);
   }
 

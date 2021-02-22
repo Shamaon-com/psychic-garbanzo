@@ -131,7 +131,7 @@ export default function AdminLayout({ children, ...pageProps }) {
                   </svg>
                 </span>
                 <span  className="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase"
-                  onClick={Auth.signOut()}
+                  onClick={() => Auth.signOut()}
                 >
                   Sign Out
                 </span>
