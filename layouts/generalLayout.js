@@ -134,7 +134,7 @@ export default function GeneralLayout({ children }) {
       <div className="h-16 border-b-4 border-t-4 border-gray-400">
         <div className="relative flex justify-between h-full">
           <div className="flex-1 flex  h-full">
-            <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
+            <div className="absolute inset-y-0 right-0 flex items-center">
               <button
                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 aria-expanded="false"
