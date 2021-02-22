@@ -13,8 +13,9 @@ export default function GeneralLayout({ children }) {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(true)
   const authContext = useContext(AuthContext);
+  const [renderMobileNav, setRenderMobileNav] = useState(false);
 
-  const generalSettings = authContext.generalSettings[0]
+  const generalSettings = authContext.generalSettings[0];
 
   useEffect(() => {
     onLoad();
@@ -64,7 +65,10 @@ export default function GeneralLayout({ children }) {
       }
     }
 
-    enabledPages.push("pageControl")
+    if(!isMobile){
+      enabledPages.push("pageControl");
+    }
+    
     setEnabledPages(enabledPages);
   }
 
@@ -87,34 +91,40 @@ export default function GeneralLayout({ children }) {
   }
 
   const renderNavModal = () => {
-    <div className="hidden sm:hidden">
-      <div className="px-2 pt-2 pb-3 space-y-1">
-        <a
-          href="#"
-          className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
-        >
-          Dashboard
+    return (
+      <div className="bg-gray-100 absolute w-full text-center">
+        <div className="px-2 pt-2 pb-3 space-y-1">
+          <a
+            href="#"
+            className="bg-gray-600 cursor-pointer text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Eventos
       </a>
-        <a
-          href="#"
-          className="text-blue-900  block px-3 py-2 rounded-md text-base font-medium"
-        >
-          Team
+          {enabledPages.map((page) => {
+            return (
+              <a
+                href="#"
+                className="text-blue-900  block px-3 py-2 rounded-md text-base font-small"
+              >
+                <a
+                  href={"/" + page.match(/[A-Z][a-z]+/g)[0].toLowerCase()}
+                  className="px-3 cursor-pointer py-2 font-bold rounded-md text-lg font-medium"
+                  style={{ color: authContext.generalSettings[0].textColor }}
+                >
+                  {page.match(/[A-Z][a-z]+/g)[0]}
+                </a>
+              </a>
+            )
+          })}
+          <a
+            onClick={() => setRenderMobileNav(false)}
+            className="px-3 py-2 cursor-pointer font-bold rounded-md text-lg font-small"
+          >
+            Cerrar
       </a>
-        <a
-          href="#"
-          className="text-blue-900  block px-3 py-2 rounded-md text-base font-medium"
-        >
-          Projects
-      </a>
-        <a
-          href="#"
-          className="text-blue-900  block px-3 py-2 rounded-md text-base font-medium"
-        >
-          Calendar
-      </a>
+        </div>
       </div>
-    </div>
+    )
   }
 
   const renderMobileMenu = () => {
@@ -126,6 +136,7 @@ export default function GeneralLayout({ children }) {
               <button
                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 aria-expanded="false"
+                onClick={(e) => setRenderMobileNav(true)}
               >
                 <span className="sr-only">Open main menu</span>
 
@@ -170,6 +181,7 @@ export default function GeneralLayout({ children }) {
               />
             </div>
           </div>
+          {renderMobileNav && renderNavModal()}
         </div>
       </div>
     )
@@ -201,7 +213,7 @@ export default function GeneralLayout({ children }) {
                     return (
                       <a
                         href={"/" + page.match(/[A-Z][a-z]+/g)[0].toLowerCase()}
-                        className="px-3 py-2 font-bold rounded-md text-lg font-medium"
+                        className="px-3 cursor-pointer py-2 font-bold rounded-md text-lg font-medium"
                         style={{ color: authContext.generalSettings[0].textColor }}
                       >
                         {page.match(/[A-Z][a-z]+/g)[0]}

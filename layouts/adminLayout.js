@@ -2,7 +2,7 @@ import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { AuthContext } from "../utils/functionsLib";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
+import { Auth } from 'aws-amplify';
 import * as svg from '../utils/svg';
 
 
@@ -11,6 +11,10 @@ export default function AdminLayout({ children, ...pageProps }) {
   const [enabledPages, setEnabledPages] = useState([]);
   const router = useRouter();
   const authContext = useContext(AuthContext);
+
+  if(!authContext.isLoggedIn){
+    return(<></>)
+  }
 
   useEffect(() => {
     console.log(authContext);
@@ -126,7 +130,11 @@ export default function AdminLayout({ children, ...pageProps }) {
                     <path d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
                   </svg>
                 </span>
-                <AmplifySignOut />
+                <span  className="flex font-medium text-sm text-gray-400 px-4 my-4 uppercase"
+                  onClick={Auth.signOut()}
+                >
+                  Sign Out
+                </span>
               </a>
             </li>
           </ul>

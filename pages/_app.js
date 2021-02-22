@@ -1,14 +1,17 @@
 import "tailwindcss/tailwind.css";
-import { Amplify, Auth, API, graphqlOperation, AWSKinesisFirehoseProvider, Analytics} from "aws-amplify";
+import { Amplify, Auth, API, graphqlOperation, AWSKinesisFirehoseProvider, Analytics } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
 import { useRouter } from 'next/router';
-import { AmplifyAuthenticator } from "@aws-amplify/ui-react";
+import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn } from '@aws-amplify/ui-react';
+
 import React, { useState, useEffect } from "react";
 import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 
 import { AuthContext } from "../utils/functionsLib";
 
 import * as queries from "../src/graphql/queries";
+
+
 
 Amplify.configure(awsconfig);
 
@@ -17,12 +20,12 @@ Analytics.addPluggable(new AWSKinesisFirehoseProvider());
 
 Analytics.configure({
   AWSKinesisFirehose: {
-      region: 'eu-west-1',
-      bufferSize: 1000,
-      flushSize: 100,
-      flushInterval: 5000, // 5s
-      resendLimit: 5
-  } 
+    region: 'eu-west-1',
+    bufferSize: 1000,
+    flushSize: 100,
+    flushInterval: 5000, // 5s
+    resendLimit: 5
+  }
 });
 
 function MyApp({ Component, pageProps }) {
@@ -49,7 +52,7 @@ function MyApp({ Component, pageProps }) {
         // load user session
         const session = await Auth.currentSession();
         setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
-        setAttributes({...userData.attributes, 'groups': session.accessToken.payload['cognito:groups']})
+        setAttributes({ ...userData.attributes, 'groups': session.accessToken.payload['cognito:groups'] })
 
         setIsLoggedIn(true);
         setIsAuthenticating(false);
@@ -60,13 +63,13 @@ function MyApp({ Component, pageProps }) {
       }
     }
 
-    async function loadSettings(){
+    async function loadSettings() {
       // load settings data
-      try{
+      try {
         const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
         setGeneralSettings(settings.data.listGeneralSettingss.items);
         setIsLoadingSettings(false);
-      } catch(e){
+      } catch (e) {
         console.log(e);
         const settings = await API.graphql({
           query: queries.listGeneralSettingss,
@@ -81,8 +84,39 @@ function MyApp({ Component, pageProps }) {
     onLoad();
   }, []);
 
+
+  const MyTheme = {
+    SignInButton: { 'backgroundColor': 'red' },
+  }
+
+
   return (
-    <AmplifyAuthenticator>
+    <AmplifyAuthenticator theme={MyTheme} hideDefault={true}>
+      <AmplifySignUp
+        slot="sign-up"
+        headerText="Crea una nueva cuenta"
+        formFields={[
+          {
+            type: "username",
+            label: "Nombre de usuario *",
+            placeholder: "tu nombre",
+            required: true,
+          },
+          {
+            type: "email",
+            label: "Email *",
+            placeholder: "usuario@tuemail.com",
+            required: true,
+          },
+          {
+            type: "password",
+            label: "Contraseña *",
+            placeholder: "contrasena1234",
+            required: true,
+          }
+        ]}
+      />
+      <AmplifySignIn headerText="Login" slot="sign-in" usernameAlias="email" />
       <head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet" />
@@ -101,8 +135,8 @@ function MyApp({ Component, pageProps }) {
           </Layout>
         </AuthContext.Provider>
       ) : (
-        <LoadingAnimation />
-      )}
+          <LoadingAnimation />
+        )}
     </AmplifyAuthenticator>
   );
 }
