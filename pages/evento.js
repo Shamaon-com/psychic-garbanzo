@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 // Amplify
 import { API, graphqlOperation } from 'aws-amplify';
-import * as queries from '../../src/graphql/queries';
+import * as queries from '../src/graphql/queries';
 
 // Utils
 import { useRouter } from 'next/router';
 
 // Components
-import GeneralLayout from '../../layouts/generalLayout';
-import Chat from '../../components/eventoPage/chat';
-import Iframe from '../../components/generalComponents/iframe';
-import QuestionBox from '../../components/eventoPage/questionBox';
-import Tabs from '../../components/containers/tabs';
+import GeneralLayout from '../layouts/generalLayout';
+import Chat from '../components/eventoPage/chat';
+import Iframe from '../components/generalComponents/iframe';
+import QuestionBox from '../components/eventoPage/questionBox';
+import Tabs from '../components/containers/tabs';
 
 const Home = () => {
 

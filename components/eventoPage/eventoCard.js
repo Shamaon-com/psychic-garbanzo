@@ -22,7 +22,7 @@ export default function EventoCard({ ...props }) {
       style={{ backgroundColor: generalSettings.boxBackgroundColor }}
     >
       <DeleteButton id={props.data.id} item={"Evento"} />
-      <a href={"/evento/" + props.data.id}  >
+      <a href={"/evento?id=" + props.data.id}  >
         <div className="flex justify-center items-center h-2/3">
           <LazyImage s3Key={props.data.image} type="full" />
         </div>

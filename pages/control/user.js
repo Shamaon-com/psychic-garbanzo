@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 // Amplify
 import { API } from 'aws-amplify';
-import * as queries from '../../../src/graphql/queries';
+import * as queries from '../../src/graphql/queries';
 
 // Utils
 import { useRouter } from 'next/router';
 
 // Components
-import AdminLayout from '../../../layouts/adminLayout';
-import Chat from '../../../components/eventoPage/chat';
-import Iframe from '../../../components/generalComponents/iframe';
-import QuestionBox from '../../../components/eventoPage/questionBox';
-import Tabs from '../../../components/containers/tabs';
+import AdminLayout from '../../layouts/adminLayout';
+import Chat from '../../components/eventoPage/chat';
+import Iframe from '../../components/generalComponents/iframe';
+import QuestionBox from '../../components/eventoPage/questionBox';
+import Tabs from '../../components/containers/tabs';
 
 const User = () => {
 
@@ -22,6 +22,7 @@ const User = () => {
 	useEffect(() => {
 
         const { id } = router.query
+		console.log(id)
 		getEvento(id);
 	}, []);
 
