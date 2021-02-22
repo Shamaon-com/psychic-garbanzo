@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
 import { Analytics } from 'aws-amplify';
 
+import LazyImage from '../components/generalComponents/lazyImage';
 
 
 export default function GeneralLayout({ children }) {
@@ -174,6 +175,7 @@ export default function GeneralLayout({ children }) {
               </button>
             </div>
             <div className="h-16 ">
+            <LazyImage s3Key={generalSettings.mainLogo} type="full" />
               <img
                 className="object-contain h-full py-2"
                 src="/img/Screen Capture_select-area_20201221163707.png"
@@ -194,11 +196,8 @@ export default function GeneralLayout({ children }) {
           <div className="relative flex items-center justify-between h-full">
             <div className="flex-1 flex items-center h-full justify-center">
               <div className="flex-shrink-0 flex items-center h-full ">
-                <img
-                  className="object-contain w-full h-full"
-                  src="/img/Screen Capture_select-area_20201221163707.png"
-                  alt="Workflow"
-                />
+              <LazyImage s3Key={generalSettings.mainLogo} type="full" />
+
               </div>
               <div className="hidden sm:block sm:ml-auto">
                 <div className="flex space-x-4">
