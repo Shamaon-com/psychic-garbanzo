@@ -7,7 +7,7 @@ export default function LoadingAnimation({ ...props }) {
     return (
       <div  className="min-h-screen h-screen">
         <div  className="w-full h-full flex justify-center items-center">
-          <div  className="w-44">
+          <div  className="w-10 sm:w-44">
             <LazyImage s3Key={props.src} type="full" />
             <div  className="flex flex-row justify-center items-center max-h-2">
             <svg  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

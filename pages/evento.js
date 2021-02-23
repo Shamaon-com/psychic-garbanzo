@@ -34,16 +34,12 @@ const Home = () => {
 	return (
         <div className="flex mx-auto max-w-screen-2xl w-full h-full lg:items-center lg:h-4/5  lg:px-8">
             <div className="flex flex-col mx-auto h-full w-full lg:flex-row">
-                <div className="flex flex-col w-full px-4 sm:px-8 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
-                    <div
-                        className=" sm:text-4xl sm:text-center lg:text-left lg:text-5xl text-gray-500"
-                        style={{ height: '10%' }}
-                    >
+                <div className="flex mb-5 flex-col w-full px-4 sm:px-8 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4">
+                    <div className=" text-4xl my-5 sm:text-center lg:text-left lg:text-5xl text-gray-500">
                         {data.title}
                     </div>
                     <div
                         className="flex-1 w-full h-full"
-                        style={{ height: '90%' }}
                     >
                         <Iframe src={data.url} />
                     </div>

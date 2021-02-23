@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Storage } from "aws-amplify";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 export default function LazyImage({ ...props }) {
     /**
@@ -17,8 +20,10 @@ export default function LazyImage({ ...props }) {
 
 
     async function getImage(key) {
-        Storage.get(key).then((data) => {
-            setSource(data);
+        Storage.get(key, {
+                level: 'public', // defaults to `public`
+            }).then((data) => {
+            setSource(data);         
         })
     }; 
 
@@ -35,13 +40,15 @@ export default function LazyImage({ ...props }) {
     }
 
     return (
-        
-        <img
-            className={setClass()}
-            src={source}
-            alt="img"
-        />
-       
+
+            <LazyLoadImage
+                key={props.key}
+                className={setClass()}
+                effect="blur"
+                src={source} 
+                height="100%" 
+                 
+            />
     );
 
 }

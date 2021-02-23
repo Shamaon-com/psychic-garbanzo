@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from "../../utils/functionsLib";
+import { useRouter } from 'next/router';
 
 import DeleteButton from '../adminComponentes/deleteButton';
 import LazyImage from '../generalComponents/lazyImage';
@@ -15,18 +16,20 @@ export default function EventoCard({ ...props }) {
 
   const authContext = useContext(AuthContext);
   const generalSettings = authContext.generalSettings[0];
-
+  const router = useRouter();
 
   return (
-    <div key={props.data.id} className="shadow py-3 px-3 h-96 mx-5 relative z-1 sm:mx-0 sm:h-64"
-      style={{ backgroundColor: generalSettings.boxBackgroundColor }}
+    <div
+       key={props.data.id} 
+       className="cursor-pointer shadow py-3 px-3 h-96 mx-5 relative z-1 sm:mx-0 sm:h-64"
+       style={{ backgroundColor: generalSettings.boxBackgroundColor }}
+       onClick={() => router.push("/evento?id=" + props.data.id)}
     >
       <DeleteButton id={props.data.id} item={"Evento"} />
-      <a href={"/evento?id=" + props.data.id}  >
-        <div className="flex justify-center items-center h-2/3">
-          <LazyImage s3Key={props.data.image} type="full" />
+        <div className="flex justify-center items-center h-full">
+          <LazyImage s3Key={props.data.image} type="full" key={props.data.id}/>
         </div>
-        <div className="m-2 h-1/3">
+        <div className="absolute bottom-0 right-0 left-0 w-full bg-gray-600 bg-opacity-60">
           <div className="text-center h-1/3 font-semibold text-lg"
             style={{ color: generalSettings.boxTitleColor }}
           >
@@ -44,7 +47,6 @@ export default function EventoCard({ ...props }) {
             })}
           </div>
         </div>
-      </a>
     </div>
   );
 }
