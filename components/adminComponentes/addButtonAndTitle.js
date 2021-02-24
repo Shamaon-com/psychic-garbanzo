@@ -12,14 +12,14 @@ export default function AddButtonAndTitle({ ...props }) {
      */
 
 
-    const authContext = useContext(AuthContext);
+    const authContext = useContext(AuthContext); 
     const generalSettings = authContext.generalSettings[0];
 
 
     return (
         <>
 
-            <div class="flex flex-row items-center">
+            <div className="flex flex-row items-center">
                 <div
                     className="text-3xl sm:text-5xl"
                     style={{ color: generalSettings.titleColor }}

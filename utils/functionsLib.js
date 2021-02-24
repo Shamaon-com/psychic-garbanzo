@@ -25,6 +25,7 @@ export const uploadToS3 = async (file) => {
 
     Storage.put(file.name.replace(/\s+/g, ''), file, {
       contentType: file.type,
+      level: 'public',
     }).then((result) => {
       console.log(result);
     }).catch((err) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 // Amplify
 import { API, graphqlOperation } from "aws-amplify";
@@ -6,17 +6,18 @@ import * as subscriptions from "../src/graphql/subscriptions";
 
 // Utils
 import { useModalFields } from '../utils/hooksLib';
-import {uploadToS3, validate } from '../utils/functionsLib';
+import { uploadToS3, validate } from '../utils/functionsLib';
 import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
+import { AuthContext } from "../utils/functionsLib";
+
 
 // Components
 import GeneralLayout from '../layouts/generalLayout';
 import Modal from '../components/generalComponents/modal';
 import FullPage from '../components/containers/fullPage';
-import AddButtonAndTitle from '../components/adminComponentes/addButtonAndTitle';
 import FileCard from '../components/recursosPage/fileCard';
 import VideoCard from '../components/recursosPage/videoCard';
-import List  from '../components/containers/list';
+import List from '../components/containers/list';
 import IframeModal from '../components/generalComponents/iframeModal';
 
 
@@ -42,6 +43,8 @@ export default function Recursos() {
   const documentType = "document";
   const videoResourceType = "video";
 
+  const authContext = useContext(AuthContext);
+  const generalSettings = authContext.generalSettings[0];
 
   useEffect(() => {
     graphqlGet("listRecursos", setRecursos);
@@ -103,7 +106,7 @@ export default function Recursos() {
 
     setIsCreating(true);
     if (validate(fields)) {
-      if(status.type == videoResourceType){
+      if (status.type == videoResourceType) {
         for (var field in fields) {
           if (fields[field].type === "file") {
             uploadToS3(fields[field].value);
@@ -143,11 +146,11 @@ export default function Recursos() {
   }
 
   const modifyState = (typeOfRecurso) => {
-    if(typeOfRecurso == documentType){
-      var diccionario = {type: {type: "disabled", value: documentType}};
+    if (typeOfRecurso == documentType) {
+      var diccionario = { type: { type: "disabled", value: documentType } };
 
-      for(let key in fields){
-        if(key != "videoUrl"){
+      for (let key in fields) {
+        if (key != "videoUrl") {
           diccionario[key] = fields[key];
         }
       }
@@ -155,11 +158,11 @@ export default function Recursos() {
       setCurrentRecurso(diccionario);
       setShowModal(true);
 
-    } else if(typeOfRecurso == videoResourceType){
-      var diccionario = {type: {type: "disabled", value: videoResourceType}};
+    } else if (typeOfRecurso == videoResourceType) {
+      var diccionario = { type: { type: "disabled", value: videoResourceType } };
 
-      for(let key in fields){
-        if(key != "file"){
+      for (let key in fields) {
+        if (key != "file") {
           diccionario[key] = fields[key];
         }
       }
@@ -187,20 +190,42 @@ export default function Recursos() {
           setIframeSrc={setIframeSrc}
         />
         <div className="flex flex-col justify-center" style={{ height: "20%" }}>
-          <AddButtonAndTitle title={"Recursos"} setShowModal={setShowModal} />
+          <div
+            className="text-3xl sm:text-5xl"
+            style={{ color: generalSettings.titleColor }}
+          >
+            Recursos
         </div>
-        <div 
-          className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
-          onClick={() => modifyState(documentType)}
+        </div>
+        <div
+          className="flex flex-row w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
         >
           Documentos
+
+          {authContext.isAdmin &&
+            <div
+              className="cursor-pointer bg-blue-500 w-6 h-6 text-center ml-2"
+              onClick={() => modifyState(documentType)}
+            >
+              +
+            </div>
+          }
+
         </div>
-        <List data = {generateFileCardData() } />
-        <div className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
-        onClick={() => modifyState(videoResourceType)}>
+        <List data={generateFileCardData()} />
+        <div className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
           Videos
+          {authContext.isAdmin &&
+            <div
+              className="cursor-pointer bg-blue-500 w-6 h-6 text-center ml-2"
+              onClick={() => modifyState(videoResourceType)}
+            >
+              +
+            </div>
+          }
+
         </div>
-        <List data = {generateVideoCardData() } />
+        <List data={generateVideoCardData()} />
       </FullPage>
     </GeneralLayout>
   );

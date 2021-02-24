@@ -79,8 +79,7 @@ export default function Tabs({ ...props }) {
 
         return (
             <select
-                className="mt-1 self-center block py-2 px-3 border border-gray-300 bg-white rounded-md text-center
-                         shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm w-48"
+                className=""
                 onChange={(e) => {
                     setSelected(e.target.value);
                 }}
