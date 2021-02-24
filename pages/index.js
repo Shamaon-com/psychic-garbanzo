@@ -180,7 +180,7 @@ const Eventos = () => {
         <Grid
           data={generateData()}
           pcCols={4}
-          mobileCols={1}
+          mobileCols={2}
         />
       </div>
     </FullPage>

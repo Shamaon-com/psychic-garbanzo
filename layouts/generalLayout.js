@@ -19,33 +19,39 @@ export default function GeneralLayout({ children }) {
 
   const generalSettings = authContext.generalSettings[0];
 
+
+  if(!authContext.isLoggedIn){
+    return(<></>)
+  }
+
+
   useEffect(() => {
+    console.log(authContext)
     onLoad();
-    recordEvent();
+    analytics();
   }, []);
 
-  const recordEvent = async () => {
-    console.log(children.type.name)
 
-    try {
-      Analytics.record({
-        data: {
-          event: "page load",
-          date: new Date(),
-          triggerFrom: "generalLayout",
-          destination: children.type.name
-        },
-        streamName: 'analytics-dev'
-      }, 'AWSKinesisFirehose');
-    } catch (e) {
-      console.log(e);
-    };
-  }
+  const analytics = () => {
+
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="https://shamaon.matomo.cloud/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '4']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.src='//cdn.matomo.cloud/shamaon.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+    })();    
+  
+}
 
 
   async function onLoad() {
     if (authContext.isLoggedIn && authContext.generalSettings.length === 0) {
-      console.log("pushing to settings")
+      console.log("pushing to settings");
       router.push("/control/settings");
     }
     else {
@@ -94,10 +100,10 @@ export default function GeneralLayout({ children }) {
 
   const renderNavModal = () => {
     return (
-      <div className="bg-gray-100 absolute w-full text-center">
+      <div className="bg-gray-100 shadow-sm absolute w-full text-center z-50">
         <div className="px-2 pt-2 pb-3 space-y-1">
           <a
-            href="#"
+            href="/"
             className="bg-gray-600 cursor-pointer text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Eventos
@@ -175,7 +181,7 @@ export default function GeneralLayout({ children }) {
                 </svg>
               </button>
             </div>
-            <div className="h-16 ">
+            <div className="h-10 w-20 my-auto" >
             <LazyImage s3Key={generalSettings.mainLogo} type="full" />
             </div>
           </div>
@@ -191,9 +197,8 @@ export default function GeneralLayout({ children }) {
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div className="relative flex items-center justify-between h-full">
             <div className="flex-1 flex items-center h-full justify-center">
-              <div className="flex-shrink-0 flex items-center h-full ">
-              <LazyImage s3Key={generalSettings.mainLogo} type="full" />
-
+              <div className="flex-shrink-0 h-20 flex items-center ">
+                <LazyImage s3Key={generalSettings.mainLogo} type="full" />
               </div>
               <div className="hidden sm:block sm:ml-auto">
                 <div className="flex space-x-4">
@@ -237,6 +242,6 @@ export default function GeneralLayout({ children }) {
     )
   }
 
-  return <>{!isLoading ? renderLayout() : <LoadingAnimation src={generalSettings.mainLogo}/>}</>;
+  return <>{!isLoading ? renderLayout() : <LoadingAnimation src={''}/>}</>;
 
 }

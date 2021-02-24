@@ -1,9 +1,9 @@
 import "tailwindcss/tailwind.css";
-import { Amplify, Auth, API, graphqlOperation, AWSKinesisFirehoseProvider, Analytics } from "aws-amplify";
+import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
 import { useRouter } from 'next/router';
 import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn } from '@aws-amplify/ui-react';
-
+import { AuthState} from "@aws-amplify/ui-components";
 import React, { useState, useEffect } from "react";
 import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 
@@ -15,18 +15,6 @@ import * as queries from "../src/graphql/queries";
 
 Amplify.configure(awsconfig);
 
-Analytics.addPluggable(new AWSKinesisFirehoseProvider());
-
-
-Analytics.configure({
-  AWSKinesisFirehose: {
-    region: 'eu-west-1',
-    bufferSize: 1000,
-    flushSize: 100,
-    flushInterval: 5000, // 5s
-    resendLimit: 5
-  }
-});
 
 function MyApp({ Component, pageProps }) {
 
@@ -44,45 +32,64 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
 
-    async function onLoad() {
-      try {
-        // load user data
-        const userData = await Auth.currentUserInfo();
-
-        // load user session
-        const session = await Auth.currentSession();
-        setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
-        setAttributes({ ...userData.attributes, 'groups': session.accessToken.payload['cognito:groups'] })
-
-        setIsLoggedIn(true);
-        setIsAuthenticating(false);
-
-      } catch (e) {
-        console.log(e);
-        setIsAuthenticating(false);
-      }
-    }
-
-    async function loadSettings() {
-      // load settings data
-      try {
-        const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
-        setGeneralSettings(settings.data.listGeneralSettingss.items);
-        setIsLoadingSettings(false);
-      } catch (e) {
-        console.log(e);
-        const settings = await API.graphql({
-          query: queries.listGeneralSettingss,
-          variables: {},
-          authMode: "AWS_IAM"
-        });
-        setGeneralSettings(settings.data.listGeneralSettingss.items);
-        setIsLoadingSettings(false);
-      }
-    }
     loadSettings();
     onLoad();
   }, []);
+
+
+  const handleAuthStateChange = (nextAuthState, authData) => {
+    setIsAuthenticating(true); setIsLoadingSettings(true);
+    if (nextAuthState === AuthState.SignedIn) {
+      console.log("user successfully signed in!");
+      console.log("user data: ", authData);
+
+      onLoad(); loadSettings();
+    }
+    if (authData) {
+      console.log("authData: ", authData);
+    }
+  };
+
+
+  async function onLoad() {
+    console.log("is loading user data")
+    try {
+      // load user data
+      const userData = await Auth.currentUserInfo();
+
+      // load user session
+      const session = await Auth.currentSession();
+      setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
+      setAttributes({ ...userData.attributes, 'groups': session.accessToken.payload['cognito:groups'] })
+
+      setIsLoggedIn(true);
+      setIsAuthenticating(false);
+
+    } catch (e) {
+      console.log(e);
+      setIsAuthenticating(false);
+    }
+  }
+
+  async function loadSettings() {
+    console.log("is loading settings")
+
+    // load settings data
+    try {
+      const settings = await API.graphql(graphqlOperation(queries.listGeneralSettingss));
+      setGeneralSettings(settings.data.listGeneralSettingss.items);
+      setIsLoadingSettings(false);
+    } catch (e) {
+      console.log(e);
+      const settings = await API.graphql({
+        query: queries.listGeneralSettingss,
+        variables: {},
+        authMode: "AWS_IAM"
+      });
+      setGeneralSettings(settings.data.listGeneralSettingss.items);
+      setIsLoadingSettings(false);
+    }
+  }
 
 
   const MyTheme = {
@@ -98,7 +105,7 @@ function MyApp({ Component, pageProps }) {
 
     */
   return (
-    <AmplifyAuthenticator theme={MyTheme} hideDefault={true}>
+    <AmplifyAuthenticator handleAuthStateChange={handleAuthStateChange} theme={MyTheme} hideDefault={true}>
       <AmplifySignUp
         slot="sign-up"
         headerText="Crea una nueva cuenta"

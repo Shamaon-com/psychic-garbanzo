@@ -4,10 +4,9 @@ import { API, graphqlOperation } from 'aws-amplify';
 import QuestionList from '../../components/containers/questionList';
 
 
-import * as mutations from '../../config/graphql/mutations';
-import * as queries from '../../config/graphql/queries';
-import * as subscriptions from '../../config/graphql/subscriptions';
-
+import * as mutations from '../../src/graphql/mutations';
+import * as queries from '../../src/graphql/queries';
+import * as subscriptions from '../../src/graphql/subscriptions';
 
 const Ponentes = () => {
 	const [questions, setQuestions] = useState([]);
