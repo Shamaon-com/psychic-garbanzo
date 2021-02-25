@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 // Amplify
 import { API, graphqlOperation } from 'aws-amplify';
@@ -6,6 +6,7 @@ import * as queries from '../src/graphql/queries';
 
 // Utils
 import { useRouter } from 'next/router';
+import { AuthContext } from "../utils/functionsLib";
 
 // Components
 import GeneralLayout from '../layouts/generalLayout';
@@ -16,8 +17,12 @@ import Tabs from '../components/containers/tabs';
 
 const Home = () => {
 
+
     const [data, setData] = useState({});
     const router = useRouter()
+    const authContext = useContext(AuthContext);
+    const generalSettings = authContext.generalSettings[0];
+
 
     useEffect(() => {
 
@@ -56,7 +61,9 @@ const Home = () => {
                 <>
                     <div className={`flex mb-5 flex-col w-full px-4 sm:px-8 lg:pt-8 lg:px-5 lg:h-full 
                                 ${data.chat || data.questions ? "lg:w-3/4" : "lg:w-full"}`}>
-                        <div className=" text-4xl my-5 sm:text-center lg:text-left lg:text-5xl text-gray-500">
+                        <div className=" text-4xl my-5 sm:text-center lg:text-left lg:text-5xl"
+                            style={{color:generalSettings.titleColor }}
+                        >
                             {data.title}
                         </div>
                         <div
@@ -73,7 +80,9 @@ const Home = () => {
         } else {
             return (
                 <div className="flex mb-5 flex-col w-full px-4 sm:px-8 lg:pt-8 lg:px-5 lg:h-full lg:w-3/4 mx-auto">
-                    <div className=" text-4xl my-5 sm:text-center lg:text-left lg:text-5xl text-gray-500">
+                    <div className=" text-4xl my-5 sm:text-center lg:text-left lg:text-5xl"
+                    style={{color:generalSettings.titleColor }}
+                    >
                         {data.title}
                     </div>
                     <div

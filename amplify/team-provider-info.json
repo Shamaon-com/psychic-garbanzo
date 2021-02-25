@@ -1,14 +1,14 @@
 {
-  "etc": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-psychicgarbanzo-etc-113059-authRole",
-      "UnauthRoleArn": "arn:aws:iam::541276598152:role/amplify-psychicgarbanzo-etc-113059-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::541276598152:role/amplify-psychicgarbanzo-etc-113059-authRole",
+      "AuthRoleName": "amplify-psychicgarbanzo-dev-103459-authRole",
+      "UnauthRoleArn": "arn:aws:iam::541276598152:role/amplify-psychicgarbanzo-dev-103459-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::541276598152:role/amplify-psychicgarbanzo-dev-103459-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-psychicgarbanzo-etc-113059-deployment",
-      "UnauthRoleName": "amplify-psychicgarbanzo-etc-113059-unauthRole",
-      "StackName": "amplify-psychicgarbanzo-etc-113059",
-      "StackId": "arn:aws:cloudformation:eu-west-1:541276598152:stack/amplify-psychicgarbanzo-etc-113059/efc84c30-775c-11eb-b610-0a09032a195b",
+      "DeploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
+      "UnauthRoleName": "amplify-psychicgarbanzo-dev-103459-unauthRole",
+      "StackName": "amplify-psychicgarbanzo-dev-103459",
+      "StackId": "arn:aws:cloudformation:eu-west-1:541276598152:stack/amplify-psychicgarbanzo-dev-103459/1323e840-6f71-11eb-830f-02b5ca390d7f",
       "AmplifyAppId": "d3rha1918k7pep"
     },
     "categories": {
@@ -18,12 +18,11 @@
       },
       "function": {
         "AdminQueries9594c6ac": {
-          "deploymentBucketName": "amplify-psychicgarbanzo-etc-113059-deployment",
+          "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
           "s3Key": "amplify-builds/AdminQueries9594c6ac-3844346a4b7264427a33-build.zip"
         },
         "psychicgarbanzo9d2c3b48PostConfirmation": {
-          "GROUP": "users",
-          "deploymentBucketName": "amplify-psychicgarbanzo-etc-113059-deployment",
+          "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
           "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-73597437656955524d74-build.zip"
         }
       }

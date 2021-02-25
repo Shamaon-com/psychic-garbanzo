@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../utils/functionsLib';
+
 
 export default function Tabs({ ...props }) {
     /**
@@ -16,6 +18,8 @@ export default function Tabs({ ...props }) {
 
     const [selected, setSelected] = useState(0);
     const [isMobile, setIsMobile] = useState(true);
+	const authContext = useContext(AuthContext);
+    const generalSettings = authContext.generalSettings[0];
 
     useEffect(() => {
         handleResize();
@@ -36,7 +40,7 @@ export default function Tabs({ ...props }) {
 
         switch (index) {
             case selected:
-                return "w-64 bg-blue-900 hover:bg-blue-800";
+                return {backgroundColor: generalSettings.boxBackgroundColor, width: "16rem"};
             case selected + 1:
                 return "w-48 hover:bg-gray-500 bg-gray-400";
             default:
@@ -60,9 +64,11 @@ export default function Tabs({ ...props }) {
                 {props.data.map((item, index) => {
                     return (
                         <div
-                            className={
-                                "py-1 text-center text-white " +
-                                getTabStyle(index)
+                            className={"py-1 text-center text-white"}
+                            style={index == selected ? 
+                                {backgroundColor: generalSettings.boxBackgroundColor, width: "16rem"}
+                                :
+                                {backgroundColor: 'gray', width: "12rem"}
                             }
                             onClick={() => setSelected(index)}>
                             {item.name}
