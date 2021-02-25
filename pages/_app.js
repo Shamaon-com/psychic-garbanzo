@@ -109,13 +109,8 @@ function MyApp({ Component, pageProps }) {
       <AmplifySignUp
         slot="sign-up"
         headerText="Crea una nueva cuenta"
+        usernameAlias="email"
         formFields={[
-          {
-            type: "username",
-            label: "Nombre de usuario *",
-            placeholder: "tu nombre",
-            required: true,
-          },
           {
             type: "email",
             label: "Email *",
