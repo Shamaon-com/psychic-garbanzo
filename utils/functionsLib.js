@@ -21,22 +21,24 @@ export const capitalize = (str) => {
 
 
 
-export const uploadToS3 = async (file) => {
+export const uploadToS3 = async (file, setLoaded) => {
 
-    Storage.put(file.name.replace(/\s+/g, ''), file, {
+    await Storage.put(file.name.replace(/\s+/g, ''), file, {
       contentType: file.type,
       level: 'public',
     }).then((result) => {
       console.log(result);
+      setLoaded(false);
     }).catch((err) => {
       alert(err);
+      setLoaded(false);
     })
   }
 
   export const validate = (fields) => {
     for (var field in fields) {
-      if (fields[field] === "") {
-        alert("Rellene todos los campos");
+      if (fields[field].value === "") {
+        alert("Rellene todos los campos " + field);
         return false;
       }
     }

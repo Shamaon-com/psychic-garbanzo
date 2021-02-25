@@ -40,19 +40,19 @@ function MyApp({ Component, pageProps }) {
   const handleAuthStateChange = (nextAuthState, authData) => {
     setIsAuthenticating(true); setIsLoadingSettings(true);
     if (nextAuthState === AuthState.SignedIn) {
-      console.log("user successfully signed in!");
-      console.log("user data: ", authData);
+      //console.log("user successfully signed in!");
+      //console.log("user data: ", authData);
 
       onLoad(); loadSettings();
     }
     if (authData) {
-      console.log("authData: ", authData);
+      //console.log("authData: ", authData);
     }
   };
 
 
   async function onLoad() {
-    console.log("is loading user data")
+    //console.log("is loading user data")
     try {
       // load user data
       const userData = await Auth.currentUserInfo();
@@ -72,7 +72,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   async function loadSettings() {
-    console.log("is loading settings")
+    //console.log("is loading settings")
 
     // load settings data
     try {

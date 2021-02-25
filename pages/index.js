@@ -34,29 +34,29 @@ const Eventos = () => {
     */
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-
+  const [isUplading, setIsUplading] = useState(false);
   // Specifc to page 
   const [eventos, setEventos] = useState([]);
 
   const [fields, handleFieldChange] = useModalFields({
-    iframe: { type: "default", value: "" },
-    titulo: { type: "default", value: "" },
+    iframe: { type: "default", value: false },
+    titulo: { type: "default", value: false },
     chat: {
-      type: "select", value: "",
+      type: "select", value: false,
       options: [
         { key: false, text: "Desactivado" },
-        { key: true, text: "Ativado" },
+        { key: true, text: "Activado" },
       ]
     },
     preguntas: {
-      type: "select", value: "",
+      type: "select", value: false,
       options: [
         { key: false, text: "Desactivado" },
-        { key: true, text: "Ativado" },
+        { key: true, text: "Activado" },
       ]
     },
-    inicio: { type: "date", value: { day: 0, month: 0, hour: 0, minute: 0 }},
-    fin: { type: "date", value: { day: 0, month: 0, hour: 0, minute: 0 }},
+    inicio: { type: "date", value: { day: 1, month: 1, hour: 0, minute: 0 }},
+    fin: { type: "date", value: { day: 1, month: 1, hour: 0, minute: 0 }},
     image: { type: "file", value: {} }
   });
 
@@ -124,34 +124,32 @@ const Eventos = () => {
       ).toString(),
       image: fields.image.value.name
     };
-
     graphqlCreate('createEvento', itemDetails);
+    setIsCreating(false);
   };
 
-  const submit = () => {
+  const submit = async () => {
     /**
      * This function is trigged when create button is pressed in Modal component,
      * it will create evento and upload the correspoing image to s3
      */
-    setIsCreating(true);
+    setIsCreating(true); setIsUplading(true);
 
-    if (validate()) {
+    if (validate(fields)) {
       for (var field in fields) {
         if (fields[field].type === "file") {
-          uploadToS3(fields[field].value);
+          await uploadToS3(fields[field].value, setIsUplading);
         }
       }
-
       createEvento();
-      setIsCreating(false);
-      setShowModal(false);
     }
+    setIsCreating(false);
   };
 
 
 
   const generateData = () => {
-    console.log(eventos)
+    //console.log(eventos)
     return (
       eventos.map((evento) => {
         return (
@@ -171,7 +169,7 @@ const Eventos = () => {
         submit={submit}
         showModal={showModal}
         setShowModal={setShowModal}
-        isCreating={isCreating}
+        isCreating={isCreating && isUplading}
       />
       <div className="flex flex-col justify-center " style={{ height: "20%" }}>
         <AddButtonAndTitle title={"Eventos"} setShowModal={setShowModal} />
