@@ -19,12 +19,12 @@
       "function": {
         "AdminQueries9594c6ac": {
           "deploymentBucketName": "amplify-psychicgarbanzo-etc-113059-deployment",
-          "s3Key": "amplify-builds/AdminQueries9594c6ac-5674565770627055614e-build.zip"
+          "s3Key": "amplify-builds/AdminQueries9594c6ac-3844346a4b7264427a33-build.zip"
         },
         "psychicgarbanzo9d2c3b48PostConfirmation": {
           "GROUP": "users",
           "deploymentBucketName": "amplify-psychicgarbanzo-etc-113059-deployment",
-          "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-44484868744367457959-build.zip"
+          "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-73597437656955524d74-build.zip"
         }
       }
     }
