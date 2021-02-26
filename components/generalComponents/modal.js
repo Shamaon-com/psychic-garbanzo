@@ -196,7 +196,7 @@ export default function Modal({ ...props }) {
 
   const renderFields = () => {
     var dataArray = [];
-    
+    console.log(props.fields)
     for (var field in props.fields) {
 
       switch (props.fields[field].type) {
