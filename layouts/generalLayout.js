@@ -107,9 +107,10 @@ export default function GeneralLayout({ children }) {
           >
             Eventos
       </a>
-          {enabledPages.map((page) => {
+          {enabledPages.map((page, index) => {
             return (
               <a
+                key={index}
                 href="#"
                 className="text-blue-900  block px-3 py-2 rounded-md text-base font-small"
               >
@@ -211,6 +212,7 @@ export default function GeneralLayout({ children }) {
                   {enabledPages.map((page, index) => {
                     return (
                       <a
+                        key={index}
                         href={"/" + page.match(/[A-Z][a-z]+/g)[0].toLowerCase()}
                         className="px-3 cursor-pointer py-2  rounded-md text-lg font-medium"
                         style={{ color: authContext.generalSettings[0].textColor }}

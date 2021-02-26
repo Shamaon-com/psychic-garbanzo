@@ -18,7 +18,7 @@ export default function Modal({ ...props }) {
 
   const renderTextField = (fieldName, field) => {
     return (
-      <div  className="mb-4">
+      <div key={fieldName} className="mb-4">
         <label  className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
           {capitalize(fieldName)}
         </label>
@@ -37,7 +37,7 @@ export default function Modal({ ...props }) {
 
   const renderFileField = (fieldName, field) => {
     return (
-      <div  className="mb-4">
+      <div key={fieldName} className="mb-4">
         <label  className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
           {capitalize(fieldName)}
         </label>
@@ -57,7 +57,7 @@ export default function Modal({ ...props }) {
      * Filed options is array of options in props field
      */
     return (
-      <div  className="mb-4">
+      <div key={fieldName} className="mb-4">
         <label  className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
           {fieldName}
         </label>
@@ -69,7 +69,7 @@ export default function Modal({ ...props }) {
               onChange={props.handleFieldChange}
             >
               {field.options.map((item, index) => {
-                return(<option value={item.key}>{item.text}</option>);
+                return(<option key={item.key} value={item.key}>{item.text}</option>);
               })}
             </select>
       </div>
@@ -104,6 +104,7 @@ export default function Modal({ ...props }) {
 
 
   const renderDateField = (fieldName, field) => {
+
     const MONTH_NAMES = [
       "Enero",
       "Febrero",
@@ -121,7 +122,7 @@ export default function Modal({ ...props }) {
 
     return (
 
-      <div  className="mb-4">
+      <div key={fieldName} className="mb-4">
         <label  className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
           {capitalize(fieldName)}
         </label>
@@ -153,7 +154,7 @@ export default function Modal({ ...props }) {
                onChange={props.handleFieldChange}
             >
               {MONTH_NAMES.map((month, key) => {
-                return <option value={key}>{month}</option>;
+                return <option key={key} value={key}>{month}</option>;
               })}
             </select>
           </div>

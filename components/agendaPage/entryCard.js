@@ -17,7 +17,9 @@ export default function EntryCard({ ...props }) {
 
 
     return (
-        <div className="shadow h-24 w-10/12 flex flex-col justify-center align-center items-center">
+        <div className="shadow h-24 w-10/12 flex flex-col justify-center align-center items-center"
+            key={props.data.id}
+        >
             <div className="h-1/4 flex flex-row w-full relative">
                 <div className="text-center text-gray-100 w-full"
                      style={{backgroundColor: generalSettings.boxBorderColor}}
