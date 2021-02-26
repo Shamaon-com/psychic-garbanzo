@@ -41,38 +41,27 @@ export function useModalFields(initialState) {
     function (event) {
       
       let type = fields[event.target.id.split("_")[0]].type;
-      
-      console.log(type);
 
       switch(type){
         case "file":
-          setValues({
-            ...fields,
-            [event.target.id]: {"type": type, "value": event.target.files[0]}
-          });
+          fields[event.target.id].value = event.target.files[0]
+          setValues({...fields});
           break;
         case "date":
           const [id, tag] = event.target.id.split("_");
           let currentDate = fields[id].value;
           currentDate[tag] = event.target.value;
-          setValues({
-            ...fields,
-            [id]: {"type": type, "value": currentDate}
-          });
+          fields[id].value = currentDate
+          setValues({...fields});
           break;
         case "select":
           const currentOptions = fields[event.target.id].options;
-          console.log(event.target.value)
-          setValues({
-            ...fields,
-            [event.target.id]: {"type": type, "value": event.target.value, "options": currentOptions}
-          });
+          fields[event.target.id].value = event.target.value
+          setValues({...fields});
           break;
         default:
-          setValues({
-            ...fields,
-            [event.target.id]: {"type": type, "value": event.target.value}
-          });
+          fields[event.target.id].value = event.target.value
+          setValues({...fields});
       }
     }
   ];
