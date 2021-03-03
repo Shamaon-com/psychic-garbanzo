@@ -193,7 +193,8 @@ export default function GeneralLayout({ children }) {
 
   const renderPcNavBar = () => {
     return (
-      <div className="h-1/5 py-6 border-b-4 border-gray-400">
+      <div className="sticky top-0 h-1/5 py-6 border-b-4 z-50 border-gray-400" 
+      style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div className="relative flex items-center justify-between h-full">
             <div className="flex-1 flex items-center h-full justify-center">
