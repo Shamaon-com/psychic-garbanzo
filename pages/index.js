@@ -22,16 +22,15 @@ import Grid from '../components/containers/grid';
 const Eventos = () => {
 
   /*
-
-      url: String!
+    url: String!
     title: String!
     startDate: String!
     endDate: String!
     Chat: Boolean!
     Questions: Boolean!
     Allowed: Boolean!
+  */
 
-    */
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isUplading, setIsUplading] = useState(false);

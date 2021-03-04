@@ -17,7 +17,7 @@ import Modal from '../components/generalComponents/modal';
 import FullPage from '../components/containers/fullPage';
 import FileCard from '../components/recursosPage/fileCard';
 import VideoCard from '../components/recursosPage/videoCard';
-import List from '../components/containers/list';
+import ComponentList from '../components/containers/list';
 import IframeModal from '../components/generalComponents/iframeModal';
 
 
@@ -25,6 +25,7 @@ export default function Recursos() {
 
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isUplading, setIsUplading] = useState(false);
 
   // Specifc to page
   const [recursos, setRecursos] = useState([]);
@@ -84,6 +85,8 @@ export default function Recursos() {
 
   const createRecurso = () => {
 
+    console.log(fields)
+
     var itemDetails = {
       name: fields.name.value,
       type: currentRecurso.type.value,
@@ -95,29 +98,47 @@ export default function Recursos() {
     console.log(itemDetails);
 
     graphqlCreate('createRecurso', itemDetails);
-
+    setShowModal(false);
   };
 
-  const submit = () => {
+  const customValidate = () => {
     /**
-     * This function is trigged when create button is pressed in Modal component,
-     * it will create Recurso and upload the correspoing image to s3
+     * Validate different fields depending on type defined at
+     * currentRecurso.type.value
      */
-
-    setIsCreating(true);
-    if (validate(fields)) {
-      if (status.type == videoResourceType) {
-        for (var field in fields) {
-          if (fields[field].type === "file") {
-            uploadToS3(fields[field].value);
-          }
+    var fieldsSeconday = fields
+    if (currentRecurso.type.value === documentType) {
+      for (var field in fieldsSeconday) {
+        if (fieldsSeconday[field].value === "" && field !== "videoUrl") {
+          alert("por favor rellene todos los campos " + field)
+          return false
         }
       }
-
-      createRecurso();
-      setIsCreating(false);
-      setShowModal(false);
+      return true
+    } else {
+      delete fieldsSeconday["file"]
     }
+
+  }
+
+
+
+  const submit = async () => {
+    /**
+     * This function is trigged when create button is pressed in Modal component,
+     * it will create evento and upload the correspoing image to s3
+     */
+    setIsCreating(true); setIsUplading(true);
+
+    if (customValidate()) {
+      for (var field in fields) {
+        if (fields[field].type === "file") {
+          await uploadToS3(fields[field].value, setIsUplading);
+        }
+      }
+      createRecurso();
+    }
+    setIsCreating(false);
   };
 
   const generateVideoCardData = () => {
@@ -183,7 +204,7 @@ export default function Recursos() {
           submit={submit}
           showModal={showModal}
           setShowModal={setShowModal}
-          isCreating={isCreating}
+          isCreating={isCreating && isUplading}
         />
         <IframeModal
           iframeSrc={iframeSrc}
@@ -212,7 +233,7 @@ export default function Recursos() {
           }
 
         </div>
-        <List data={generateFileCardData()} />
+        <ComponentList data={generateFileCardData()} />
         <div className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
           Videos
           {authContext.isAdmin &&
@@ -225,7 +246,7 @@ export default function Recursos() {
           }
 
         </div>
-        <List data={generateVideoCardData()} />
+        <ComponentList data={generateVideoCardData()} />
       </FullPage>
     </GeneralLayout>
   );
