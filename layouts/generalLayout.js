@@ -27,7 +27,6 @@ export default function GeneralLayout({ children }) {
 
   useEffect(() => {
     console.log(authContext)    
-    console.log(new Date().toLocaleString())
     onLoad();
     analytics();
   }, []);
@@ -35,9 +34,9 @@ export default function GeneralLayout({ children }) {
 
   const analytics = () => {
     gtag.event({
-      action: 'submit_form',
+      action: 'User Movement Data',
       category: 'Contact',
-      label: authContext.attributes.email + "   -   " + router.pathname + "   -   " + (new Date().toLocaleString()),
+      label: authContext.attributes.email + "-" + router.pathname + "-" + (new Date().toLocaleString()),
     })
 }
 
