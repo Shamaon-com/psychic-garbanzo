@@ -33,12 +33,10 @@ export default function GeneralLayout({ children }) {
 
 
   const analytics = () => {
-    
-    console.log(new Date().getTime())
     gtag.event({
-      userID: authContext.attributes.email,
-      url: 'login',
-      dateTime: new Date().getTime(),
+      action: 'submit_form',
+      category: 'Contact',
+      label: authContext.attributes.email + " " + router.pathname + " " + new Date().getTime(),
     })
 }
 
