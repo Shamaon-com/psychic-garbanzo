@@ -27,6 +27,7 @@ export default function GeneralLayout({ children }) {
 
   useEffect(() => {
     console.log(authContext)    
+    console.log(new Date().toLocaleString())
     onLoad();
     analytics();
   }, []);
@@ -36,7 +37,7 @@ export default function GeneralLayout({ children }) {
     gtag.event({
       action: 'submit_form',
       category: 'Contact',
-      label: authContext.attributes.email + " " + router.pathname + " " + new Date().getTime(),
+      label: authContext.attributes.email + "   -   " + router.pathname + "   -   " + (new Date().toLocaleString()),
     })
 }
 
