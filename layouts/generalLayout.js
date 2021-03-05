@@ -2,6 +2,7 @@ import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
+import * as gtag from '../lib/gtag'
 
 import LazyImage from '../components/generalComponents/lazyImage';
 
@@ -13,10 +14,9 @@ export default function GeneralLayout({ children }) {
   const [enabledPages, setEnabledPages] = useState([])
   const router = useRouter();
   const [isSmScreen, setIsSmScreen] = useState(false)
-
   const authContext = useContext(AuthContext);
   const [renderMobileNav, setRenderMobileNav] = useState(false);
-
+ 
   const generalSettings = authContext.generalSettings[0];
 
 
@@ -26,26 +26,20 @@ export default function GeneralLayout({ children }) {
 
 
   useEffect(() => {
-    console.log(authContext)
+    console.log(authContext)    
     onLoad();
     analytics();
   }, []);
 
 
   const analytics = () => {
-
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u="https://shamaon.matomo.cloud/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
-      _paq.push(['setSiteId', '4']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.type='text/javascript'; g.async=true; g.src='//cdn.matomo.cloud/shamaon.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-    })();    
-  
+    
+    console.log(new Date().getTime())
+    gtag.event({
+      userID: authContext.attributes.email,
+      url: 'login',
+      dateTime: new Date().getTime(),
+    })
 }
 
 
