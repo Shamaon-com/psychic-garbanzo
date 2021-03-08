@@ -8,7 +8,7 @@ import { AuthContext } from '../../utils/functionsLib';
 import useDynamicRefs from 'use-dynamic-refs';
 
 export default function Chat({ ...props }) {
-	
+
 	const [message, setMessage] = useState('');
 	const [messages, setMessages] = useState([]);
 	const [getRef, setRef] = useDynamicRefs();
@@ -16,24 +16,21 @@ export default function Chat({ ...props }) {
 	const authContext = useContext(AuthContext);
 
 	useEffect(() => {
-		onPageRendered();
-	}, []);
-
-	const onPageRendered = async () => {
 		getMessages();
 		subscribeCreateMessage();
 		subscribeDeleteMessage();
-	};
+	}, []);
+
 
 	/**
 	 * CRUD Operation functions
 	 */
 
-	const getMessages = () => {
-		API.graphql(graphqlOperation(queries.listMessages)).then((data) => {
-			setMessages(sortArray(data.data.listMessages.items));
-			scrollToBottom();
-		});
+	const getMessages = async () => {
+		const eventoData = await API.graphql({ query: queries.getEvento, variables: { id: props.eventoId } });
+		console.log("test", eventoData)
+		setMessages(eventoData.data.getEvento.messages.items);
+		scrollToBottom();
 	};
 
 	const subscribeDeleteMessage = async () => {
@@ -41,7 +38,8 @@ export default function Chat({ ...props }) {
 			graphqlOperation(subscriptions.onDeleteMessage)
 		).subscribe({
 			next: (subonDeleteEvent) => {
-				setMessages((messages) =>
+				console.log(...messages)
+				subonDeleteEvent.value.data.onDeleteMessage.eventoId == props.eventoId && setMessages((messages) =>
 					sortArray([
 						...messages.filter(
 							(message) =>
@@ -69,13 +67,15 @@ export default function Chat({ ...props }) {
 		);
 	};
 
+
+
 	const subscribeCreateMessage = async () => {
 		await API.graphql(
 			graphqlOperation(subscriptions.onCreateMessage)
 		).subscribe({
 			next: (subonCreateEvent) => {
-				console.log('message sub create');
-				setMessages((messages) =>
+
+				subonCreateEvent.value.data.onCreateMessage.eventoId == props.eventoId && setMessages((messages) =>
 					sortArray([
 						...messages,
 						subonCreateEvent.value.data.onCreateMessage,
@@ -94,6 +94,7 @@ export default function Chat({ ...props }) {
 
 		var itemDetails = {
 			user: authContext.attributes.email,
+			eventoId: props.eventoId,
 			message: message,
 		};
 
@@ -152,6 +153,7 @@ export default function Chat({ ...props }) {
 	 */
 
 	const renderMessages = () => {
+		console.log(messages)
 		return (
 			<>
 				{messages.map((message, key) => {
@@ -165,7 +167,7 @@ export default function Chat({ ...props }) {
 						<div
 							key={key}
 							id={message.id}
-							 className={classVar}
+							className={classVar}
 							onMouseEnter={showDelete}
 							onMouseLeave={hideDelete}
 						>
@@ -173,7 +175,7 @@ export default function Chat({ ...props }) {
 								<svg
 									ref={setRef(message.id)}
 									style={{ display: 'none', width: '20px' }}
-									 className="ml-auto p-0.5 cursor-pointer"
+									className="ml-auto p-0.5 cursor-pointer"
 									viewBox="0 0 512 512"
 									width="512pt"
 									xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +191,7 @@ export default function Chat({ ...props }) {
 									/>
 								</svg>
 							)}
-							<div  className="text-sm">
+							<div className="text-sm">
 								{message.user.split('@')[0]} -{' '}
 								{new Date(
 									message.createdAt
@@ -205,18 +207,20 @@ export default function Chat({ ...props }) {
 		);
 	};
 
+
+
 	return (
-		<div  className="flex flex-col h-full w-full border-8 border-gray-300">
-			<div  className="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
-				<div  className="flex items-center">
-					<h2  className="font-semibold tracking-wider">Chat</h2>
+		<div className="flex flex-col lg:h-full w-full h-30 lg:max-h-full border-8 border-gray-300">
+			<div className="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
+				<div className="flex items-center">
+					<h2 className="font-semibold tracking-wider">Chat</h2>
 				</div>
 			</div>
-			<div  className="flex flex-col bg-gray-200 px-2 overflow-auto h-full">
-				<div  className=" flex flex-col mt-auto">{renderMessages()}</div>
+			<div className="flex flex-col bg-gray-200 px-2 overflow-auto h-full">
+				<div className=" flex flex-col mt-auto">{renderMessages()}</div>
 			</div>
 
-			<div  className="relative bg-white">
+			<div className="relative bg-white">
 				<input
 					type="text"
 					name="message"
@@ -224,14 +228,15 @@ export default function Chat({ ...props }) {
 					onChange={(e) => {
 						setMessage(e.target.value);
 					}}
-					 className="pl-4 pr-16 py-2 border border-blue-700 focus:outline-none w-full"
+					className="pl-4 pr-16 py-2 border border-blue-700 focus:outline-none w-full"
 				/>
 				<button
-					 className="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
+					type="submit"
+					className="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
                         px-3 py-1 w-auto transistion-color duration-100 focus:outline-none"
-						onClick={(e) => {
-							createMessage(e);
-						}}
+					onClick={(e) => {
+						createMessage(e);
+					}}
 				>
 					Send
 				</button>

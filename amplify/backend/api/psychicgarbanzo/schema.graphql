@@ -61,6 +61,7 @@ type Evento
 		questions: Boolean!
 		allowed: Boolean!
 		image: String
+		messages: [Message] @connection(keyName: "byMessage", fields: ["id"])
 	}
 
 type Message
@@ -80,8 +81,10 @@ type Message
 				mutations: [create]
 			}
 		]
-	) {
+	)
+	@key(name: "byMessage", fields: ["eventoId", "user", "message"]) { 
 	id: ID!
+	eventoId: ID!
 	user: String!
 	message: String!
 }
@@ -100,6 +103,7 @@ type Question
 		]
 	) {
 	id: ID!
+	eventoId: String!
 	user: String!
 	question: String!
 }

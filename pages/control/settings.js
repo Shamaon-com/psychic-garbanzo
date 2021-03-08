@@ -71,7 +71,7 @@ const PlatformControl = (props) => {
      */
     console.log(dict)
     if(validate(dict)){
-      appID === null ? updateSettings() : createSettings()
+      appID === null ? createSettings() : updateSettings()
     }
   };
 
@@ -128,9 +128,10 @@ const PlatformControl = (props) => {
       console.log(appID)
       API.graphql(
         graphqlOperation(mutations.deleteGeneralSettings, { input: { id: appID } })
-      );
+      ).then(() => {
+        //location.reload()
+      });
     }
-    location.reload();
   };
 
 

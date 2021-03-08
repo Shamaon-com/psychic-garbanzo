@@ -65,7 +65,6 @@ function MyApp({ Component, pageProps }) {
     try {
       // load user data
       const userData = await Auth.currentUserInfo();
-      console.log(userData.attributes)
       // load user session
       const session = await Auth.currentSession();
       setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));
