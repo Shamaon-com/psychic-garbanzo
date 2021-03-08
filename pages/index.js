@@ -154,9 +154,9 @@ const Eventos = () => {
   const generateData = () => {
     //console.log(eventos)
     return (
-      eventos.map((evento) => {
+      eventos.map((evento, index) => {
         return (
-          <EventoCard data={evento} />
+          <EventoCard key={index} data={evento} />
         )
       })
     )

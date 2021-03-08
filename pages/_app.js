@@ -6,7 +6,7 @@ import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn } from '@aws-amplify
 import { AuthState} from "@aws-amplify/ui-components";
 import React, { useState, useEffect } from "react";
 import LoadingAnimation from "../components/generalComponents/loadingAnimation";
-
+import * as gtag from '../lib/gtag'
 import { AuthContext } from "../utils/functionsLib";
 
 import * as queries from "../src/graphql/queries";
@@ -36,6 +36,15 @@ function MyApp({ Component, pageProps }) {
     onLoad();
   }, []);
 
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
   const handleAuthStateChange = (nextAuthState, authData) => {
     setIsAuthenticating(true); setIsLoadingSettings(true);
@@ -56,7 +65,7 @@ function MyApp({ Component, pageProps }) {
     try {
       // load user data
       const userData = await Auth.currentUserInfo();
-
+      console.log(userData.attributes)
       // load user session
       const session = await Auth.currentSession();
       setIsAdmin((session).accessToken.payload['cognito:groups'].includes("admins"));

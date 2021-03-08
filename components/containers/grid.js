@@ -74,7 +74,7 @@ import React, { useState } from "react";
         const renderArray = array.slice(index, stopIndex);
 
         return (
-            <div  className={createGridClass()}>
+            <div className={createGridClass()}>
                 {renderArray.map((item) => {
                     return item
                     })
