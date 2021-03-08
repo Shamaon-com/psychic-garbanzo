@@ -129,7 +129,7 @@ export default function GeneralLayout({ children }) {
           <div className="w-full h-fullmax-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
             <div className="relative flex items-center justify-between h-full">
               <div className="flex-1 flex items-center h-full justify-center">
-                <div className="flex-shrink-0 h-20 flex items-center w-3/4">
+                <div className="flex-shrink-0 h-20 flex items-center w-full">
                   <LazyImage s3Key={generalSettings.mainLogo} type="full" />
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center">
@@ -192,7 +192,7 @@ export default function GeneralLayout({ children }) {
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div className="relative flex items-center justify-between h-full">
             <div className="flex-1 flex items-center h-full justify-center">
-              <div className="flex-shrink-0 h-20 flex items-center ">
+              <div className="flex-shrink-0 h-20 flex items-center">
                 <LazyImage s3Key={generalSettings.mainLogo} type="full" />
               </div>
               <div className="hidden sm:block sm:ml-auto">
