@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
 import * as gtag from '../lib/gtag'
+import { Storage } from "aws-amplify";
 
 import LazyImage from '../components/generalComponents/lazyImage';
 
@@ -16,6 +17,7 @@ export default function GeneralLayout({ children }) {
   const [isSmScreen, setIsSmScreen] = useState(false)
   const authContext = useContext(AuthContext);
   const [renderMobileNav, setRenderMobileNav] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState("");
   const generalSettings = authContext.generalSettings[0];
 
 
@@ -48,6 +50,7 @@ export default function GeneralLayout({ children }) {
     }
     else {
       checkEnabledPages();
+      loadBackgroundImage();
       setIsLoading(false);
     }
   }
@@ -225,14 +228,29 @@ export default function GeneralLayout({ children }) {
     )
   }
 
+  const loadBackgroundImage = async () => {
+    const data =  await Storage.get( generalSettings.backgroundLoginImage, {
+      level: 'public', // defaults to `public`
+      })
+      console.log(data)
+      setBackgroundImage(data)
+  }
 
   const renderLayout = () => {
 
     return (
       <div className="min-h-screen h-screen flex flex-col font-NanumGothic"
-        style={{ backgroundColor: generalSettings.backgroundColor, color: generalSettings.textColor }}
+        style={{
+          backgroundImage: "url(" +backgroundImage+ ")", 
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+          backgroundPosition: "center",
+          backgroundColor: generalSettings.backgroundColor, 
+          color: generalSettings.textColor 
+        }}
       >
-        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()}        {children}
+        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()} 
+        {children}
       </div>
     )
   }

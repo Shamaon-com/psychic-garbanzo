@@ -17,7 +17,6 @@ export function useFormFields(initialState) {
 export function setDictValue(initialState) {
 
   const [fields, setValues] = useState(initialState);
-
   return [
     fields,
     function (key, value) {
