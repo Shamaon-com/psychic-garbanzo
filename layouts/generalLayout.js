@@ -16,7 +16,6 @@ export default function GeneralLayout({ children }) {
   const [isSmScreen, setIsSmScreen] = useState(false)
   const authContext = useContext(AuthContext);
   const [renderMobileNav, setRenderMobileNav] = useState(false);
- 
   const generalSettings = authContext.generalSettings[0];
 
 
@@ -34,9 +33,10 @@ export default function GeneralLayout({ children }) {
 
   const analytics = () => {
     gtag.event({
-      action: 'User Movement Data',
-      category: 'Contact',
-      label: authContext.attributes.email + "-" + router.pathname + "-" + (new Date().toLocaleString()),
+      category: 'navigationData',
+      action: router.pathname,
+      value: new Date().toLocaleString(),
+      label: authContext.attributes.sub 
     })
 }
 
