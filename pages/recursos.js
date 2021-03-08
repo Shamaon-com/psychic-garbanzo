@@ -145,9 +145,9 @@ export default function Recursos() {
 
     const videoRecurso = recursos.filter(recurso => recurso.type === videoResourceType);
     return (
-      videoRecurso.map((item) => {
+      videoRecurso.map((item, index) => {
         return (
-          <VideoCard data={item} setIframeSrc={setIframeSrc} />
+          <VideoCard key={index} data={item} setIframeSrc={setIframeSrc} />
         )
       })
     )
@@ -160,7 +160,7 @@ export default function Recursos() {
     return (
       videoRecurso.map((item) => {
         return (
-          <FileCard data={item} setIframeSrc={setIframeSrc} />
+          <FileCard key={index} data={item} setIframeSrc={setIframeSrc} />
         )
       })
     )

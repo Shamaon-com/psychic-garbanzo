@@ -232,8 +232,7 @@ export default function GeneralLayout({ children }) {
       <div className="min-h-screen h-screen flex flex-col font-NanumGothic"
         style={{ backgroundColor: generalSettings.backgroundColor, color: generalSettings.textColor }}
       >
-        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()}
-        {children}
+        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()}        {children}
       </div>
     )
   }
