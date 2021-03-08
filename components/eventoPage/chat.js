@@ -16,25 +16,28 @@ export default function Chat({ ...props }) {
 	const authContext = useContext(AuthContext);
 
 	useEffect(() => {
-		onPageRendered();
-	}, []);
-
-	const onPageRendered = async () => {
 		getMessages();
 		subscribeCreateMessage();
-		subscribeDeleteMessage();
-	};
+	}, []);
+
 
 	/**
 	 * CRUD Operation functions
 	 */
-
+	/*
 	const getMessages = () => {
 		API.graphql(graphqlOperation(queries.listMessages)).then((data) => {
 			setMessages(sortArray(data.data.listMessages.items));
-			scrollToBottom();
+			//scrollToBottom();
 		});
 	};
+	*/
+
+	const getMessages = async () => {
+        const eventoData = await API.graphql({ query: queries.getEvento, variables: { id: props.eventoId } });
+        console.log("test", eventoData)
+        setMessages(eventoData.data.getEvento.messages.items);
+    };
 
 	const subscribeDeleteMessage = async () => {
 		await API.graphql(
@@ -69,6 +72,17 @@ export default function Chat({ ...props }) {
 		);
 	};
 
+	const subscribeUpdateEvento = async () => {
+		await API.graphql(
+			graphqlOperation(subscriptions.onUpdateEvento)
+		).subscribe({
+			next: (subonCreateEvent) => {
+				console.log(subonCreateEvent);
+				
+			},
+		});
+	};
+
 	const subscribeCreateMessage = async () => {
 		await API.graphql(
 			graphqlOperation(subscriptions.onCreateMessage)
@@ -94,6 +108,7 @@ export default function Chat({ ...props }) {
 
 		var itemDetails = {
 			user: authContext.attributes.email,
+			eventoId: props.eventoId,
 			message: message,
 		};
 
@@ -152,6 +167,7 @@ export default function Chat({ ...props }) {
 	 */
 
 	const renderMessages = () => {
+		console.log(messages)
 		return (
 			<>
 				{messages.map((message, key) => {
@@ -205,6 +221,8 @@ export default function Chat({ ...props }) {
 		);
 	};
 
+
+
 	return (
 		<div  className="flex flex-col h-full w-full border-8 border-gray-300">
 			<div  className="flex justify-between items-center text-white p-1 bg-gray-500 shadow-lg mr-5 w-full">
@@ -227,6 +245,7 @@ export default function Chat({ ...props }) {
 					 className="pl-4 pr-16 py-2 border border-blue-700 focus:outline-none w-full"
 				/>
 				<button
+					type="submit"
 					 className="absolute right-0 bottom-0 text-blue-600 bg-white  hover:text-blue-500 m-1 
                         px-3 py-1 w-auto transistion-color duration-100 focus:outline-none"
 						onClick={(e) => {

@@ -22,11 +22,12 @@ const Home = () => {
     const router = useRouter()
     const authContext = useContext(AuthContext);
     const generalSettings = authContext.generalSettings[0];
-
+    const [eventoId, setEventoId] = useState(null)
 
     useEffect(() => {
 
         const { id } = router.query
+        setEventoId(id)
         getEvento(id);
     }, []);
 
@@ -39,13 +40,13 @@ const Home = () => {
     const renderTabs = () => {
         if (data.chat && data.questions) {
             return [
-                { id: 'chat', component: <Chat />, name: 'Chat' },
+                { id: 'chat', component: <Chat eventoId={eventoId} />, name: 'Chat' },
                 { id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
             ]
         }
         else if (data.chat) {
             return [
-                { id: 'chat', component: <Chat />, name: 'Chat' },
+                { id: 'chat', component: <Chat eventoId={eventoId}/>, name: 'Chat' },
             ]
         }
         else if (data.questions) {
