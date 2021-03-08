@@ -6,8 +6,8 @@ import React, { useState } from "react";
 
     const [array, setArray] = useState([]);
     const [index, setIndex] = useState(0);
-    const [mobileCols, setMobileCols] = useState(props.mobileCols);
-    const [pcCols, setPcCols] = useState(props.pcCols);
+    const [mobileCols, setMobileCols] = useState(props.mobileElements);
+    const [pcCols, setPcCols] = useState(props.pcElements);
 
     const [currentCols, setCurrentCols] = useState(mobileCols);
 
@@ -36,8 +36,7 @@ import React, { useState } from "react";
      }
 
      const handleResize = () => {
-
-        if (window.screen.width >= 640) {
+        if (window.innerWidth >= 640) {
             setCurrentCols(pcCols)
             setIndex(0)
         } else {
@@ -49,6 +48,7 @@ import React, { useState } from "react";
 
      const calculateStopIndex = () => {
 
+        console.log("current cols", currentCols)
         if (index < index + currentCols && index + currentCols < array.length) {
             return index + currentCols;
         }
@@ -59,10 +59,12 @@ import React, { useState } from "react";
 
     const createGridClass = () => {
 
-        var pcClass = " sm:grid sm:grid-cols-" + (pcCols/2).toString();
+        var toDiveBy = pcCols % 2 != 0 ? 3 : 2
+
+        var pcClass = " sm:grid sm:grid-cols-" + (pcCols/toDiveBy).toString();
         var mobileClass = "grid";
         if(mobileCols > 1){
-            mobileClass = mobileClass + " grid-cols-" + (mobileCols/2).toString();
+            mobileClass = mobileClass + " grid-cols-" + 1;
         }
 
         return mobileCols + pcClass + " gap-6 auto-rows-max";
@@ -70,7 +72,9 @@ import React, { useState } from "react";
 
     const renderGrid = () => {
         
+        
         let stopIndex = calculateStopIndex();
+        console.log("stop Index", stopIndex)
         const renderArray = array.slice(index, stopIndex);
 
         return (

@@ -56,6 +56,7 @@ export default function Modal({ ...props }) {
     /**
      * Filed options is array of options in props field
      */
+    console.log(field)
     return (
       <div key={fieldName} className="mb-4">
         <label  className="text-gray-800 block mb-1 font-bold text-sm tracking-wide">
@@ -63,6 +64,7 @@ export default function Modal({ ...props }) {
         </label>
         <select
               id={fieldName}
+              value={field.value}
                className="mt-1 w-1/2 self-center block py-2 px-3 border border-gray-300 
                     bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 
                     focus:border-indigo-500 sm:text-sm"
@@ -197,9 +199,8 @@ export default function Modal({ ...props }) {
 
   const renderFields = () => {
     var dataArray = [];
-    console.log(props.fields)
-    for (var field in props.fields) {
 
+    for (var field in props.fields) {
       switch (props.fields[field].type) {
         case "select":
           dataArray.push(renderSelectField(field, props.fields[field]));
