@@ -21,13 +21,13 @@ export default function GeneralLayout({ children }) {
   const generalSettings = authContext.generalSettings[0];
 
 
-  if(!authContext.isLoggedIn){
-    return(<></>)
+  if (!authContext.isLoggedIn) {
+    return (<></>)
   }
 
 
   useEffect(() => {
-    console.log(authContext)    
+    console.log(authContext)
     onLoad();
     analytics();
   }, []);
@@ -38,9 +38,9 @@ export default function GeneralLayout({ children }) {
       category: 'navigationData',
       action: router.pathname,
       value: new Date().toLocaleString(),
-      label: authContext.attributes.sub 
+      label: authContext.attributes.sub
     })
-}
+  }
 
 
   async function onLoad() {
@@ -67,7 +67,7 @@ export default function GeneralLayout({ children }) {
         enabledPages.push(pageArray[i])
       }
     }
-    if(!isSmScreen){
+    if (!isSmScreen) {
       enabledPages.push("pageControl");
     }
     setEnabledPages(enabledPages);
@@ -75,7 +75,7 @@ export default function GeneralLayout({ children }) {
 
 
   useEffect(() => {
-    
+
     handleResizeSmScreen();
     // Add event listener
     window.addEventListener("resize", handleResizeSmScreen);
@@ -83,8 +83,8 @@ export default function GeneralLayout({ children }) {
     return () => window.removeEventListener("resize", handleResizeSmScreen);
   }, []);
 
-  const handleResizeSmScreen = () =>{
-    if ( document.body.clientWidth >= 1024){
+  const handleResizeSmScreen = () => {
+    if (document.body.clientWidth >= 1024) {
       setIsSmScreen(false)
       setRenderMobileNav(false)
     } else {
@@ -126,62 +126,54 @@ export default function GeneralLayout({ children }) {
 
   const renderPcSmScreen = () => {
     return (
-      <div className="sticky top-0 h-1/5 py-6 border-b-4 z-50 border-gray-400" 
-      style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
+      <div className="sticky top-0 h-20 border-b-4 z-50 border-gray-400"
+        style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
         <div className="w-full h-full flex flex-col">
-          <div className="w-full h-fullmax-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
-            <div className="relative flex items-center justify-between h-full">
-              <div className="flex-1 flex items-center h-full justify-center">
-                <div className="flex-shrink-0 h-20 flex items-center w-full">
-                  <LazyImage s3Key={generalSettings.mainLogo} type="full" />
-                </div>
-                <div className="absolute inset-y-0 right-0 flex items-center">
-                  <button
-                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                    aria-expanded="false"
-                    onClick={(e) => setRenderMobileNav(!renderMobileNav)}
-                  >
-                    <span className="sr-only">Open main menu</span>
-
-                    <svg
-                      className="block h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 6h16M4 12h16M4 18h16"
-                      />
-                    </svg>
-
-                    <svg
-                      className="hidden h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+          <div className="py-3 h-full">
+            <LazyImage s3Key={generalSettings.mainLogo} type="full" />
           </div>
-          <div className ="w-full h-full">
-            {renderMobileNav && renderNavModal()}
+          <div className="absolute inset-y-0 right-0 flex items-center">
+            <button
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-expanded="false"
+              onClick={(e) => setRenderMobileNav(!renderMobileNav)}
+            >
+              <span className="sr-only">Open main menu</span>
+
+              <svg
+                className="block h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+
+              <svg
+                className="hidden h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
+          { renderMobileNav && <div className="w-full h-full">{renderNavModal()}</div>}
         </div>
       </div>
     )
@@ -190,8 +182,8 @@ export default function GeneralLayout({ children }) {
 
   const renderPcNavBar = () => {
     return (
-      <div className="sticky top-0 h-1/5 py-6 border-b-4 z-50 border-gray-400" 
-      style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
+      <div className="sticky top-0 h-1/5 py-6 border-b-4 z-50 border-gray-400"
+        style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div className="relative flex items-center justify-between h-full">
             <div className="flex-1 flex items-center h-full justify-center">
@@ -229,11 +221,11 @@ export default function GeneralLayout({ children }) {
   }
 
   const loadBackgroundImage = async () => {
-    const data =  await Storage.get( generalSettings.backgroundLoginImage, {
+    const data = await Storage.get(generalSettings.backgroundLoginImage, {
       level: 'public', // defaults to `public`
-      })
-      console.log(data)
-      setBackgroundImage(data)
+    })
+    console.log(data)
+    setBackgroundImage(data)
   }
 
   const renderLayout = () => {
@@ -241,20 +233,20 @@ export default function GeneralLayout({ children }) {
     return (
       <div className="min-h-screen h-screen flex flex-col font-NanumGothic"
         style={{
-          backgroundImage: "url(" +backgroundImage+ ")", 
+          backgroundImage: "url(" + backgroundImage + ")",
           backgroundRepeat: "no-repeat",
           backgroundAttachment: "fixed",
           backgroundPosition: "center",
-          backgroundColor: generalSettings.backgroundColor, 
-          color: generalSettings.textColor 
+          backgroundColor: generalSettings.backgroundColor,
+          color: generalSettings.textColor
         }}
       >
-        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()} 
+        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()}
         {children}
       </div>
     )
   }
 
-  return <>{!isLoading ? renderLayout() : <LoadingAnimation src={''}/>}</>;
+  return <>{!isLoading ? renderLayout() : <LoadingAnimation src={''} />}</>;
 
 }
