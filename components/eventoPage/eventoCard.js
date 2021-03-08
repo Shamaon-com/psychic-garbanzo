@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AuthContext } from "../../utils/functionsLib";
-import { useRouter } from 'next/router';
 
 import DeleteButton from '../adminComponentes/deleteButton';
 import LazyImage from '../generalComponents/lazyImage';
@@ -16,11 +15,13 @@ export default function EventoCard({ ...props }) {
 
   const authContext = useContext(AuthContext);
   const generalSettings = authContext.generalSettings[0];
-  const router = useRouter();
 
+  useEffect(() => {
+    console.log(props.data.id)
+  }, [])
+  
   return (
-    <div
-       key={props.data.id} 
+    <div key={props.data.id} 
        className="cursor-pointer shadow py-3 px-3 mx-5 relative z-1 sm:mx-0 mb-5 h-48 sm:h-72"
        style={{ backgroundColor: generalSettings.boxBackgroundColor }}
     >
