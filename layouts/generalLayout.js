@@ -2,6 +2,7 @@ import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router';
 import { AuthContext } from "../utils/functionsLib";
+import * as gtag from '../lib/gtag'
 
 import LazyImage from '../components/generalComponents/lazyImage';
 
@@ -12,10 +13,9 @@ export default function GeneralLayout({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [enabledPages, setEnabledPages] = useState([])
   const router = useRouter();
-  const [isMobile, setIsMobile] = useState(false)
+  const [isSmScreen, setIsSmScreen] = useState(false)
   const authContext = useContext(AuthContext);
   const [renderMobileNav, setRenderMobileNav] = useState(false);
-
   const generalSettings = authContext.generalSettings[0];
 
 
@@ -25,26 +25,19 @@ export default function GeneralLayout({ children }) {
 
 
   useEffect(() => {
-    console.log(authContext)
+    console.log(authContext)    
     onLoad();
     analytics();
   }, []);
 
 
   const analytics = () => {
-
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u="https://shamaon.matomo.cloud/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
-      _paq.push(['setSiteId', '4']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.type='text/javascript'; g.async=true; g.src='//cdn.matomo.cloud/shamaon.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-    })();    
-  
+    gtag.event({
+      category: 'navigationData',
+      action: router.pathname,
+      value: new Date().toLocaleString(),
+      label: authContext.attributes.sub 
+    })
 }
 
 
@@ -71,29 +64,28 @@ export default function GeneralLayout({ children }) {
         enabledPages.push(pageArray[i])
       }
     }
-
-    if(!isMobile){
+    if(!isSmScreen){
       enabledPages.push("pageControl");
     }
-
     setEnabledPages(enabledPages);
   }
 
 
   useEffect(() => {
-    handleResize();
+    
+    handleResizeSmScreen();
     // Add event listener
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResizeSmScreen);
     // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResizeSmScreen);
   }, []);
 
-  const handleResize = () => {
-
-    if (window.screen.width >= 1024) {
-      setIsMobile(false)
+  const handleResizeSmScreen = () =>{
+    if ( document.body.clientWidth >= 1024){
+      setIsSmScreen(false)
+      setRenderMobileNav(false)
     } else {
-      setIsMobile(true)
+      setIsSmScreen(true)
     }
   }
 
@@ -124,80 +116,83 @@ export default function GeneralLayout({ children }) {
               </a>
             )
           })}
-          <a
-            onClick={() => setRenderMobileNav(false)}
-            className="px-3 py-2 cursor-pointer rounded-md text-lg font-small"
-          >
-            Cerrar
-      </a>
         </div>
       </div>
     )
   }
 
-  const renderMobileMenu = () => {
+  const renderPcSmScreen = () => {
     return (
-      <div className="h-16 border-b-4 border-t-4 border-gray-400">
-        <div className="relative flex justify-between h-full">
-          <div className="flex-1 flex  h-full">
-            <div className="absolute inset-y-0 right-0 flex items-center">
-              <button
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                aria-expanded="false"
-                onClick={(e) => setRenderMobileNav(true)}
-              >
-                <span className="sr-only">Open main menu</span>
+      <div className="sticky top-0 h-1/5 py-6 border-b-4 z-50 border-gray-400" 
+      style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
+        <div className="w-full h-full flex flex-col">
+          <div className="w-full h-fullmax-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
+            <div className="relative flex items-center justify-between h-full">
+              <div className="flex-1 flex items-center h-full justify-center">
+                <div className="flex-shrink-0 h-20 flex items-center w-full">
+                  <LazyImage s3Key={generalSettings.mainLogo} type="full" />
+                </div>
+                <div className="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-400  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    aria-expanded="false"
+                    onClick={(e) => setRenderMobileNav(!renderMobileNav)}
+                  >
+                    <span className="sr-only">Open main menu</span>
 
-                <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                    <svg
+                      className="block h-6 w-6"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                      />
+                    </svg>
 
-                <svg
-                  className="hidden h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="h-10 w-20 my-auto" >
-            <LazyImage s3Key={generalSettings.mainLogo} type="full" />
+                    <svg
+                      className="hidden h-6 w-6"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          {renderMobileNav && renderNavModal()}
+          <div className ="w-full h-full">
+            {renderMobileNav && renderNavModal()}
+          </div>
         </div>
       </div>
     )
   }
+
 
   const renderPcNavBar = () => {
     return (
-      <div className="h-1/5 py-6 border-b-4 border-gray-400">
+      <div className="sticky top-0 h-1/5 py-6 border-b-4 z-50 border-gray-400" 
+      style={{ backgroundColor: authContext.generalSettings[0].backgroundColor }}>
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full">
           <div className="relative flex items-center justify-between h-full">
             <div className="flex-1 flex items-center h-full justify-center">
-              <div className="flex-shrink-0 h-20 flex items-center ">
+              <div className="flex-shrink-0 h-20 flex items-center">
                 <LazyImage s3Key={generalSettings.mainLogo} type="full" />
               </div>
               <div className="hidden sm:block sm:ml-auto">
@@ -237,7 +232,7 @@ export default function GeneralLayout({ children }) {
       <div className="min-h-screen h-screen flex flex-col font-NanumGothic"
         style={{ backgroundColor: generalSettings.backgroundColor, color: generalSettings.textColor }}
       >
-        {isMobile ? renderMobileMenu() : renderPcNavBar()}
+        {isSmScreen ? renderPcSmScreen() : renderPcNavBar()}
         {children}
       </div>
     )

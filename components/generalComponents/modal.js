@@ -12,7 +12,7 @@ export default function Modal({ ...props }) {
    * - Submit Function
    * 
    */
-
+ 
   const fileRef = useRef(null);
 
 
@@ -247,7 +247,9 @@ export default function Modal({ ...props }) {
             <h2  className="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
               Añadir {props.element}
             </h2>
-            {renderFields()}
+            <div className=" px-5 max-h-96 overflow-y-auto">
+              {renderFields()}
+            </div>
             <div  className="flex justify-end mt-8 text-right">
               <button
                 type="button"
