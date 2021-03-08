@@ -64,6 +64,7 @@ export default function Tabs({ ...props }) {
                 {props.data.map((item, index) => {
                     return (
                         <div
+                            key={index}
                             className={"py-1 text-center text-white"}
                             style={index == selected ? 
                                 {backgroundColor: generalSettings.boxBackgroundColor, width: "16rem"}
@@ -93,6 +94,7 @@ export default function Tabs({ ...props }) {
                 {props.data.map((item, index) => {
                     return (
                         <option
+                            key={index}
                             value={index}
                             className={
                                 "py-1 text-center text-white " +

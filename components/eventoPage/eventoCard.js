@@ -22,7 +22,7 @@ export default function EventoCard({ ...props }) {
   
   return (
     <div key={props.data.id} 
-       className="cursor-pointer shadow py-3 px-3 mx-5 relative z-1 sm:mx-0 mb-5 h-48 sm:h-72"
+       className="cursor-pointer shadow py-3 px-3 mx-5 relative z-1 sm:mx-0 mb-5 h-72"
        style={{ backgroundColor: generalSettings.boxBackgroundColor }}
     >
         <DeleteButton id={props.data.id} item={"Evento"} />

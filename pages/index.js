@@ -22,16 +22,15 @@ import Grid from '../components/containers/grid';
 const Eventos = () => {
 
   /*
-
-      url: String!
+    url: String!
     title: String!
     startDate: String!
     endDate: String!
     Chat: Boolean!
     Questions: Boolean!
     Allowed: Boolean!
+  */
 
-    */
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isUplading, setIsUplading] = useState(false);
@@ -42,18 +41,20 @@ const Eventos = () => {
 
 
   const [fields, handleFieldChange] = useModalFields({
-    iframe: { type: "default", value: false },
-    titulo: { type: "default", value: false },
+    iframe: { type: "default", value: "" },
+    titulo: { type: "default", value: "" },
     chat: {
-      type: "select", value: false,
+      type: "select", value: "",
       options: [
+        { key: "", text: "" },
         { key: false, text: "Desactivado" },
         { key: true, text: "Activado" },
       ]
     },
     preguntas: {
-      type: "select", value: false,
+      type: "select", value: "",
       options: [
+        { key: "", text: "" },
         { key: false, text: "Desactivado" },
         { key: true, text: "Activado" },
       ]
@@ -129,6 +130,7 @@ const Eventos = () => {
     };
     graphqlCreate('createEvento', itemDetails);
     setIsCreating(false);
+    setShowModal(false);
   };
 
   const submit = async () => {
@@ -179,9 +181,9 @@ const Eventos = () => {
       </div>
       <div style={{ height: "80%"}}>
         <Grid
-          data={generateData()}
-          pcCols={4}
-          mobileCols={2}
+          data={ generateData() }
+          pcElements={4}
+          mobileElements={1}
         />
       </div>
     </FullPage>

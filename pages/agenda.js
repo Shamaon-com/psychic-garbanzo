@@ -7,6 +7,7 @@ import * as subscriptions from "../src/graphql/subscriptions";
 // Utils
 import { useModalFields } from '../utils/hooksLib';
 import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
+import { uploadToS3, validate } from '../utils/functionsLib';
 
 // Components
 import GeneralLayout from '../layouts/generalLayout';
@@ -24,12 +25,13 @@ export default function Agenda() {
   const [agendas, setAgendas] = useState([]);
   const [isCreating, setIsCreating] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isUplading, setIsUplading] = useState(false);
 
 
   const [fields, handleFieldChange] = useModalFields({
     title: { type: "default", value: "" },
     description: { type: "default", value: "" },
-    date: { type: "date", value: { day: 0, month: 0, hour: 0, minute: 0 } },
+    date: { type: "date", value: { day: 1, month: 1, hour: 0, minute: 0 } },
   });
 
 
@@ -73,7 +75,7 @@ export default function Agenda() {
       title: fields.title.value,
       description: fields.description.value,
       date: new Date(
-        2020,
+        2021,
         fields.date.value.month,
         fields.date.value.day,
         fields.date.value.hour,
@@ -87,7 +89,23 @@ export default function Agenda() {
     setShowModal(false);
   };
 
+  const submit = async () => {
+    /**
+     * This function is trigged when create button is pressed in Modal component,
+     * it will create evento and upload the correspoing image to s3
+     */
+    setIsCreating(true); setIsUplading(true);
 
+    if (validate(fields)) {
+      for (var field in fields) {
+        if (fields[field].type === "file") {
+          await uploadToS3(fields[field].value, setIsUplading);
+        }
+      }
+      createAgenda();
+    }
+    setIsCreating(false);
+  };
 
   const parseDates = () => {
     /**
@@ -102,12 +120,12 @@ export default function Agenda() {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
 
-    dataArray.map((item) => {
+    dataArray.map((item, index) => {
       let key = new Date(item.date).toDateString();
       if (dataDict[key] === undefined) {
-        dataDict[key] = [<EntryCard data={item} />];
+        dataDict[key] = [<EntryCard key={index} data={item} />];
       } else {
-        dataDict[key].push(<EntryCard data={item} />);
+        dataDict[key].push(<EntryCard key={index} data={item} />);
       }
     });
 
@@ -134,10 +152,10 @@ export default function Agenda() {
           element={"Agenda"}
           fields={fields}
           handleFieldChange={handleFieldChange}
-          submit={createAgenda}
+          submit={submit}
           showModal={showModal}
           setShowModal={setShowModal}
-          isCreating={isCreating}
+          isCreating={isCreating && isUplading}
         />
         <div className="flex flex-col justify-center" style={{ height: "20%" }}>
           <AddButtonAndTitle title={"Agenda"} setShowModal={setShowModal} />

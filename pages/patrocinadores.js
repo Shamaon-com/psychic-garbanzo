@@ -23,6 +23,7 @@ export default function Patrocinador() {
 
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isUplading, setIsUplading] = useState(false);
 
   // Specifc to page
   const [patrocinadors, setPatrocinadors] = useState([]);
@@ -77,34 +78,36 @@ export default function Patrocinador() {
     };
 
     graphqlCreate('createPatrocinador', itemDetails);
+    setShowModal(false);
   };
 
 
-  const submit = () => {
+  const submit = async () => {
     /**
      * This function is trigged when create button is pressed in Modal component,
-     * it will create ponente and upload the correspoing image to s3
+     * it will create evento and upload the correspoing image to s3
      */
-    setIsCreating(true);
-    if (validate()) {
+    setIsCreating(true); setIsUplading(true);
+
+    if (validate(fields)) {
       for (var field in fields) {
         if (fields[field].type === "file") {
-          uploadToS3(fields[field].value);
+          await uploadToS3(fields[field].value, setIsUplading);
         }
       }
       createPatrocinador();
-      setIsCreating(false);
-      setShowModal(false);
     }
+    setIsCreating(false);
   };
+
 
 
 
   const generateData = () => {
     return (
-      patrocinadors.map((item) => {
+      patrocinadors.map((item, index) => {
         return (
-          <PatrocinadorsCard data={item} />
+          <PatrocinadorsCard key={index} data={item} />
         )
       })
     )
@@ -113,22 +116,22 @@ export default function Patrocinador() {
   return (
     <GeneralLayout>
       <FullPage>
-      <Modal
-        element={"Patrocinador"}
-        fields={fields}
-        handleFieldChange={handleFieldChange}
-        submit={submit}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        isCreating={isCreating}
-      />
+        <Modal
+          element={"Evento"}
+          fields={fields}
+          handleFieldChange={handleFieldChange}
+          submit={submit}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          isCreating={isCreating && isUplading}
+          />
       <div className="flex flex-col justify-center" style={{ height: "20%" }}>
         <AddButtonAndTitle title={"Patrocinadores"} setShowModal={setShowModal} />
       </div>
       <Grid
         data={ generateData() }
-        pcCols={6}
-        mobileCols={4}
+        pcElements={9}
+        mobileElements={3}
       />
       </FullPage>
     </GeneralLayout>

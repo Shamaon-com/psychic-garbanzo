@@ -23,7 +23,7 @@ export default function Ponentes() {
 
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-
+  const [isUplading, setIsUplading] = useState(false);
   // Specifc to page 
   const [ponentes, setPonentes] = useState([]);
 
@@ -84,35 +84,34 @@ export default function Ponentes() {
     };
 
     graphqlCreate('createPonente', itemDetails);
+    setShowModal(false);
   };
 
-  const submit = () => {
+  const submit = async () => {
     /**
      * This function is trigged when create button is pressed in Modal component,
-     * it will create ponente and upload the correspoing image to s3
+     * it will create evento and upload the correspoing image to s3
      */
-    setIsCreating(true);
+    setIsCreating(true); setIsUplading(true);
 
-    if (validate()) {
+    if (validate(fields)) {
       for (var field in fields) {
         if (fields[field].type === "file") {
-          uploadToS3(fields[field].value);
+          await uploadToS3(fields[field].value, setIsUplading);
         }
       }
-
       createPonente();
-      setIsCreating(false);
-      setShowModal(false);
     }
+    setIsCreating(false);
   };
 
 
 
   const generateData = () => {
     return (
-      ponentes.map((ponente) => {
+      ponentes.map((ponente, index) => {
         return (
-          <PonenteCard data={ponente} />
+          <PonenteCard key={index} data={ponente} />
         )
       })
     )
@@ -123,21 +122,21 @@ export default function Ponentes() {
     <GeneralLayout>
       <FullPage>
         <Modal
-          element={"Ponente"}
+          element={"Evento"}
           fields={fields}
           handleFieldChange={handleFieldChange}
           submit={submit}
           showModal={showModal}
           setShowModal={setShowModal}
-          isCreating={isCreating}
+          isCreating={isCreating && isUplading}
         />
         <div className="flex flex-col justify-center" style={{ height: "20%" }}>
           <AddButtonAndTitle title={"Ponentes"} setShowModal={setShowModal} />
         </div>
         <Grid
           data={ generateData() }
-          pcCols={6}
-          mobileCols={1}
+          pcElements={6}
+          mobileElements={2}
         />
       </FullPage>
     </GeneralLayout>
