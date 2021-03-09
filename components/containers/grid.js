@@ -48,7 +48,6 @@ import React, { useState } from "react";
 
      const calculateStopIndex = () => {
 
-        console.log("current cols", currentCols)
         if (index < index + currentCols && index + currentCols < array.length) {
             return index + currentCols;
         }
@@ -74,7 +73,6 @@ import React, { useState } from "react";
         
         
         let stopIndex = calculateStopIndex();
-        console.log("stop Index", stopIndex)
         const renderArray = array.slice(index, stopIndex);
 
         return (

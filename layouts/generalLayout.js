@@ -67,7 +67,9 @@ export default function GeneralLayout({ children }) {
         enabledPages.push(pageArray[i])
       }
     }
-    if (!isSmScreen) {
+    console.log(isSmScreen
+      )
+    if (authContext.isAdmin && document.body.clientWidth >= 1024) {
       enabledPages.push("pageControl");
     }
     setEnabledPages(enabledPages);
@@ -84,6 +86,7 @@ export default function GeneralLayout({ children }) {
   }, []);
 
   const handleResizeSmScreen = () => {
+    console.log(document.body.clientWidth)
     if (document.body.clientWidth >= 1024) {
       setIsSmScreen(false)
       setRenderMobileNav(false)

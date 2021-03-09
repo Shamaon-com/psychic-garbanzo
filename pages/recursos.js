@@ -5,7 +5,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as subscriptions from "../src/graphql/subscriptions";
 
 // Utils
-import { useModalFields } from '../utils/hooksLib';
+import { setDictValue, useModalFields } from '../utils/hooksLib';
 import { uploadToS3, validate } from '../utils/functionsLib';
 import { graphqlGet, graphqlCreate } from "../utils/graphqlOperations";
 import { AuthContext } from "../utils/functionsLib";
@@ -83,9 +83,11 @@ export default function Recursos() {
     });
   };
 
-  const createRecurso = () => {
+  const createDocumentRecurso = async () => {
 
-    console.log(fields)
+    setIsCreating(true); setIsUplading(true);
+
+    await uploadToS3(fields.file.value, setIsUplading);
 
     var itemDetails = {
       name: fields.name.value,
@@ -95,51 +97,52 @@ export default function Recursos() {
       text: fields.text.value
     };
 
-    console.log(itemDetails);
+    graphqlCreate('createRecurso', itemDetails);
+    setIsCreating(false); setShowModal(false);
+  };
+
+  const createVideoRecurso = async () => {
+
+    setIsCreating(true);
+    
+    var itemDetails = {
+      name: fields.name.value,
+      type: currentRecurso.type.value,
+      file: "",
+      videoUrl: fields.videoUrl.value,
+      text: fields.text.value
+    };
 
     graphqlCreate('createRecurso', itemDetails);
-    setShowModal(false);
+    setIsCreating(false); setShowModal(false);
   };
+
 
   const customValidate = () => {
     /**
      * Validate different fields depending on type defined at
      * currentRecurso.type.value
      */
-    var fieldsSeconday = fields
-    if (currentRecurso.type.value === documentType) {
-      for (var field in fieldsSeconday) {
-        if (fieldsSeconday[field].value === "" && field !== "videoUrl") {
-          alert("por favor rellene todos los campos " + field)
-          return false
+    if (currentRecurso.type.value === "video"){
+      for(let field in fields){
+        if(fields[field].value === "" && field !== "file"){
+          alert("Rellene todos los campos " + field)
+          return
         }
       }
-      return true
-    } else {
-      delete fieldsSeconday["file"]
+      createVideoRecurso(); 
+    } else if (currentRecurso.type.value === "document"){
+      for(let field in fields){
+        if(fields[field].value === "" && field !== "videoUrl"){
+          alert("Rellene todos los campos " + field)
+          return
+        }
+      }
+      createDocumentRecurso();
     }
-
   }
 
 
-
-  const submit = async () => {
-    /**
-     * This function is trigged when create button is pressed in Modal component,
-     * it will create evento and upload the correspoing image to s3
-     */
-    setIsCreating(true); setIsUplading(true);
-
-    if (customValidate()) {
-      for (var field in fields) {
-        if (fields[field].type === "file") {
-          await uploadToS3(fields[field].value, setIsUplading);
-        }
-      }
-      createRecurso();
-    }
-    setIsCreating(false);
-  };
 
   const generateVideoCardData = () => {
 
@@ -158,7 +161,7 @@ export default function Recursos() {
 
     const videoRecurso = recursos.filter(recurso => recurso.type === documentType);
     return (
-      videoRecurso.map((item) => {
+      videoRecurso.map((item, index) => {
         return (
           <FileCard key={index} data={item} setIframeSrc={setIframeSrc} />
         )
@@ -201,7 +204,7 @@ export default function Recursos() {
           element={"Recurso"}
           fields={currentRecurso}
           handleFieldChange={handleFieldChange}
-          submit={submit}
+          submit={customValidate}
           showModal={showModal}
           setShowModal={setShowModal}
           isCreating={isCreating && isUplading}
@@ -219,7 +222,7 @@ export default function Recursos() {
         </div>
         </div>
         <div
-          className="flex flex-row w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
+          className="flex flex-row w-full sm:w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold"
         >
           Documentos
 
@@ -234,7 +237,7 @@ export default function Recursos() {
 
         </div>
         <ComponentList data={generateFileCardData()} />
-        <div className="flex w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
+        <div className="flex w-full sm:w-8/12 mx-auto h-12 py-2 justify-center border-b-2 border-gray-300 font-bold">
           Videos
           {authContext.isAdmin &&
             <div

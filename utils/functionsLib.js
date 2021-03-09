@@ -22,7 +22,10 @@ export const capitalize = (str) => {
 
 
 export const uploadToS3 = async (file, setIsUplading) => {
-
+    if(file === undefined || file === null || file === ""){
+      alert("Error al cargar imagen")
+      return
+    }
     await Storage.put(file.name.replace(/\s+/g, ''), file, {
       contentType: file.type,
       level: 'public',

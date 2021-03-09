@@ -19,7 +19,7 @@ export default function EntryCard({ ...props }) {
     return (
         <div 
         key={props.data.id}
-        className="shadow h-24 w-10/12 flex flex-col justify-center align-center items-center"
+        className="shadow h-24 w-full sm:w-10/12 flex flex-col justify-center align-center items-center"
         >
             <div className="h-1/4 flex flex-row w-full relative">
                 <div className="text-center text-gray-100 w-full"

@@ -18,7 +18,7 @@ export default function VideoCard({ ...props }) {
 
 
     return (
-        <div key={props.data.id} className="shadow flex w-8/12 flex-row h-20 relative"
+        <div key={props.data.id} className="shadow flex w-full sm:w-8/12 flex-row h-20 relative"
             style={{ backgroundColor: generalSettings.boxBackgroundColor }}
         >
             <DeleteButton id={props.data.id} item={"Recurso"} />

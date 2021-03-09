@@ -16,7 +16,9 @@ const PlatformControl = (props) => {
   const [appID, setAppId] = useState(null);
   const [getRef, setRef] = useDynamicRefs();
   const [tab, setTab] = useState(0);
-  const [loaded, setIsLoaded] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
   const [mainLogoObject, setMainLogoObject] = useState({});
   const [backgroundLoginImage, setBackgroundLoginImage] = useState({});
   const [initalState, setInitalState] = useState({
@@ -59,8 +61,6 @@ const PlatformControl = (props) => {
 
       setInitalState(obj1);
     }
-
-    setIsLoaded(false);
   }, []);
 
   const setValue = () => {
@@ -69,8 +69,8 @@ const PlatformControl = (props) => {
      * to check that all fields are populated
      * else we just update the settings with the new values
      */
-    console.log(dict)
-    if(validate(dict)){
+    setIsLoading(true);
+    if (validate(dict)) {
       appID === null ? createSettings() : updateSettings()
     }
   };
@@ -80,7 +80,11 @@ const PlatformControl = (props) => {
     for (var field in fields) {
       console.log(field, fields[field])
 
-    if (field !== "backgroundLoginImage" &&( fields[field] === "" || (Object.keys(fields[field]).length === 0 && fields[field].constructor === Object))) {
+      if (fields[field] === null) {
+        alert("rellene todos los campos");
+        return false;
+      }
+      else if (field !== "backgroundLoginImage" && (fields[field] === "" || (Object.keys(fields[field]).length === 0 && fields[field].constructor === Object))) {
         alert("Rellene todos los campos " + field);
         return false;
       }
@@ -90,36 +94,34 @@ const PlatformControl = (props) => {
 
   const createSettings = () => {
 
-    setIsLoaded(false);
-
     API.graphql(
       graphqlOperation(mutations.createGeneralSettings, { input: dict })
     );
 
-    setIsLoaded(false);
+    setTimeout(() => { setIsLoading(false); }, 3000);
 
   };
 
   const updateSettings = () => {
 
-    console.log(initalState);
-
-    setIsLoaded(false);
     var dictAndId = { ...dict, id: appID };
 
 
     if (initalState["mainLogo"] !== dict["mainLogo"]) {
-      uploadToS3(mainLogoObject.value, setIsLoaded);
+      setIsUploading(true);
+      uploadToS3(mainLogoObject.value, setIsUploading);
     }
 
-    if (initalState["backgroundLoginImage"] !== dict["backgroundLoginImage"]) {
-      uploadToS3(backgroundLoginImage.value, setIsLoaded);
+    if (initalState["backgroundLoginImage"] !== dict["backgroundLoginImage"] && dict["backgroundLoginImage"] != "") {
+      setIsUploading(true);
+      uploadToS3(backgroundLoginImage.value, setIsUploading);
     }
 
     API.graphql(
       graphqlOperation(mutations.updateGeneralSettings, { input: dictAndId })
     );
-    setIsLoaded(true);
+
+    setTimeout(() => { setIsLoading(false); }, 3000);
   };
 
   const deleteSettings = () => {
@@ -274,7 +276,19 @@ const PlatformControl = (props) => {
     )
   }
 
-
+  const renderButton = () => {
+    return (
+      <button
+        disabled={disabled}
+        className={`h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 \
+                bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800 \
+                disabled:opacity-50 disabled:cursor-default ${isLoading || isUploading && "animate-pulse"}`}
+        onClick={setValue}
+      >
+        Guardar
+      </button>
+    )
+  }
 
   const renderModulosTab = () => {
     /*
@@ -309,16 +323,7 @@ const PlatformControl = (props) => {
             </p>
           </div>
           <div className="flex flex-col w-1/2 justify-center items-end">
-            {renderSpinner()}
-            <button
-              disabled={disabled}
-              className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
-                        bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800
-                        disabled:opacity-50 disabled:cursor-default"
-              onClick={setValue}
-            >
-              Guardar
-            </button>
+            {renderButton()}
           </div>
         </div>
         {renderToggleInput()}
@@ -338,16 +343,7 @@ const PlatformControl = (props) => {
             </p>
           </div>
           <div className="flex flex-col w-1/2 justify-center items-end">
-            {renderSpinner()}
-            <button
-              disabled={disabled}
-              className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
-                        bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800
-                        disabled:opacity-50 disabled:cursor-default"
-              onClick={setValue}
-            >
-              Guardar
-            </button>
+            {renderButton()}
           </div>
         </div>
         <div>
@@ -367,17 +363,8 @@ const PlatformControl = (props) => {
             </p>
           </div>
           <div className="flex flex-col w-1/2 justify-center items-end">
-            <button
-              disabled={disabled}
-              className="h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 
-                        bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800
-                        disabled:opacity-50 disabled:cursor-default"
-              onClick={setValue}
-            >
-              Guardar
-            </button>
+            {renderButton()}
           </div>
-          {renderSpinner()}
         </div>
         <div className="flex flex-row mb-3 py-3 border-b">
           <p className="text-gray-600 w-1/5">Logo</p>
@@ -408,23 +395,26 @@ const PlatformControl = (props) => {
           <p className="mr-auto font-light w-3/5">
             Imagen de fondo en la pagina de inicio
           </p>
-          {dict["backgroundLoginImage"] != null ?
-            <div className="flex flex-row">
-              <div className="mx-5">
-                {dict["backgroundLoginImage"].value != undefined ? dict["backgroundLoginImage"].value.name : dict["backgroundLoginImage"]}
-              </div>
-              <div className="text-purple-500 cursor-pointer" onClick={() => setDict("backgroundLoginImage", null)}> Cambiar </div>
-            </div>
-            :
-            <input className="w-2/6" id="backgroundLoginImage" accept="png" type="file"
-              onChange={(e) => {
-                validate();
-                setBackgroundLoginImage({ "type": "file", "value": e.target.files[0] })
-                setDict(e.target.id, e.target.files[0].name)
-              }
-              }
-            />
-          }
+          <div className="flex flex-row justify-right">
+            <div className="mr-5 text-red-500 cursor-pointer" onClick={() => setDict("backgroundLoginImage", "")}> X </div>
+            {dict["backgroundLoginImage"] != null ?
+              <>
+                <div className="mx-5">
+                  {dict["backgroundLoginImage"].value != undefined ? dict["backgroundLoginImage"].value.name : dict["backgroundLoginImage"]}
+                </div>
+                <div className="text-purple-500 cursor-pointer" onClick={() => setDict("backgroundLoginImage", null)}> Cambiar </div>
+              </>
+              :
+              <input className="w-60" id="backgroundLoginImage" accept="png" type="file"
+                onChange={(e) => {
+                  validate();
+                  setBackgroundLoginImage({ "type": "file", "value": e.target.files[0] })
+                  setDict(e.target.id, e.target.files[0].name)
+                }
+                }
+              />
+            }
+          </div>
         </div>
       </>
     );
@@ -440,21 +430,6 @@ const PlatformControl = (props) => {
         return renderColoresTab();
     }
   };
-
-  const renderSpinner = () => {
-    return (
-      <>
-        {loaded &&
-          <div className="flex flex-col justify-center items-center mx-3">
-            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="black" stroke-width="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </div>
-        }
-      </>
-    )
-  }
 
 
   return (
