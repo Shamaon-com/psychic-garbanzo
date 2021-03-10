@@ -1,5 +1,5 @@
 import "tailwindcss/tailwind.css";
-import { Amplify, Auth, API, graphqlOperation } from "aws-amplify";
+import { Amplify, Auth, API, graphqlOperation, button } from "aws-amplify";
 import awsconfig from "../src/aws-exports";
 import { useRouter } from 'next/router';
 import { AmplifyAuthenticator, AmplifySignUp, AmplifySignIn } from '@aws-amplify/ui-react';
@@ -126,8 +126,9 @@ I18n.putVocabularies(dict)
 
 
   const MyTheme = {
-    SignInButton: { 'backgroundColor': 'blue' },
-  }
+    Formcontainer: { 'backgroundColor': 'red', 'borderColor': 'red' }
+
+}
 
 /*
 
@@ -138,7 +139,7 @@ I18n.putVocabularies(dict)
 
     */
   return (
-    <AmplifyAuthenticator handleAuthStateChange={handleAuthStateChange} theme={MyTheme} hideDefault={true}>
+    <AmplifyAuthenticator handleAuthStateChange={handleAuthStateChange}theme={MyTheme} hideDefault={true} >
       <AmplifySignUp
         slot="sign-up"
         headerText="Crea una nueva cuenta"
@@ -157,8 +158,10 @@ I18n.putVocabularies(dict)
             required: true,
           }
         ]}
+        submitButtonText="Registrarse"
+
       />
-      <AmplifySignIn headerText="Login" slot="sign-in" usernameAlias="email" />
+      <AmplifySignIn headerText="Login" slot="sign-in" usernameAlias="email"/>
       {!isAuthenticating && !isLoadingSettings ? (
         <AuthContext.Provider
           value={{
