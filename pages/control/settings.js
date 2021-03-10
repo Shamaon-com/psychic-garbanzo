@@ -281,8 +281,8 @@ const PlatformControl = (props) => {
       <button
         disabled={disabled}
         className={`h-10 w-40 px-5 m-2 text-indigo-100 transition-colors duration-150 \
-                bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800 \
-                disabled:opacity-50 disabled:cursor-default ${(isLoading || isUploading) && "animate-pulse"}`}
+                    bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800 \
+                    disabled:opacity-50 disabled:cursor-default ${(isLoading || isUploading) && "animate-pulse"}`}
         onClick={setValue}
       >
         Guardar

@@ -61,7 +61,7 @@ export default function AdminLayout({ children, ...pageProps }) {
 
   const checkEnabledPages = () => {
     if (authContext.isAdmin) {
-      setEnabledPages(["settings", "profile", "questions"]);
+      setEnabledPages(["settings", "users", "profile", "questions"]);
     } else if (authContext.attributes.groups.includes("ponentes")) {
       setEnabledPages(["profile", "questions"]);
     } else if (authContext.attributes.groups.includes("moderadoes")) {
@@ -74,19 +74,20 @@ export default function AdminLayout({ children, ...pageProps }) {
   const renderNavigation = () => {
 
    return enabledPages.map((page) => {
-      return (<li className="my-px">
-        <a
-          href={navigationData[page].route}
-          className="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"
-        >
-          <span className="flex items-center justify-center text-lg text-gray-400">
-            <span className="text-gray-600">
-              {navigationData[page].image}
+      return (
+        <li className="my-px">
+          <a
+            href={navigationData[page].route}
+            className="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"
+          >
+            <span className="flex items-center justify-center text-lg text-gray-400">
+              <span className="text-gray-600">
+                {navigationData[page].image}
+              </span>
             </span>
-          </span>
-          <span className="ml-3">{navigationData[page].text}</span>
-        </a>
-      </li>
+            <span className="ml-3">{navigationData[page].text}</span>
+          </a>
+        </li>
       )
     })
   }
@@ -114,7 +115,6 @@ export default function AdminLayout({ children, ...pageProps }) {
             {renderNavigation()}
             <li className="my-px mt-auto">
               <a
-                href="#"
                 className="flex flex-row items-center h-12 px-4 rounded-lg text-gray-600 hover:bg-gray-100"
               >
                 <span className="flex items-center justify-center text-lg text-red-400">

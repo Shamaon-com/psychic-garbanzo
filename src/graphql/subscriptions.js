@@ -62,6 +62,17 @@ export const onCreateEvento = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      questionsData {
+        items {
+          id
+          eventoId
+          user
+          question
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -90,6 +101,17 @@ export const onUpdateEvento = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      questionsData {
+        items {
+          id
+          eventoId
+          user
+          question
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -118,6 +140,17 @@ export const onDeleteEvento = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      questionsData {
+        items {
+          id
+          eventoId
+          user
+          question
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;

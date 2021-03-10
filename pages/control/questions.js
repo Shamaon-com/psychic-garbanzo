@@ -3,35 +3,51 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { API, graphqlOperation } from 'aws-amplify';
 import QuestionList from '../../components/containers/questionList';
 
-
+import { graphqlGet, graphqlCreate } from "../../utils/graphqlOperations";
 import * as mutations from '../../src/graphql/mutations';
 import * as queries from '../../src/graphql/queries';
 import * as subscriptions from '../../src/graphql/subscriptions';
 
+
+//components
+import ContainerPage from "../../components/containers/containerPage";
+import Iframe from "../../components/generalComponents/iframe";
+
+
 const Ponentes = () => {
 	const [questions, setQuestions] = useState([]);
+	const [eventos, setEventos] = useState([]);
+	const [currentEvento, setEvento] = useState(null);
 	const questionsEndRef = useRef(null);
 
+
 	useEffect(() => {
-		onPageRendered();
+		graphqlGet("listEventos", setEventos);
+		subscribeDeleteQuestion();
+		subscribeCreateQuestion();
 	}, []);
 
-	const onPageRendered = async () => {
-		getQuestions();
-		subscribeCreateQuestion();
-		subscribeDeleteQuestion();
+	const searchEvento = (index) => {
+
+		console.log(index)
+		if(index == 99999){
+			setEvento(null)
+			return;
+		}
+
+		const getEvento = async () => {
+			const eventoData = await API.graphql({ query: queries.getEvento, variables: { id: eventos[index].id } });
+			setEvento(eventoData.data.getEvento);
+			setQuestions(eventoData.data.getEvento.questionsData.items)
+		}
+
+		getEvento();
 	};
+
 
 	/**
 	 * CRUD Operation functions
 	 */
-
-	const getQuestions = () => {
-		API.graphql(graphqlOperation(queries.listQuestions)).then((data) => {
-			setQuestions(sortArray(data.data.listQuestions.items));
-			// scrollToBottom();
-		});
-	};
 
 	const subscribeDeleteQuestion = async () => {
 		await API.graphql(
@@ -51,34 +67,16 @@ const Ponentes = () => {
 		});
 	};
 
-	const deleteQuestion = (e) => {
-		var target = e.target;
-		while (target && target.id === '') {
-			target = target.parentNode;
-			console.log(target);
-		}
-
-		var itemDetails = {
-			id: target.id,
-		};
-		API.graphql(
-			graphqlOperation(mutations.deleteQuestion, { input: itemDetails })
-		);
-	};
 
 	const subscribeCreateQuestion = async () => {
 		await API.graphql(
 			graphqlOperation(subscriptions.onCreateQuestion)
 		).subscribe({
 			next: (subonCreateEvent) => {
-				console.log('question sub create');
-				setQuestions((questions) =>
-					sortArray([
-						...questions,
-						subonCreateEvent.value.data.onCreateQuestion,
-					])
-				);
-				scrollToBottom();
+				setQuestions((questions, currentEvento) => {
+					console.log(questions, currentEvento)
+					return []
+				});	
 			},
 		});
 	};
@@ -104,43 +102,57 @@ const Ponentes = () => {
 		questionsEndRef.current.scrollIntoView({ behavior: 'smooth' });
 	};
 
-	// const renderQuestionList = () => {
-	// 	return (
-	// 		<tbody className="bg-white text-gray-700 p-4 self-start m-3 rounded-xl shadow-lg">
-	// 			{questions.map((question, key) => {
-	// 				return <div>{question.question}</div>;
-	// 			})}
-	// 		</tbody>
-	// 	);
-	// };
+	const renderSelect = () => {
+		return (
+			<select
+				id="eventos"
+				className="py-2 px-3 border border-gray-300
+				  bg-white rounded-md shadow-sm focus:outline-none 
+				  focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+				onChange={(e) => { searchEvento(e.target.value) }}
+			>
+				<option value={99999}>Seleccione una opción</option>
+				{eventos.map((evento, index) => {
+					return <option value={index}>{evento.title}</option>
+				})
+				}
+			</select>
+		)
 
-	const renderMain = () => {
-		return questions.length === 0 ? (
-			<div  className="m-auto">
-				<div  className="bg-white shadow-xl rounded-xl">
-					<div  className="font-sans text-xl text-gray-600 p-5">
-						Aquí aparecerán las preguntas
-						<div ref={questionsEndRef}></div>
+	}
+
+
+	return (
+
+		<ContainerPage>
+			<div
+				className="bg-white flex flex-col rounded-lg shadow py-10 px-20 overflow-auto h-full"
+			>
+				<div className="py-5 border-b flex ">
+					<div className="flex flex-col w-1/2">
+						<p className="text-xl mb-3">Modulos</p>
+						<p className="text-gray-500 font-extralight">
+							Activa o desactiva ciertos modulos
+						</p>
+					</div>
+					<div className="flex flex-col justify-center items-end w-1/2">
+						{renderSelect()}
 					</div>
 				</div>
+				{currentEvento &&
+					<div className="flex flex-col h-4/5">
+						<div className="h-1/2 mb-3">
+							<QuestionList data={questions} />
+						</div>
+						<div className="mx-auto max-w-2xl w-full">
+							<Iframe src={currentEvento.url} />
+						</div>
+					</div>
+				}
 			</div>
-		) : (
-			<div  className=" w-full space-y-8">
-				<div
-					 className="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
-					style={{ height: '100%', maxHeight: '75%' }}
-				>
-					<QuestionList
-						data={questions}
-						deleteItem={deleteQuestion}
-					/>
-					<div ref={questionsEndRef}></div>
-				</div>
-			</div>
-		);
-	};
+		</ContainerPage>
 
-	return <>{renderMain()}</>;
+	)
 }
 
 Ponentes.layout = AdminLayout;

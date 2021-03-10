@@ -41,7 +41,7 @@ const Home = () => {
         if (data.chat && data.questions) {
             return [
                 { id: 'chat', component: <Chat eventoId={eventoId} />, name: 'Chat' },
-                { id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
+                { id: 'preguntas', component: <QuestionBox eventoId={eventoId} />, name: 'Preguntas' }
             ]
         }
         else if (data.chat) {
@@ -51,7 +51,7 @@ const Home = () => {
         }
         else if (data.questions) {
             return [
-                { id: 'preguntas', component: <QuestionBox />, name: 'Preguntas' }
+                { id: 'preguntas', component: <QuestionBox eventoId={eventoId} />, name: 'Preguntas' }
             ]
         }
     }

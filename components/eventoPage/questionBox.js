@@ -6,7 +6,7 @@ import { AuthContext } from '../../utils/functionsLib';
 
 
 
-export default function QuestionBox() {
+export default function QuestionBox({...props}) {
 	const [question, setQuestion] = useState('');
 	const authContext = useContext(AuthContext);
     const generalSettings = authContext.generalSettings[0];
@@ -21,6 +21,7 @@ export default function QuestionBox() {
 		var itemDetails = {
 			user: authContext.attributes.email,
 			question: question,
+			eventoId: props.eventoId
 		};
 
 		console.log('Event Details : ' + JSON.stringify(itemDetails));

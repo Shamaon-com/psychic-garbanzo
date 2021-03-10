@@ -90,6 +90,17 @@ export const getEvento = /* GraphQL */ `
       }
       createdAt
       updatedAt
+      questionsData {
+        items {
+          id
+          eventoId
+          user
+          question
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -115,6 +126,9 @@ export const listEventos = /* GraphQL */ `
         }
         createdAt
         updatedAt
+        questionsData {
+          nextToken
+        }
       }
       nextToken
     }
