@@ -46,7 +46,7 @@
         ]
     },
     "useDefault": "manual",
-    "triggers": "{\n  \"PostConfirmation\": [\n    \"add-to-group\"\n  ]\n}",
+    "triggers": "{}",
     "userPoolGroupList": [
         "admins",
         "moderators",
@@ -58,23 +58,12 @@
     "parentStack": {
         "Ref": "AWS::StackId"
     },
-    "permissions": [
-        "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}"
-    ],
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "psychicgarbanzo9d2c3b48PostConfirmation",
-            "triggerProvider": "Cognito",
-            "attributes": [
-                "Arn",
-                "Name"
-            ]
-        }
-    ],
-    "userPoolGroups": false,
-    "adminQueries": false,
+    "permissions": [],
+    "dependsOn": [],
+    "userPoolGroups": true,
+    "adminQueries": true,
     "hostedUI": false,
     "authProviders": [],
-    "thirdPartyAuth": false
+    "thirdPartyAuth": false,
+    "adminQueryGroup": "admins"
 }

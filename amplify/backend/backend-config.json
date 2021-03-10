@@ -3,17 +3,7 @@
     "psychicgarbanzo9d2c3b48": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "psychicgarbanzo9d2c3b48PostConfirmation",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        }
-      ],
+      "dependsOn": [],
       "customAuth": false
     },
     "userPoolGroups": {
@@ -47,11 +37,6 @@
           ]
         }
       ]
-    },
-    "psychicgarbanzo9d2c3b48PostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
     }
   },
   "api": {
