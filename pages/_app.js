@@ -8,12 +8,14 @@ import React, { useState, useEffect } from "react";
 import LoadingAnimation from "../components/generalComponents/loadingAnimation";
 import * as gtag from '../lib/gtag'
 import { AuthContext } from "../utils/functionsLib";
-
+import { I18n } from 'aws-amplify';
 import * as queries from "../src/graphql/queries";
 
 
 
 Amplify.configure(awsconfig);
+
+
 
 
 function MyApp({ Component, pageProps }) {
@@ -30,6 +32,29 @@ function MyApp({ Component, pageProps }) {
 
   const Layout = Component.layout || (({ children }) => <>{children}</>)
 
+  const dict = {
+    'es': {
+        'Login':"Acceder",
+        'Have an account?':"¿Ya está registrado?",
+        'Login':"Acceder",
+        'Email Address *':"Correo electrónico  *",
+        'Email *':"Correo electrónico *",
+        'CREATE ACCOUNT':"Registrarse",
+        'Enter your email address':"Introduzca su correo electrónico",
+        'Password *':"Contraseña *",
+        'Enter your password':"Introduzca su contraseña",
+        'Forgot your password?':"¿Se te ha olvidado la contraseña?",
+        'Reset password':"Restablecer contraseña",
+        'No account?':"¿No estas registrado?",
+        'Create account':"Crear una cuenta",
+        'Sign In': "Acceder",
+        'Sign in': "Acceder",
+        'Sign Up': "Regístrate"
+    }
+};
+
+I18n.putVocabularies(dict)
+  
   useEffect(() => {
 
     loadSettings();
@@ -101,7 +126,7 @@ function MyApp({ Component, pageProps }) {
 
 
   const MyTheme = {
-    SignInButton: { 'backgroundColor': 'red' },
+    SignInButton: { 'backgroundColor': 'blue' },
   }
 
 /*
@@ -122,13 +147,13 @@ function MyApp({ Component, pageProps }) {
           {
             type: "email",
             label: "Email *",
-            placeholder: "usuario@tuemail.com",
+            placeholder: "Introduzca su dirección de correo electrónico",
             required: true,
           },
           {
             type: "password",
             label: "Contraseña *",
-            placeholder: "contrasena1234",
+            placeholder: "Introduzca su contrasena",
             required: true,
           }
         ]}
