@@ -1,3 +1,6 @@
+
+
+
 type User @model
   @auth(rules: [
     { allow: groups, groups: ["admins"], queries: [get, list], mutations: [create, update, delete] },
@@ -60,8 +63,10 @@ type Evento
 		chat: Boolean!
 		questions: Boolean!
 		allowed: Boolean!
-		image: String
+		image: String!
 		messages: [Message] @connection(keyName: "byMessage", fields: ["id"])
+		questionsData: [Question] @connection(keyName: "byQuestion", fields: ["id"])
+
 	}
 
 type Message
@@ -101,12 +106,13 @@ type Question
 			}
 			{ allow: groups, groups: ["users"], mutations: [create] }
 		]
-	) {
-	id: ID!
-	eventoId: String!
-	user: String!
-	question: String!
-}
+	) 
+	@key(name: "byQuestion", fields: ["eventoId", "user", "question"]) { 
+		id: ID!
+		eventoId: ID!
+		user: String!
+		question: String!
+	}
 
 type GeneralSettings
   @model

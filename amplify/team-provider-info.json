@@ -20,6 +20,11 @@
         "AdminQueries9594c6ac": {
           "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
           "s3Key": "amplify-builds/AdminQueries9594c6ac-5674565770627055614e-build.zip"
+        },
+        "psychicgarbanzo9d2c3b48PostConfirmation": {
+          "GROUP": "users",
+          "deploymentBucketName": "amplify-psychicgarbanzo-dev-103459-deployment",
+          "s3Key": "amplify-builds/psychicgarbanzo9d2c3b48PostConfirmation-4763594f72653776624b-build.zip"
         }
       }
     }
