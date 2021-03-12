@@ -1,5 +1,5 @@
 {
-    "identityPoolName": "psychicgarbanzo9d2c3b48_identitypool_9d2c3b48",
+    "identityPoolName": "psychicgarbanzo671cdc58_identitypool_671cdc58",
     "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "psychi9d2c3b48",
     "userPoolName": "psychicgarbanzo9d2c3b48_userpool_9d2c3b48",
@@ -72,9 +72,10 @@
             ]
         }
     ],
-    "userPoolGroups": false,
-    "adminQueries": false,
+    "userPoolGroups": true,
+    "adminQueries": true,
     "hostedUI": false,
+    "adminQueryGroup": "admins",
     "authProviders": [],
     "thirdPartyAuth": false
 }

@@ -1,15 +1,14 @@
 {
   "trigger": true,
   "modules": [
-    "add-to-group",
-    "custom"
+    "add-to-group"
   ],
   "parentResource": "psychicgarbanzo9d2c3b48",
   "functionName": "psychicgarbanzo9d2c3b48PostConfirmation",
   "resourceName": "psychicgarbanzo9d2c3b48PostConfirmation",
   "parentStack": "auth",
-  "triggerEnvs": "[]",
-  "triggerDir": "/Users/pablov/.nvm/versions/node/v15.6.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/PostConfirmation",
+  "triggerEnvs": [],
+  "triggerDir": "/usr/local/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/PostConfirmation",
   "triggerTemplate": "PostConfirmation.json.ejs",
   "triggerEventPath": "PostConfirmation.event.json",
   "roleName": "psychicgarbanzo9d2c3b48PostConfirmation",
